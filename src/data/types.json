@@ -1,0 +1,20 @@
+{
+  "normal": { "nom": "Normal", "icone": "⚪", "couleur": "#A8A878" },
+  "combat": { "nom": "Combat", "icone": "🥊", "couleur": "#C03028" },
+  "vol": { "nom": "Vol", "icone": "🕊️", "couleur": "#A890F0" },
+  "poison": { "nom": "Poison", "icone": "☠️", "couleur": "#A040A0" },
+  "sol": { "nom": "Sol", "icone": "🌎", "couleur": "#E0C068" },
+  "roche": { "nom": "Roche", "icone": "🪨", "couleur": "#B8A038" },
+  "insecte": { "nom": "Insecte", "icone": "🐛", "couleur": "#A8B820" },
+  "spectre": { "nom": "Spectre", "icone": "👻", "couleur": "#705898" },
+  "acier": { "nom": "Acier", "icone": "🔩", "couleur": "#B8B8D0" },
+  "feu": { "nom": "Feu", "icone": "🔥", "couleur": "#F08030" },
+  "eau": { "nom": "Eau", "icone": "💧", "couleur": "#6890F0" },
+  "plante": { "nom": "Plante", "icone": "🌿", "couleur": "#78C850" },
+  "electrik": { "nom": "Électrik", "icone": "⚡", "couleur": "#F8D030" },
+  "psy": { "nom": "Psy", "icone": "🔮", "couleur": "#F85888" },
+  "glace": { "nom": "Glace", "icone": "❄️", "couleur": "#98D8D8" },
+  "dragon": { "nom": "Dragon", "icone": "🐉", "couleur": "#7038F8" },
+  "tenebres": { "nom": "Ténèbres", "icone": "🌑", "couleur": "#705848" },
+  "fee": { "nom": "Fée", "icone": "🧚", "couleur": "#EE99AC" }
+}

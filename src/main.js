@@ -6,24 +6,38 @@ async function chargerJson(chemin) {
   return reponse.json();
 }
 
+const metaSpriteCache = new Map();
+async function obtenirMetaSprite(def) {
+  if (metaSpriteCache.has(def.id)) return metaSpriteCache.get(def.id);
+  const promesse = chargerJson(`${def.sprite_dossier}meta.json`).catch(() => null);
+  metaSpriteCache.set(def.id, promesse);
+  return promesse;
+}
+
 async function demarrer() {
-  const [resources, pokemons, upgrades] = await Promise.all([
+  const [resources, pokemons, upgrades, types, recrutement] = await Promise.all([
     chargerJson("src/data/resources.json"),
     chargerJson("src/data/pokemons.json"),
     chargerJson("src/data/upgrades.json"),
+    chargerJson("src/data/types.json"),
+    chargerJson("src/data/recrutement.json"),
   ]);
 
-  const game = new Game({ resources, pokemons, upgrades });
+  const game = new Game({ resources, pokemons, upgrades, recrutement });
 
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
     prodInfo: document.getElementById("prod-info"),
     zoneDecor: document.getElementById("zone-decor"),
     decorEquipe: document.getElementById("decor-equipe"),
+    btnReset: document.getElementById("btn-reset"),
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
     listePokemon: document.getElementById("liste-pokemon"),
+    selectionStarter: document.getElementById("selection-starter"),
+    recrutementCta: document.getElementById("recrutement-cta"),
+    recrutementCtaTexte: document.getElementById("recrutement-cta-texte"),
     shopListe: document.getElementById("shop-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
     tabsBtns: document.querySelectorAll(".tab-btn"),
@@ -32,6 +46,17 @@ async function demarrer() {
     popupTitre: document.getElementById("popup-titre"),
     popupDescription: document.getElementById("popup-description"),
     popupFooter: document.getElementById("popup-footer"),
+    starterBackdrop: document.getElementById("starter-backdrop"),
+    modalStarter: document.getElementById("modal-starter"),
+    starterCartes: document.getElementById("starter-cartes"),
+    recrueBackdrop: document.getElementById("recrue-backdrop"),
+    modalRecrue: document.getElementById("modal-recrue"),
+    recrueTitre: document.getElementById("recrue-titre"),
+    recrueCartes: document.getElementById("recrue-cartes"),
+    toastBackdrop: document.getElementById("toast-backdrop"),
+    toastHorsLigne: document.getElementById("toast-hors-ligne"),
+    toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
+    toastHorsLigneFermer: document.getElementById("toast-hors-ligne-fermer"),
   };
 
   const formatNombre = (n) => Math.floor(n).toLocaleString("fr-FR");
@@ -66,15 +91,28 @@ async function demarrer() {
     );
   }
 
+  // --- Applique l'animation idle (bas-gauche, 3 frames en moyenne) sur un élément donné ---
+  async function appliquerSpriteIdle(el2, def) {
+    const meta = await obtenirMetaSprite(def);
+    if (!meta || !meta.idle) return;
+    const { frameWidth, frameHeight, frameCount } = meta.idle;
+    el2.style.width = `${frameWidth}px`;
+    el2.style.height = `${frameHeight}px`;
+    el2.style.backgroundImage = `url(${def.sprite_dossier}idle.png)`;
+    el2.style.backgroundSize = `${frameWidth * frameCount}px ${frameHeight}px`;
+    el2.style.animation = `cycle-sprite ${(frameCount * 0.15).toFixed(2)}s steps(${frameCount}) infinite`;
+  }
+
   // --- Zone décorative : sprites des Pokémon (jusqu'à 6 plus tard), purement visuel ---
   function construireDecorEquipe() {
     el.decorEquipe.innerHTML = "";
     for (const membre of game.state.equipe) {
-      const sprite = document.createElement("span");
+      const def = game.definitionPokemon(membre.id);
+      const sprite = document.createElement("div");
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
-      sprite.textContent = "🔥";
       el.decorEquipe.appendChild(sprite);
+      appliquerSpriteIdle(sprite, def);
     }
   }
 
@@ -86,7 +124,7 @@ async function demarrer() {
       ligne.className = "ligne-pokemon";
       ligne.dataset.membreId = membre.id;
       ligne.innerHTML = `
-        <span class="lp-sprite">🔥</span>
+        <img class="lp-sprite" alt="" />
         <div class="lp-stats">
           <div class="lp-nom-niveau">
             <span class="lp-nom"></span>
@@ -102,6 +140,7 @@ async function demarrer() {
       `;
       const def = game.definitionPokemon(membre.id);
       ligne.querySelector(".lp-nom").textContent = def.nom;
+      ligne.querySelector(".lp-sprite").src = `${def.sprite_dossier}portrait.png`;
 
       ligne.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
         evt.stopPropagation();
@@ -147,6 +186,13 @@ async function demarrer() {
       const cout = Number(btn.dataset.cout);
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
     });
+
+    if (!el.recrutementCta.hidden) {
+      const palier = game.prochainRecrutement();
+      if (palier) {
+        el.recrutementCta.classList.toggle("non-abordable", game.state.pokedollars < palier.cout);
+      }
+    }
   }
 
   // --- Onglets du bas : change le panel affiché ---
@@ -264,6 +310,129 @@ async function demarrer() {
     reconstruireBoutiqueSiNecessaire();
   }
 
+  function creerBadgeType(typeId) {
+    const badge = document.createElement("span");
+    const def = types[typeId];
+    badge.className = "type-badge";
+    badge.style.background = def.couleur;
+    badge.textContent = `${def.icone} ${def.nom}`;
+    return badge;
+  }
+
+  // --- Carte de choix réutilisée par la modale starter et la modale de recrutement ---
+  function creerCarteChoixPokemon(def, { abordable = true, onClick }) {
+    const carte = document.createElement("button");
+    carte.className = "starter-carte";
+    carte.disabled = !abordable;
+    carte.innerHTML = `
+      <img class="starter-carte-portrait" alt="" />
+      <div class="starter-carte-infos">
+        <span class="starter-carte-nom"></span>
+        <div class="starter-carte-types"></div>
+      </div>
+    `;
+    carte.querySelector(".starter-carte-portrait").src = `${def.sprite_dossier}portrait.png`;
+    carte.querySelector(".starter-carte-nom").textContent = def.nom;
+    const typesEl = carte.querySelector(".starter-carte-types");
+    for (const t of def.types) typesEl.appendChild(creerBadgeType(t));
+    carte.addEventListener("click", onClick);
+    return carte;
+  }
+
+  function apresChangementEquipe() {
+    actualiserEtatsPanel();
+    construireDecorEquipe();
+    construireListePokemon();
+    actualiserValeurs();
+    game.sauvegarder();
+  }
+
+  // --- État du panel Pokémon : sélection du starter, puis proposition de recrutement ---
+  function actualiserEtatsPanel() {
+    el.selectionStarter.hidden = game.aChoisiStarter();
+    const palier = game.aChoisiStarter() ? game.prochainRecrutement() : null;
+    el.recrutementCta.hidden = !palier;
+    if (palier) {
+      el.recrutementCtaTexte.textContent = `Recruter un compagnon (${formatNombre(palier.cout)} 💰)`;
+    }
+  }
+
+  function fermerModaleStarter() {
+    el.modalStarter.hidden = true;
+    el.starterBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleStarter() {
+    el.starterCartes.innerHTML = "";
+    for (const def of game.starters()) {
+      const carte = creerCarteChoixPokemon(def, {
+        onClick: () => {
+          game.choisirStarter(def.id);
+          fermerModaleStarter();
+          apresChangementEquipe();
+        },
+      });
+      el.starterCartes.appendChild(carte);
+    }
+    el.modalStarter.hidden = false;
+    el.starterBackdrop.hidden = false;
+  }
+
+  el.selectionStarter.addEventListener("click", ouvrirModaleStarter);
+  el.starterBackdrop.addEventListener("click", fermerModaleStarter);
+
+  // --- Recrutement d'un 2e Pokémon (et suivants) : choix fixe défini en data ---
+  function fermerModaleRecrutement() {
+    el.modalRecrue.hidden = true;
+    el.recrueBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleRecrutement() {
+    const palier = game.prochainRecrutement();
+    if (!palier) return;
+    const abordable = game.state.pokedollars >= palier.cout;
+    el.recrueTitre.textContent = `Recruter un compagnon — ${formatNombre(palier.cout)} 💰`;
+    el.recrueCartes.innerHTML = "";
+    for (const id of palier.choix) {
+      const def = game.definitionPokemon(id);
+      const carte = creerCarteChoixPokemon(def, {
+        abordable,
+        onClick: () => {
+          if (!game.recruterPokemon(def.id)) return;
+          fermerModaleRecrutement();
+          apresChangementEquipe();
+        },
+      });
+      el.recrueCartes.appendChild(carte);
+    }
+    el.modalRecrue.hidden = false;
+    el.recrueBackdrop.hidden = false;
+  }
+
+  el.recrutementCta.addEventListener("click", ouvrirModaleRecrutement);
+  el.recrueBackdrop.addEventListener("click", fermerModaleRecrutement);
+
+  // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
+  function afficherToastHorsLigne() {
+    const gains = game.gainsHorsLigne;
+    if (!gains) return;
+    const heures = Math.floor(gains.secondes / 3600);
+    const minutes = Math.floor((gains.secondes % 3600) / 60);
+    const duree = heures > 0 ? `${heures}h ${minutes}min` : `${minutes}min`;
+    el.toastHorsLigneTexte.textContent = `${duree} écoulées : +${formatNombre(gains.montant)} 💰`;
+    el.toastHorsLigne.hidden = false;
+    el.toastBackdrop.hidden = false;
+  }
+
+  function fermerToastHorsLigne() {
+    el.toastHorsLigne.hidden = true;
+    el.toastBackdrop.hidden = true;
+    actualiserValeurs();
+  }
+
+  el.toastHorsLigneFermer.addEventListener("click", fermerToastHorsLigne);
+  el.toastBackdrop.addEventListener("click", fermerToastHorsLigne);
+
   // --- Clic manuel : uniquement dans la zone décorative ---
   el.zoneDecor.addEventListener("click", (evt) => {
     game.clic();
@@ -271,7 +440,7 @@ async function demarrer() {
     actualiserValeurs();
   });
 
-  setInterval(() => {
+  const idIntervalleTick = setInterval(() => {
     game.tick();
     for (const membre of game.state.equipe) {
       const sprite = el.decorEquipe.querySelector(`[data-membre-id="${membre.id}"]`);
@@ -281,13 +450,43 @@ async function demarrer() {
     actualiserValeurs();
   }, 1000);
 
-  setInterval(() => game.sauvegarder(), 5000);
-  window.addEventListener("beforeunload", () => game.sauvegarder());
+  const idIntervalleSauvegarde = setInterval(() => game.sauvegarder(), 5000);
+  const sauvegarderAvantFermeture = () => game.sauvegarder();
+  window.addEventListener("beforeunload", sauvegarderAvantFermeture);
+
+  // --- Bouton Reset : efface complètement la partie (storage + caches + cookies du site) ---
+  async function reinitialiserJeu() {
+    clearInterval(idIntervalleTick);
+    clearInterval(idIntervalleSauvegarde);
+    window.removeEventListener("beforeunload", sauvegarderAvantFermeture);
+
+    localStorage.clear();
+    sessionStorage.clear();
+    if (window.caches) {
+      const cles = await caches.keys();
+      await Promise.all(cles.map((c) => caches.delete(c)));
+    }
+    document.cookie.split(";").forEach((c) => {
+      const nom = c.split("=")[0].trim();
+      if (nom) document.cookie = `${nom}=;expires=${new Date(0).toUTCString()};path=/`;
+    });
+
+    location.reload();
+  }
+
+  el.btnReset.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    if (window.confirm("Réinitialiser complètement la partie ? Cette action est irréversible.")) {
+      reinitialiserJeu();
+    }
+  });
 
   construireDecorEquipe();
   construireListePokemon();
   reconstruirePossedeesSiNecessaire();
   rafraichirAffichage();
+  actualiserEtatsPanel();
+  afficherToastHorsLigne();
 }
 
 demarrer();
