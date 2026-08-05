@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>PokeLoop</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="ressource">
+      <span class="ressource-icone" id="ressource-icone">💰</span>
+      <span class="ressource-valeur" id="pokedollars-valeur">0</span>
+    </div>
+    <div class="prod-info" id="prod-info">0 /s</div>
+  </header>
+
+  <main class="main">
+    <section class="pokemon-zone">
+      <button class="pokemon-tap" id="pokemon-tap" aria-label="Tapoter le Pokémon">
+        <span class="pokemon-sprite" id="pokemon-sprite">🔥</span>
+      </button>
+      <div class="pokemon-infos">
+        <div class="pokemon-nom" id="pokemon-nom">Salamèche</div>
+        <div class="pokemon-niveau">Niv. <span id="pokemon-niveau">5</span></div>
+        <div class="xp-barre">
+          <div class="xp-barre-remplissage" id="xp-remplissage"></div>
+        </div>
+        <div class="xp-texte" id="xp-texte">0 / 0 XP</div>
+      </div>
+    </section>
+
+    <section class="investir-zone">
+      <button class="btn btn-investir" id="btn-investir-10">Investir 10 💰 → XP</button>
+      <button class="btn btn-investir" id="btn-investir-tout">Tout investir</button>
+    </section>
+
+    <section class="shop-zone">
+      <h2 class="section-titre">Boutique</h2>
+      <ul class="shop-liste" id="shop-liste"></ul>
+    </section>
+
+    <section class="possedees-zone">
+      <h2 class="section-titre">Upgrades possédées</h2>
+      <ul class="possedees-liste" id="possedees-liste"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

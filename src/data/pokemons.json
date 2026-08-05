@@ -1,0 +1,11 @@
+[
+  {
+    "id": "charmander",
+    "nom": "Salamèche",
+    "types": ["feu"],
+    "niveau_depart": 5,
+    "sprite_dossier": "assets/sprites/charmander/",
+    "xp_courbe": { "base": 10, "facteur": 1.5 },
+    "production_base": { "type": "lineaire", "valeur_par_niveau": 1 }
+  }
+]

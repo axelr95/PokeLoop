@@ -1,0 +1,112 @@
+import {
+  productionPokemon,
+  xpRequise,
+  appliquerFacteurs,
+  modifiersPourCible,
+} from "./calculations.js";
+
+const SAVE_KEY = "pokeloop_save_v1";
+
+export class Game {
+  constructor({ resources, pokemons, upgrades }) {
+    this.data = { resources, pokemons, upgrades };
+    this.state = this.chargerOuInitialiser();
+  }
+
+  chargerOuInitialiser() {
+    const brut = localStorage.getItem(SAVE_KEY);
+    if (brut) {
+      try {
+        return JSON.parse(brut);
+      } catch {
+        // save corrompue, on repart de zéro
+      }
+    }
+    const starter = this.data.pokemons[0];
+    return {
+      pokedollars: 0,
+      equipe: [{ id: starter.id, niveau: starter.niveau_depart, xp: 0 }],
+      upgradesPossedees: [],
+    };
+  }
+
+  sauvegarder() {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(this.state));
+  }
+
+  definitionPokemon(id) {
+    return this.data.pokemons.find((p) => p.id === id);
+  }
+
+  productionParSeconde() {
+    return this.state.equipe.reduce((total, membre) => {
+      const def = this.definitionPokemon(membre.id);
+      const base = productionPokemon(def, membre.niveau);
+      const cibles = def.types.map((t) => ({ type: "type_pokemon", valeur: t }));
+      const modifiers = cibles.flatMap((c) =>
+        modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, c)
+      );
+      return total + appliquerFacteurs(base, modifiers);
+    }, 0);
+  }
+
+  productionClic() {
+    const modifiers = modifiersPourCible(
+      this.data.upgrades,
+      this.state.upgradesPossedees,
+      { type: "clic_manuel" }
+    );
+    return appliquerFacteurs(1, modifiers);
+  }
+
+  tick() {
+    this.state.pokedollars += this.productionParSeconde();
+  }
+
+  clic() {
+    this.state.pokedollars += this.productionClic();
+  }
+
+  peutInvestir(montant) {
+    return montant > 0 && montant <= this.state.pokedollars;
+  }
+
+  investirXp(membreId, montant) {
+    if (!this.peutInvestir(montant)) return;
+    const membre = this.state.equipe.find((m) => m.id === membreId);
+    const def = this.definitionPokemon(membreId);
+    this.state.pokedollars -= montant;
+    membre.xp += montant;
+
+    let seuil = xpRequise(def, membre.niveau + 1);
+    while (membre.niveau < 100 && membre.xp >= seuil) {
+      membre.xp -= seuil;
+      membre.niveau += 1;
+      seuil = xpRequise(def, membre.niveau + 1);
+    }
+    if (membre.niveau >= 100) {
+      membre.niveau = 100;
+      membre.xp = 0;
+    }
+  }
+
+  upgradeDisponible(upgrade) {
+    if (this.state.upgradesPossedees.includes(upgrade.id)) return false;
+    const prerequisOk = upgrade.prerequis.every((id) =>
+      this.state.upgradesPossedees.includes(id)
+    );
+    const exclueParPossedee = upgrade.exclusif_avec.some((id) =>
+      this.state.upgradesPossedees.includes(id)
+    );
+    return prerequisOk && !exclueParPossedee;
+  }
+
+  acheterUpgrade(upgradeId) {
+    const upgrade = this.data.upgrades.find((u) => u.id === upgradeId);
+    if (!upgrade || !this.upgradeDisponible(upgrade)) return false;
+    if (this.state.pokedollars < upgrade.cout.valeur) return false;
+    this.state.pokedollars -= upgrade.cout.valeur;
+    this.state.upgradesPossedees.push(upgrade.id);
+    return true;
+  }
+}

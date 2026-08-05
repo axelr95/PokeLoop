@@ -1,0 +1,41 @@
+[
+  {
+    "id": "spe_feu_1",
+    "nom": "Spécialisation Feu",
+    "description": "+50% production finale sur les Pokémon de type Feu",
+    "cout": { "ressource": "pokedollars", "valeur": 100 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "feu" },
+      "valeur": 1.5
+    },
+    "prerequis": [],
+    "exclusif_avec": []
+  },
+  {
+    "id": "clic_boost_1",
+    "nom": "Poigne ferme",
+    "description": "+50% production finale du clic manuel",
+    "cout": { "ressource": "pokedollars", "valeur": 50 },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": { "type": "clic_manuel" },
+      "valeur": 0.5
+    },
+    "prerequis": [],
+    "exclusif_avec": []
+  },
+  {
+    "id": "prod_globale_1",
+    "nom": "Élevage motivé",
+    "description": "+20% production de base sur tous les Pokémon",
+    "cout": { "ressource": "pokedollars", "valeur": 250 },
+    "effet": {
+      "categorie": "additif_base",
+      "cible": { "type": "global" },
+      "valeur": 0.2
+    },
+    "prerequis": ["spe_feu_1"],
+    "exclusif_avec": []
+  }
+]
