@@ -37,10 +37,18 @@ function appliquerFondDecor(el) {
   el.zoneDecor.style.backgroundImage = `url(assets/backgrounds/${nomFondActuel()}.png)`;
 }
 
-// --- Positionnement en arc de cercle sur le bord de la falaise : 1er au centre, ---
-// --- puis alternance droite/gauche en s'éloignant, en remontant légèrement.     ---
-const ARC_PAS_HORIZONTAL = 46; // px d'écart au centre par cran
-const ARC_PAS_VERTICAL = 10; // px de remontée par cran
+// --- Positionnement des 6 emplacements d'équipe, en cercle autour du centre ---
+// (dx, dy en fractions de la largeur de la zone décorative, d'après le croquis
+// fourni par l'utilisateur ; dy positif = vers le haut). Le 1er reste au centre,
+// pile sur le repère de la falaise.
+const EMPLACEMENTS_EQUIPE = [
+  { dx: 0, dy: 0 }, // 1 : centre
+  { dx: -0.23, dy: -0.11 }, // 2 : bas-gauche
+  { dx: 0.21, dy: -0.14 }, // 3 : bas-droite
+  { dx: 0.18, dy: 0.13 }, // 4 : haut-droite
+  { dx: 0, dy: -0.23 }, // 5 : bas-centre
+  { dx: -0.12, dy: 0.1 }, // 6 : haut-gauche
+];
 
 // Vers le centre de la bande d'herbe (pas encore pile sur le rebord — à affiner
 // plus tard si besoin). Comme le fond est calé en largeur (background-size: 100%
@@ -53,10 +61,12 @@ function decalageFalaisePx(largeurZoneDecor) {
   return FALAISE_FRACTION_DEPUIS_BAS * RATIO_HAUTEUR_IMAGE * largeurZoneDecor;
 }
 
-function positionArc(index, decalageBase) {
-  const cran = Math.ceil(index / 2);
-  const cote = index === 0 ? 0 : index % 2 === 1 ? 1 : -1;
-  return { x: cote * cran * ARC_PAS_HORIZONTAL, y: decalageBase + cran * ARC_PAS_VERTICAL };
+function positionArc(index, decalageBase, largeurZoneDecor) {
+  const emplacement = EMPLACEMENTS_EQUIPE[index] || EMPLACEMENTS_EQUIPE[EMPLACEMENTS_EQUIPE.length - 1];
+  return {
+    x: emplacement.dx * largeurZoneDecor,
+    y: decalageBase + emplacement.dy * largeurZoneDecor,
+  };
 }
 
 async function demarrer() {
@@ -154,13 +164,14 @@ async function demarrer() {
   // --- Zone décorative : sprites des Pokémon en arc de cercle sur la falaise ---
   function construireDecorEquipe() {
     el.decorEquipe.innerHTML = "";
-    const decalageBase = decalageFalaisePx(el.zoneDecor.getBoundingClientRect().width);
+    const largeurZone = el.zoneDecor.getBoundingClientRect().width;
+    const decalageBase = decalageFalaisePx(largeurZone);
     game.state.equipe.forEach((membre, index) => {
       const def = game.definitionPokemon(membre.id);
       const sprite = document.createElement("div");
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
-      const { x, y } = positionArc(index, decalageBase);
+      const { x, y } = positionArc(index, decalageBase, largeurZone);
       sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(2.4)`;
       el.decorEquipe.appendChild(sprite);
       appliquerSpriteIdle(sprite, def);
