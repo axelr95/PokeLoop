@@ -42,11 +42,11 @@ function appliquerFondDecor(el) {
 const ARC_PAS_HORIZONTAL = 46; // px d'écart au centre par cran
 const ARC_PAS_VERTICAL = 10; // px de remontée par cran
 
-// Le rebord de la falaise (transition chemin/herbe) est à ~31% du bas de l'image
-// source (mesuré sur les 4 fonds, identique sur les 4). Comme le fond est calé en
-// largeur (background-size: 100% auto) et ancré en bas, sa hauteur affichée dépend
-// de la largeur de la zone : on recalcule donc ce décalage depuis la largeur réelle.
-const FALAISE_FRACTION_DEPUIS_BAS = 0.31;
+// Vers le centre de la bande d'herbe (pas encore pile sur le rebord — à affiner
+// plus tard si besoin). Comme le fond est calé en largeur (background-size: 100%
+// auto) et ancré en bas, sa hauteur affichée dépend de la largeur de la zone :
+// on recalcule donc ce décalage depuis la largeur réelle plutôt qu'une constante fixe.
+const FALAISE_FRACTION_DEPUIS_BAS = 0.14;
 const RATIO_HAUTEUR_IMAGE = 576 / 256;
 
 function decalageFalaisePx(largeurZoneDecor) {
@@ -535,10 +535,9 @@ async function demarrer() {
   // --- Debug : force le fond à afficher pour tester les 4 tranches horaires ---
   el.btnDebugFond.addEventListener("click", (evt) => {
     evt.stopPropagation();
-    indexFondDebug = indexFondDebug === null ? 0 : indexFondDebug + 1;
-    if (indexFondDebug >= NOMS_FONDS.length) indexFondDebug = null;
+    indexFondDebug = indexFondDebug === null ? 0 : (indexFondDebug + 1) % NOMS_FONDS.length;
     appliquerFondDecor(el);
-    el.btnDebugFond.textContent = indexFondDebug === null ? "🕐" : ICONES_FONDS[NOMS_FONDS[indexFondDebug]];
+    el.btnDebugFond.textContent = ICONES_FONDS[NOMS_FONDS[indexFondDebug]];
   });
 
   appliquerFondDecor(el);
