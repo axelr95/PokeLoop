@@ -237,19 +237,31 @@ body {
   gap: 0.15rem;
 }
 
-.ce-haut {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  min-width: 0;
+/* Case remplie : portrait en pleine hauteur à gauche, infos à droite (plus visible) */
+.carte-equipe-remplie {
+  flex-direction: row;
+  align-items: stretch;
+  padding: 0;
+  gap: 0;
 }
 
-.ce-sprite {
+.ce-portrait {
   flex: none;
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   image-rendering: pixelated;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ce-infos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.2rem 0.4rem;
 }
 
 .ce-nom-niveau {

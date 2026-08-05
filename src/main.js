@@ -181,23 +181,23 @@ async function demarrer() {
   function creerCarteEquipeRemplie(membre) {
     const def = game.definitionPokemon(membre.id);
     const carte = document.createElement("div");
-    carte.className = "carte-equipe";
+    carte.className = "carte-equipe carte-equipe-remplie";
     carte.dataset.membreId = membre.id;
     carte.innerHTML = `
-      <div class="ce-haut">
-        <img class="ce-sprite" alt="" />
+      <img class="ce-portrait" alt="" />
+      <div class="ce-infos">
         <div class="ce-nom-niveau">
           <span class="ce-nom"></span>
           <span class="ce-niveau"></span>
         </div>
-      </div>
-      <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
-      <div class="ce-actions">
-        <button class="btn-mini" data-action="10">+10</button>
-        <button class="btn-mini" data-action="tout">Max</button>
+        <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
+        <div class="ce-actions">
+          <button class="btn-mini" data-action="10">+10</button>
+          <button class="btn-mini" data-action="tout">Max</button>
+        </div>
       </div>
     `;
-    carte.querySelector(".ce-sprite").src = `${def.sprite_dossier}portrait.png`;
+    carte.querySelector(".ce-portrait").src = `${def.sprite_dossier}portrait.png`;
     carte.querySelector(".ce-nom").textContent = def.nom;
     carte.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
       evt.stopPropagation();
