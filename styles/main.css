@@ -1,8 +1,9 @@
-/* Mobile-first: les styles de base ciblent le petit écran, les media queries élargissent ensuite */
+/* Mobile-first, et on garde ce même gabarit "mobile" même sur grand écran (cf. .app) */
 
 :root {
   --couleur-fond: #1e1b2e;
   --couleur-surface: #2a2640;
+  --couleur-surface-claire: #38335299;
   --couleur-accent: #f7b32b;
   --couleur-texte: #f4f1fa;
   --couleur-texte-att: #b8b2cc;
@@ -14,24 +15,46 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
-  background: var(--couleur-fond);
+  background: #000;
   color: var(--couleur-texte);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   display: flex;
+  justify-content: center;
+  align-items: stretch;
+
+  /* Pas de sélection de texte ni de callout iOS (copier/rechercher) sur toute l'appli */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  height: 100dvh;
+  background: var(--couleur-fond);
+  display: flex;
   flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
 }
 
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 1rem;
   background: var(--couleur-surface);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -40,7 +63,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: clamp(1.1rem, 4vw, 1.4rem);
+  font-size: 1.2rem;
   font-weight: 700;
 }
 
@@ -50,206 +73,233 @@ body {
 
 .prod-info {
   color: var(--couleur-texte-att);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
-.main {
+.zone-jeu {
   flex: 1;
-  padding: 1rem;
+  min-height: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  max-width: 480px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.pokemon-zone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  background: var(--couleur-surface);
-  border-radius: var(--rayon);
-  padding: 1.25rem;
-}
-
-.pokemon-tap {
-  border: none;
-  background: radial-gradient(circle, rgba(247, 179, 43, 0.25), transparent 70%);
-  border-radius: 50%;
-  width: min(45vw, 180px);
-  height: min(45vw, 180px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
   cursor: pointer;
   touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 0.08s ease;
+  overflow: hidden;
 }
 
-.pokemon-tap:active {
-  transform: scale(0.92);
+.equipe {
+  flex: none;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.pokemon-sprite {
-  font-size: min(18vw, 72px);
-  user-select: none;
+.carte-pokemon {
+  flex: none;
+  width: 76px;
+  height: 92px;
+  background: var(--couleur-surface);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.3rem;
+  position: relative;
 }
 
-.pokemon-infos {
-  width: 100%;
-  text-align: center;
+.cp-sprite {
+  font-size: 1.8rem;
+  line-height: 1;
 }
 
-.pokemon-nom {
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.pokemon-niveau {
+.cp-niveau {
+  font-size: 0.7rem;
   color: var(--couleur-texte-att);
-  margin-bottom: 0.4rem;
 }
 
-.xp-barre {
-  width: 100%;
-  height: 10px;
+.cp-xp {
+  width: 90%;
+  height: 5px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   overflow: hidden;
 }
 
-.xp-barre-remplissage {
+.cp-xp-remplissage {
   height: 100%;
-  width: 0%;
   background: var(--couleur-accent);
-  transition: width 0.2s ease;
 }
 
-.xp-texte {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
-  color: var(--couleur-texte-att);
-}
-
-.investir-zone {
+.investir-rapide {
+  flex: none;
   display: flex;
-  gap: 0.75rem;
-}
-
-.btn {
-  flex: 1;
-  min-height: 48px;
-  border: none;
-  border-radius: var(--rayon);
-  background: var(--couleur-accent);
-  color: #1e1b2e;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn:active {
-  filter: brightness(0.9);
-}
-
-.btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.section-titre {
-  font-size: 1rem;
-  color: var(--couleur-texte-att);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 0.5rem;
-}
-
-.shop-liste,
-.possedees-liste {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.shop-item {
-  background: var(--couleur-surface);
-  border-radius: var(--rayon);
-  padding: 0.85rem;
-  display: flex;
-  flex-direction: column;
   gap: 0.5rem;
 }
 
-.shop-item-titre {
-  font-weight: 700;
+.btn-invest {
+  flex: 1;
+  min-height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: var(--couleur-surface-claire);
+  color: var(--couleur-texte);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.shop-item-desc {
+.btn-invest:active {
+  filter: brightness(1.3);
+}
+
+.tap-zone-vide {
+  flex: 1;
+  min-height: 0;
+}
+
+.floater {
+  position: absolute;
+  pointer-events: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--couleur-accent);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  animation: flotter-disparaitre 0.8s ease-out forwards;
+  z-index: 5;
+}
+
+@keyframes flotter-disparaitre {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -36px);
+  }
+}
+
+.zone-boutique {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem 0.8rem;
+  background: var(--couleur-surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.boutique-groupe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.section-titre {
+  font-size: 0.7rem;
+  color: var(--couleur-texte-att);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.icones-liste {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  min-height: 44px;
+}
+
+.icone-item {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  background: var(--couleur-surface-claire);
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.icone-item.non-abordable {
+  opacity: 0.45;
+}
+
+.icone-item.possedee {
+  background: rgba(76, 175, 130, 0.18);
+  border: 1px solid rgba(76, 175, 130, 0.4);
+}
+
+.vide {
+  color: var(--couleur-texte-att);
+  font-size: 0.75rem;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+}
+
+/* Popup de description, positionnée au-dessus de l'icône cliquée */
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: transparent;
+}
+
+.popup-upgrade {
+  position: fixed;
+  z-index: 50;
+  width: 220px;
+  background: var(--couleur-surface);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.popup-titre {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.popup-description {
   font-size: 0.85rem;
   color: var(--couleur-texte-att);
+  margin-bottom: 0.5rem;
 }
 
-.shop-item-footer {
+.popup-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
 }
 
-.shop-item-cout {
+.popup-cout {
   font-weight: 700;
   color: var(--couleur-accent);
 }
 
 .btn-acheter {
-  min-height: 40px;
-  padding: 0 1rem;
-  flex: none;
+  min-height: 38px;
+  padding: 0 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--couleur-accent);
+  color: #1e1b2e;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.possedee-item {
-  background: rgba(76, 175, 130, 0.12);
-  border: 1px solid rgba(76, 175, 130, 0.35);
-  border-radius: var(--rayon);
-  padding: 0.6rem 0.85rem;
-  font-size: 0.9rem;
-  color: var(--couleur-succes);
-}
-
-.vide {
-  color: var(--couleur-texte-att);
-  font-size: 0.85rem;
-  font-style: italic;
-}
-
-/* Tablette / desktop : on élargit un peu et on passe la zone pokémon + boutique en 2 colonnes */
-@media (min-width: 700px) {
-  .main {
-    max-width: 720px;
-  }
-
-  .main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-
-  .pokemon-zone,
-  .investir-zone {
-    grid-column: 1;
-  }
-
-  .shop-zone,
-  .possedees-zone {
-    grid-column: 2;
-  }
+.btn-acheter:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }

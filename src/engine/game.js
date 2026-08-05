@@ -38,16 +38,18 @@ export class Game {
     return this.data.pokemons.find((p) => p.id === id);
   }
 
+  productionMembre(membre) {
+    const def = this.definitionPokemon(membre.id);
+    const base = productionPokemon(def, membre.niveau);
+    const cibles = def.types.map((t) => ({ type: "type_pokemon", valeur: t }));
+    const modifiers = cibles.flatMap((c) =>
+      modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, c)
+    );
+    return appliquerFacteurs(base, modifiers);
+  }
+
   productionParSeconde() {
-    return this.state.equipe.reduce((total, membre) => {
-      const def = this.definitionPokemon(membre.id);
-      const base = productionPokemon(def, membre.niveau);
-      const cibles = def.types.map((t) => ({ type: "type_pokemon", valeur: t }));
-      const modifiers = cibles.flatMap((c) =>
-        modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, c)
-      );
-      return total + appliquerFacteurs(base, modifiers);
-    }, 0);
+    return this.state.equipe.reduce((total, membre) => total + this.productionMembre(membre), 0);
   }
 
   productionClic() {

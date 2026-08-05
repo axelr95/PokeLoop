@@ -2,6 +2,7 @@
   {
     "id": "spe_feu_1",
     "nom": "Spécialisation Feu",
+    "icone": "🔥",
     "description": "+50% production finale sur les Pokémon de type Feu",
     "cout": { "ressource": "pokedollars", "valeur": 100 },
     "effet": {
@@ -15,6 +16,7 @@
   {
     "id": "clic_boost_1",
     "nom": "Poigne ferme",
+    "icone": "👊",
     "description": "+50% production finale du clic manuel",
     "cout": { "ressource": "pokedollars", "valeur": 50 },
     "effet": {
@@ -28,6 +30,7 @@
   {
     "id": "prod_globale_1",
     "nom": "Élevage motivé",
+    "icone": "🌾",
     "description": "+20% production de base sur tous les Pokémon",
     "cout": { "ressource": "pokedollars", "valeur": 250 },
     "effet": {

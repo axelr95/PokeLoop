@@ -2,49 +2,49 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>PokeLoop</title>
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="ressource">
-      <span class="ressource-icone" id="ressource-icone">💰</span>
-      <span class="ressource-valeur" id="pokedollars-valeur">0</span>
-    </div>
-    <div class="prod-info" id="prod-info">0 /s</div>
-  </header>
+  <div class="app">
+    <header class="header">
+      <div class="ressource">
+        <span class="ressource-icone" id="ressource-icone">💰</span>
+        <span class="ressource-valeur" id="pokedollars-valeur">0</span>
+      </div>
+      <div class="prod-info" id="prod-info">0 /s</div>
+    </header>
 
-  <main class="main">
-    <section class="pokemon-zone">
-      <button class="pokemon-tap" id="pokemon-tap" aria-label="Tapoter le Pokémon">
-        <span class="pokemon-sprite" id="pokemon-sprite">🔥</span>
-      </button>
-      <div class="pokemon-infos">
-        <div class="pokemon-nom" id="pokemon-nom">Salamèche</div>
-        <div class="pokemon-niveau">Niv. <span id="pokemon-niveau">5</span></div>
-        <div class="xp-barre">
-          <div class="xp-barre-remplissage" id="xp-remplissage"></div>
-        </div>
-        <div class="xp-texte" id="xp-texte">0 / 0 XP</div>
+    <main class="zone-jeu" id="zone-jeu">
+      <div class="equipe" id="equipe"></div>
+
+      <div class="investir-rapide" id="investir-rapide">
+        <button class="btn-invest" id="btn-investir-10">Investir 10</button>
+        <button class="btn-invest" id="btn-investir-tout">Tout investir</button>
+      </div>
+
+      <div class="tap-zone-vide" aria-hidden="true"></div>
+    </main>
+
+    <section class="zone-boutique">
+      <div class="boutique-groupe">
+        <h2 class="section-titre">Boutique</h2>
+        <div class="icones-liste" id="shop-liste"></div>
+      </div>
+      <div class="boutique-groupe">
+        <h2 class="section-titre">Possédées</h2>
+        <div class="icones-liste" id="possedees-liste"></div>
       </div>
     </section>
+  </div>
 
-    <section class="investir-zone">
-      <button class="btn btn-investir" id="btn-investir-10">Investir 10 💰 → XP</button>
-      <button class="btn btn-investir" id="btn-investir-tout">Tout investir</button>
-    </section>
-
-    <section class="shop-zone">
-      <h2 class="section-titre">Boutique</h2>
-      <ul class="shop-liste" id="shop-liste"></ul>
-    </section>
-
-    <section class="possedees-zone">
-      <h2 class="section-titre">Upgrades possédées</h2>
-      <ul class="possedees-liste" id="possedees-liste"></ul>
-    </section>
-  </main>
+  <div class="popup-backdrop" id="popup-backdrop" hidden></div>
+  <div class="popup-upgrade" id="popup-upgrade" hidden>
+    <div class="popup-titre" id="popup-titre"></div>
+    <div class="popup-description" id="popup-description"></div>
+    <div class="popup-footer" id="popup-footer"></div>
+  </div>
 
   <script type="module" src="src/main.js"></script>
 </body>
