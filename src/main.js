@@ -100,6 +100,8 @@ async function demarrer() {
     el2.style.height = `${frameHeight}px`;
     el2.style.backgroundImage = `url(${def.sprite_dossier}idle.png)`;
     el2.style.backgroundSize = `${frameWidth * frameCount}px ${frameHeight}px`;
+    el2.style.setProperty("--largeur-frame", `${frameWidth}px`);
+    el2.style.setProperty("--nb-frames", frameCount);
     el2.style.animation = `cycle-sprite ${(frameCount * 0.15).toFixed(2)}s steps(${frameCount}) infinite`;
   }
 

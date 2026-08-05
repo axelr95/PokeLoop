@@ -108,10 +108,12 @@ body {
 
 @keyframes cycle-sprite {
   from {
-    background-position: 0% 0;
+    background-position-x: 0px;
   }
   to {
-    background-position: 100% 0;
+    /* En pixels, pas en % : un % se cale sur (largeur image − largeur case),
+       ce qui désaligne les frames avec steps() et donne un effet de défilement. */
+    background-position-x: calc(var(--largeur-frame, 0px) * var(--nb-frames, 1) * -1);
   }
 }
 
