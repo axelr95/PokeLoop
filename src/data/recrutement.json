@@ -1,3 +1,4 @@
 [
-  { "emplacement": 2, "cout": 1000, "choix": ["pidgey", "abra", "machop"] }
+  { "emplacement": 2, "cout": 1000, "choix": ["pidgey", "abra", "machop"] },
+  { "emplacement": 3, "cout": 5000, "choix": ["pikachu", "meowth", "cubone"] }
 ]

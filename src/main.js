@@ -188,17 +188,28 @@ async function demarrer() {
       <div class="ce-infos">
         <div class="ce-nom-niveau">
           <span class="ce-nom"></span>
+          <span class="ce-types"></span>
           <span class="ce-niveau"></span>
         </div>
-        <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
-        <div class="ce-actions">
-          <button class="btn-mini" data-action="10">+10</button>
-          <button class="btn-mini" data-action="tout">Max</button>
+        <div class="ce-normal">
+          <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
+          <div class="ce-actions">
+            <button class="btn-mini" data-action="10">+10</button>
+            <button class="btn-mini" data-action="tout">Max</button>
+          </div>
         </div>
+        <button class="btn-evoluer" hidden>Évoluer</button>
       </div>
     `;
     carte.querySelector(".ce-portrait").src = `${def.sprite_dossier}portrait.png`;
     carte.querySelector(".ce-nom").textContent = def.nom;
+    const typesEl = carte.querySelector(".ce-types");
+    for (const t of def.types) {
+      const icone = document.createElement("span");
+      icone.className = "ce-type-icone";
+      icone.textContent = types[t].icone;
+      typesEl.appendChild(icone);
+    }
     carte.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
       evt.stopPropagation();
       game.investirXp(membre.id, 10);
@@ -209,7 +220,19 @@ async function demarrer() {
       game.investirXp(membre.id, Math.floor(game.state.pokedollars));
       actualiserValeurs();
     });
+    carte.querySelector(".btn-evoluer").addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      surEvoluer(membre.id);
+    });
     return carte;
+  }
+
+  function surEvoluer(membreId) {
+    if (!game.evoluerPokemon(membreId)) return;
+    construireDecorEquipe();
+    construireGrilleEquipe();
+    actualiserValeurs();
+    game.sauvegarder();
   }
 
   function creerCarteAction(icone, texte, onClick, dataset) {
@@ -261,12 +284,18 @@ async function demarrer() {
       const carte = el.grilleEquipe.querySelector(`[data-membre-id="${membre.id}"]`);
       if (!carte) continue;
       carte.querySelector(".ce-niveau").textContent = `Nv ${membre.niveau}`;
-      const barre = carte.querySelector(".ce-xp-remplissage");
-      if (membre.niveau >= 100) {
-        barre.style.width = "100%";
-      } else {
-        const seuil = xpRequise(def, membre.niveau + 1);
-        barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
+
+      const peutEvoluer = game.peutEvoluer(membre);
+      carte.querySelector(".ce-normal").hidden = peutEvoluer;
+      carte.querySelector(".btn-evoluer").hidden = !peutEvoluer;
+      if (!peutEvoluer) {
+        const barre = carte.querySelector(".ce-xp-remplissage");
+        if (membre.niveau >= 100) {
+          barre.style.width = "100%";
+        } else {
+          const seuil = xpRequise(def, membre.niveau + 1);
+          barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
+        }
       }
     }
     const carteRecrutement = el.grilleEquipe.querySelector('[data-role="recrutement"]');

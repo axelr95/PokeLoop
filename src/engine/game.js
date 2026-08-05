@@ -141,6 +141,19 @@ export class Game {
     }
   }
 
+  peutEvoluer(membre) {
+    const def = this.definitionPokemon(membre.id);
+    return Boolean(def.evolution) && membre.niveau >= def.evolution.niveau;
+  }
+
+  evoluerPokemon(membreId) {
+    const membre = this.state.equipe.find((m) => m.id === membreId);
+    if (!membre || !this.peutEvoluer(membre)) return false;
+    const def = this.definitionPokemon(membre.id);
+    membre.id = def.evolution.vers;
+    return true;
+  }
+
   upgradeDisponible(upgrade) {
     if (this.state.upgradesPossedees.includes(upgrade.id)) return false;
     const prerequisOk = upgrade.prerequis.every((id) =>

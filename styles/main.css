@@ -289,6 +289,42 @@ body {
   color: var(--couleur-texte-att);
 }
 
+.ce-types {
+  flex: none;
+  display: flex;
+  gap: 0.12rem;
+}
+
+.ce-type-icone {
+  font-size: 0.62rem;
+  line-height: 1;
+}
+
+.ce-normal[hidden] {
+  display: none;
+}
+
+.ce-normal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.btn-evoluer {
+  min-height: 20px;
+  border: none;
+  border-radius: 6px;
+  background: var(--couleur-accent);
+  color: #1e1b2e;
+  font-size: 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-evoluer:active {
+  filter: brightness(1.15);
+}
+
 .ce-xp {
   width: 100%;
   height: 4px;
