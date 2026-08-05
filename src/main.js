@@ -6,11 +6,20 @@ async function chargerJson(chemin) {
   return reponse.json();
 }
 
+const metaSpriteCache = new Map();
+async function obtenirMetaSprite(def) {
+  if (metaSpriteCache.has(def.id)) return metaSpriteCache.get(def.id);
+  const promesse = chargerJson(`${def.sprite_dossier}meta.json`).catch(() => null);
+  metaSpriteCache.set(def.id, promesse);
+  return promesse;
+}
+
 async function demarrer() {
-  const [resources, pokemons, upgrades] = await Promise.all([
+  const [resources, pokemons, upgrades, types] = await Promise.all([
     chargerJson("src/data/resources.json"),
     chargerJson("src/data/pokemons.json"),
     chargerJson("src/data/upgrades.json"),
+    chargerJson("src/data/types.json"),
   ]);
 
   const game = new Game({ resources, pokemons, upgrades });
@@ -24,6 +33,7 @@ async function demarrer() {
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
     listePokemon: document.getElementById("liste-pokemon"),
+    selectionStarter: document.getElementById("selection-starter"),
     shopListe: document.getElementById("shop-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
     tabsBtns: document.querySelectorAll(".tab-btn"),
@@ -32,6 +42,13 @@ async function demarrer() {
     popupTitre: document.getElementById("popup-titre"),
     popupDescription: document.getElementById("popup-description"),
     popupFooter: document.getElementById("popup-footer"),
+    starterBackdrop: document.getElementById("starter-backdrop"),
+    modalStarter: document.getElementById("modal-starter"),
+    starterCartes: document.getElementById("starter-cartes"),
+    toastBackdrop: document.getElementById("toast-backdrop"),
+    toastHorsLigne: document.getElementById("toast-hors-ligne"),
+    toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
+    toastHorsLigneFermer: document.getElementById("toast-hors-ligne-fermer"),
   };
 
   const formatNombre = (n) => Math.floor(n).toLocaleString("fr-FR");
@@ -66,15 +83,28 @@ async function demarrer() {
     );
   }
 
+  // --- Applique l'animation idle (bas-gauche, 3 frames en moyenne) sur un élément donné ---
+  async function appliquerSpriteIdle(el2, def) {
+    const meta = await obtenirMetaSprite(def);
+    if (!meta || !meta.idle) return;
+    const { frameWidth, frameHeight, frameCount } = meta.idle;
+    el2.style.width = `${frameWidth}px`;
+    el2.style.height = `${frameHeight}px`;
+    el2.style.backgroundImage = `url(${def.sprite_dossier}idle.png)`;
+    el2.style.backgroundSize = `${frameWidth * frameCount}px ${frameHeight}px`;
+    el2.style.animation = `cycle-sprite ${(frameCount * 0.15).toFixed(2)}s steps(${frameCount}) infinite`;
+  }
+
   // --- Zone décorative : sprites des Pokémon (jusqu'à 6 plus tard), purement visuel ---
   function construireDecorEquipe() {
     el.decorEquipe.innerHTML = "";
     for (const membre of game.state.equipe) {
-      const sprite = document.createElement("span");
+      const def = game.definitionPokemon(membre.id);
+      const sprite = document.createElement("div");
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
-      sprite.textContent = "🔥";
       el.decorEquipe.appendChild(sprite);
+      appliquerSpriteIdle(sprite, def);
     }
   }
 
@@ -86,7 +116,7 @@ async function demarrer() {
       ligne.className = "ligne-pokemon";
       ligne.dataset.membreId = membre.id;
       ligne.innerHTML = `
-        <span class="lp-sprite">🔥</span>
+        <img class="lp-sprite" alt="" />
         <div class="lp-stats">
           <div class="lp-nom-niveau">
             <span class="lp-nom"></span>
@@ -102,6 +132,7 @@ async function demarrer() {
       `;
       const def = game.definitionPokemon(membre.id);
       ligne.querySelector(".lp-nom").textContent = def.nom;
+      ligne.querySelector(".lp-sprite").src = `${def.sprite_dossier}portrait.png`;
 
       ligne.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
         evt.stopPropagation();
@@ -264,6 +295,81 @@ async function demarrer() {
     reconstruireBoutiqueSiNecessaire();
   }
 
+  function creerBadgeType(typeId) {
+    const badge = document.createElement("span");
+    const def = types[typeId];
+    badge.className = "type-badge";
+    badge.style.background = def.couleur;
+    badge.textContent = `${def.icone} ${def.nom}`;
+    return badge;
+  }
+
+  // --- Sélection du starter : état affiché tant qu'aucun Pokémon n'est choisi ---
+  function actualiserEtatSelection() {
+    el.selectionStarter.hidden = game.aChoisiStarter();
+  }
+
+  function fermerModaleStarter() {
+    el.modalStarter.hidden = true;
+    el.starterBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleStarter() {
+    el.starterCartes.innerHTML = "";
+    for (const def of game.starters()) {
+      const carte = document.createElement("button");
+      carte.className = "starter-carte";
+      carte.innerHTML = `
+        <img class="starter-carte-portrait" alt="" />
+        <div class="starter-carte-infos">
+          <span class="starter-carte-nom"></span>
+          <div class="starter-carte-types"></div>
+        </div>
+      `;
+      carte.querySelector(".starter-carte-portrait").src = `${def.sprite_dossier}portrait.png`;
+      carte.querySelector(".starter-carte-nom").textContent = def.nom;
+      const typesEl = carte.querySelector(".starter-carte-types");
+      for (const t of def.types) typesEl.appendChild(creerBadgeType(t));
+
+      carte.addEventListener("click", () => {
+        game.choisirStarter(def.id);
+        fermerModaleStarter();
+        actualiserEtatSelection();
+        construireDecorEquipe();
+        construireListePokemon();
+        actualiserValeurs();
+        game.sauvegarder();
+      });
+      el.starterCartes.appendChild(carte);
+    }
+    el.modalStarter.hidden = false;
+    el.starterBackdrop.hidden = false;
+  }
+
+  el.selectionStarter.addEventListener("click", ouvrirModaleStarter);
+  el.starterBackdrop.addEventListener("click", fermerModaleStarter);
+
+  // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
+  function afficherToastHorsLigne() {
+    const gains = game.gainsHorsLigne;
+    if (!gains) return;
+    const heures = Math.floor(gains.secondes / 3600);
+    const minutes = Math.floor((gains.secondes % 3600) / 60);
+    const duree = heures > 0 ? `${heures}h ${minutes}min` : `${minutes}min`;
+    el.toastHorsLigneTexte.textContent = `${duree} écoulées : +${formatNombre(gains.montant)} 💰`;
+    el.toastHorsLigne.hidden = false;
+    el.toastBackdrop.hidden = false;
+  }
+
+  function fermerToastHorsLigne() {
+    el.toastHorsLigne.hidden = true;
+    el.toastBackdrop.hidden = true;
+    actualiserValeurs();
+  }
+
+  el.toastHorsLigneFermer.addEventListener("click", fermerToastHorsLigne);
+  el.toastBackdrop.addEventListener("click", fermerToastHorsLigne);
+
   // --- Clic manuel : uniquement dans la zone décorative ---
   el.zoneDecor.addEventListener("click", (evt) => {
     game.clic();
@@ -288,6 +394,8 @@ async function demarrer() {
   construireListePokemon();
   reconstruirePossedeesSiNecessaire();
   rafraichirAffichage();
+  actualiserEtatSelection();
+  afficherToastHorsLigne();
 }
 
 demarrer();

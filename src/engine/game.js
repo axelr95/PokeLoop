@@ -6,10 +6,13 @@ import {
 } from "./calculations.js";
 
 const SAVE_KEY = "pokeloop_save_v1";
+const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
+const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
 
 export class Game {
   constructor({ resources, pokemons, upgrades }) {
     this.data = { resources, pokemons, upgrades };
+    this.gainsHorsLigne = null;
     this.state = this.chargerOuInitialiser();
   }
 
@@ -17,17 +20,47 @@ export class Game {
     const brut = localStorage.getItem(SAVE_KEY);
     if (brut) {
       try {
-        return JSON.parse(brut);
+        const state = JSON.parse(brut);
+        this.state = state;
+        if (state.equipe.length > 0 && state.dernierTick) {
+          const ecouleSec = Math.min(
+            (Date.now() - state.dernierTick) / 1000,
+            OFFLINE_MAX_SECONDES
+          );
+          if (ecouleSec > OFFLINE_SEUIL_SECONDES) {
+            const gains = ecouleSec * this.productionParSeconde();
+            state.pokedollars += gains;
+            this.gainsHorsLigne = { montant: gains, secondes: ecouleSec };
+          }
+        }
+        state.dernierTick = Date.now();
+        return state;
       } catch {
         // save corrompue, on repart de zéro
       }
     }
-    const starter = this.data.pokemons[0];
     return {
       pokedollars: 0,
-      equipe: [{ id: starter.id, niveau: starter.niveau_depart, xp: 0 }],
+      equipe: [],
       upgradesPossedees: [],
+      dernierTick: Date.now(),
     };
+  }
+
+  starters() {
+    return this.data.pokemons.filter((p) => p.starter);
+  }
+
+  aChoisiStarter() {
+    return this.state.equipe.length > 0;
+  }
+
+  choisirStarter(pokemonId) {
+    if (this.aChoisiStarter()) return false;
+    const def = this.definitionPokemon(pokemonId);
+    if (!def || !def.starter) return false;
+    this.state.equipe.push({ id: def.id, niveau: def.niveau_depart, xp: 0 });
+    return true;
   }
 
   sauvegarder() {
@@ -63,6 +96,7 @@ export class Game {
 
   tick() {
     this.state.pokedollars += this.productionParSeconde();
+    this.state.dernierTick = Date.now();
   }
 
   clic() {

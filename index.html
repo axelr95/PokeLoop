@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>PokeLoop</title>
+  <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
@@ -27,6 +28,10 @@
 
       <div class="panel-contenu" id="panel-pokemon">
         <div class="liste-pokemon" id="liste-pokemon"></div>
+        <button class="selection-starter" id="selection-starter" hidden>
+          <span class="selection-icone">❓</span>
+          <span class="selection-texte">Choisis ton Pokémon de départ</span>
+        </button>
       </div>
 
       <div class="panel-contenu" id="panel-boutique" hidden>
@@ -53,6 +58,19 @@
     <div class="popup-titre" id="popup-titre"></div>
     <div class="popup-description" id="popup-description"></div>
     <div class="popup-footer" id="popup-footer"></div>
+  </div>
+
+  <div class="popup-backdrop" id="starter-backdrop" hidden></div>
+  <div class="modal-starter" id="modal-starter" hidden>
+    <h3 class="modal-titre">Choisis ton Pokémon de départ</h3>
+    <div class="starter-cartes" id="starter-cartes"></div>
+  </div>
+
+  <div class="popup-backdrop" id="toast-backdrop" hidden></div>
+  <div class="toast-hors-ligne" id="toast-hors-ligne" hidden>
+    <p class="toast-titre">Pendant ton absence…</p>
+    <p class="toast-texte" id="toast-hors-ligne-texte"></p>
+    <button class="btn-acheter" id="toast-hors-ligne-fermer">Récupérer</button>
   </div>
 
   <script type="module" src="src/main.js"></script>
