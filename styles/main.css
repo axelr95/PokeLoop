@@ -416,6 +416,10 @@ body {
   filter: brightness(1.3);
 }
 
+.selection-starter.non-abordable {
+  opacity: 0.55;
+}
+
 .selection-icone {
   font-size: 1.8rem;
 }
@@ -470,6 +474,11 @@ body {
 
 .starter-carte:active {
   border-color: var(--couleur-accent);
+}
+
+.starter-carte:disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .starter-carte-portrait {

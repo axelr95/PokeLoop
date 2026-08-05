@@ -15,14 +15,15 @@ async function obtenirMetaSprite(def) {
 }
 
 async function demarrer() {
-  const [resources, pokemons, upgrades, types] = await Promise.all([
+  const [resources, pokemons, upgrades, types, recrutement] = await Promise.all([
     chargerJson("src/data/resources.json"),
     chargerJson("src/data/pokemons.json"),
     chargerJson("src/data/upgrades.json"),
     chargerJson("src/data/types.json"),
+    chargerJson("src/data/recrutement.json"),
   ]);
 
-  const game = new Game({ resources, pokemons, upgrades });
+  const game = new Game({ resources, pokemons, upgrades, recrutement });
 
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
@@ -34,6 +35,8 @@ async function demarrer() {
     panelBoutique: document.getElementById("panel-boutique"),
     listePokemon: document.getElementById("liste-pokemon"),
     selectionStarter: document.getElementById("selection-starter"),
+    recrutementCta: document.getElementById("recrutement-cta"),
+    recrutementCtaTexte: document.getElementById("recrutement-cta-texte"),
     shopListe: document.getElementById("shop-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
     tabsBtns: document.querySelectorAll(".tab-btn"),
@@ -45,6 +48,10 @@ async function demarrer() {
     starterBackdrop: document.getElementById("starter-backdrop"),
     modalStarter: document.getElementById("modal-starter"),
     starterCartes: document.getElementById("starter-cartes"),
+    recrueBackdrop: document.getElementById("recrue-backdrop"),
+    modalRecrue: document.getElementById("modal-recrue"),
+    recrueTitre: document.getElementById("recrue-titre"),
+    recrueCartes: document.getElementById("recrue-cartes"),
     toastBackdrop: document.getElementById("toast-backdrop"),
     toastHorsLigne: document.getElementById("toast-hors-ligne"),
     toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
@@ -178,6 +185,13 @@ async function demarrer() {
       const cout = Number(btn.dataset.cout);
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
     });
+
+    if (!el.recrutementCta.hidden) {
+      const palier = game.prochainRecrutement();
+      if (palier) {
+        el.recrutementCta.classList.toggle("non-abordable", game.state.pokedollars < palier.cout);
+      }
+    }
   }
 
   // --- Onglets du bas : change le panel affiché ---
@@ -304,9 +318,42 @@ async function demarrer() {
     return badge;
   }
 
-  // --- Sélection du starter : état affiché tant qu'aucun Pokémon n'est choisi ---
-  function actualiserEtatSelection() {
+  // --- Carte de choix réutilisée par la modale starter et la modale de recrutement ---
+  function creerCarteChoixPokemon(def, { abordable = true, onClick }) {
+    const carte = document.createElement("button");
+    carte.className = "starter-carte";
+    carte.disabled = !abordable;
+    carte.innerHTML = `
+      <img class="starter-carte-portrait" alt="" />
+      <div class="starter-carte-infos">
+        <span class="starter-carte-nom"></span>
+        <div class="starter-carte-types"></div>
+      </div>
+    `;
+    carte.querySelector(".starter-carte-portrait").src = `${def.sprite_dossier}portrait.png`;
+    carte.querySelector(".starter-carte-nom").textContent = def.nom;
+    const typesEl = carte.querySelector(".starter-carte-types");
+    for (const t of def.types) typesEl.appendChild(creerBadgeType(t));
+    carte.addEventListener("click", onClick);
+    return carte;
+  }
+
+  function apresChangementEquipe() {
+    actualiserEtatsPanel();
+    construireDecorEquipe();
+    construireListePokemon();
+    actualiserValeurs();
+    game.sauvegarder();
+  }
+
+  // --- État du panel Pokémon : sélection du starter, puis proposition de recrutement ---
+  function actualiserEtatsPanel() {
     el.selectionStarter.hidden = game.aChoisiStarter();
+    const palier = game.aChoisiStarter() ? game.prochainRecrutement() : null;
+    el.recrutementCta.hidden = !palier;
+    if (palier) {
+      el.recrutementCtaTexte.textContent = `Recruter un compagnon (${formatNombre(palier.cout)} 💰)`;
+    }
   }
 
   function fermerModaleStarter() {
@@ -317,28 +364,12 @@ async function demarrer() {
   function ouvrirModaleStarter() {
     el.starterCartes.innerHTML = "";
     for (const def of game.starters()) {
-      const carte = document.createElement("button");
-      carte.className = "starter-carte";
-      carte.innerHTML = `
-        <img class="starter-carte-portrait" alt="" />
-        <div class="starter-carte-infos">
-          <span class="starter-carte-nom"></span>
-          <div class="starter-carte-types"></div>
-        </div>
-      `;
-      carte.querySelector(".starter-carte-portrait").src = `${def.sprite_dossier}portrait.png`;
-      carte.querySelector(".starter-carte-nom").textContent = def.nom;
-      const typesEl = carte.querySelector(".starter-carte-types");
-      for (const t of def.types) typesEl.appendChild(creerBadgeType(t));
-
-      carte.addEventListener("click", () => {
-        game.choisirStarter(def.id);
-        fermerModaleStarter();
-        actualiserEtatSelection();
-        construireDecorEquipe();
-        construireListePokemon();
-        actualiserValeurs();
-        game.sauvegarder();
+      const carte = creerCarteChoixPokemon(def, {
+        onClick: () => {
+          game.choisirStarter(def.id);
+          fermerModaleStarter();
+          apresChangementEquipe();
+        },
       });
       el.starterCartes.appendChild(carte);
     }
@@ -348,6 +379,37 @@ async function demarrer() {
 
   el.selectionStarter.addEventListener("click", ouvrirModaleStarter);
   el.starterBackdrop.addEventListener("click", fermerModaleStarter);
+
+  // --- Recrutement d'un 2e Pokémon (et suivants) : choix fixe défini en data ---
+  function fermerModaleRecrutement() {
+    el.modalRecrue.hidden = true;
+    el.recrueBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleRecrutement() {
+    const palier = game.prochainRecrutement();
+    if (!palier) return;
+    const abordable = game.state.pokedollars >= palier.cout;
+    el.recrueTitre.textContent = `Recruter un compagnon — ${formatNombre(palier.cout)} 💰`;
+    el.recrueCartes.innerHTML = "";
+    for (const id of palier.choix) {
+      const def = game.definitionPokemon(id);
+      const carte = creerCarteChoixPokemon(def, {
+        abordable,
+        onClick: () => {
+          if (!game.recruterPokemon(def.id)) return;
+          fermerModaleRecrutement();
+          apresChangementEquipe();
+        },
+      });
+      el.recrueCartes.appendChild(carte);
+    }
+    el.modalRecrue.hidden = false;
+    el.recrueBackdrop.hidden = false;
+  }
+
+  el.recrutementCta.addEventListener("click", ouvrirModaleRecrutement);
+  el.recrueBackdrop.addEventListener("click", fermerModaleRecrutement);
 
   // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
   function afficherToastHorsLigne() {
@@ -394,7 +456,7 @@ async function demarrer() {
   construireListePokemon();
   reconstruirePossedeesSiNecessaire();
   rafraichirAffichage();
-  actualiserEtatSelection();
+  actualiserEtatsPanel();
   afficherToastHorsLigne();
 }
 

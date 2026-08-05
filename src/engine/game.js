@@ -10,8 +10,8 @@ const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
 const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
 
 export class Game {
-  constructor({ resources, pokemons, upgrades }) {
-    this.data = { resources, pokemons, upgrades };
+  constructor({ resources, pokemons, upgrades, recrutement }) {
+    this.data = { resources, pokemons, upgrades, recrutement: recrutement || [] };
     this.gainsHorsLigne = null;
     this.state = this.chargerOuInitialiser();
   }
@@ -65,6 +65,21 @@ export class Game {
 
   sauvegarder() {
     localStorage.setItem(SAVE_KEY, JSON.stringify(this.state));
+  }
+
+  prochainRecrutement() {
+    const prochainEmplacement = this.state.equipe.length + 1;
+    return this.data.recrutement.find((r) => r.emplacement === prochainEmplacement) || null;
+  }
+
+  recruterPokemon(pokemonId) {
+    const palier = this.prochainRecrutement();
+    if (!palier || !palier.choix.includes(pokemonId)) return false;
+    if (this.state.pokedollars < palier.cout) return false;
+    const def = this.definitionPokemon(pokemonId);
+    this.state.pokedollars -= palier.cout;
+    this.state.equipe.push({ id: def.id, niveau: def.niveau_depart, xp: 0 });
+    return true;
   }
 
   definitionPokemon(id) {
