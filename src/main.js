@@ -18,12 +18,15 @@ async function demarrer() {
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
     prodInfo: document.getElementById("prod-info"),
-    zoneJeu: document.getElementById("zone-jeu"),
-    equipe: document.getElementById("equipe"),
-    btnInvestir10: document.getElementById("btn-investir-10"),
-    btnInvestirTout: document.getElementById("btn-investir-tout"),
+    zoneDecor: document.getElementById("zone-decor"),
+    decorEquipe: document.getElementById("decor-equipe"),
+    panelTitre: document.getElementById("panel-titre"),
+    panelPokemon: document.getElementById("panel-pokemon"),
+    panelBoutique: document.getElementById("panel-boutique"),
+    listePokemon: document.getElementById("liste-pokemon"),
     shopListe: document.getElementById("shop-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
+    tabsBtns: document.querySelectorAll(".tab-btn"),
     popupBackdrop: document.getElementById("popup-backdrop"),
     popup: document.getElementById("popup-upgrade"),
     popupTitre: document.getElementById("popup-titre"),
@@ -32,64 +35,104 @@ async function demarrer() {
   };
 
   const formatNombre = (n) => Math.floor(n).toLocaleString("fr-FR");
+  const TITRES_ONGLETS = { pokemon: "Pokémon", boutique: "Boutique" };
   let idsBoutiqueAffiches = null;
   let idsPossedeesAffiches = null;
 
-  // --- Feedback flottant "+X" ---
+  // --- Feedback flottant "+X", ancré dans la zone décorative (seule zone cliquable) ---
   function afficherFloater(texte, xRelatif, yRelatif) {
     const floater = document.createElement("div");
     floater.className = "floater";
     floater.textContent = texte;
     floater.style.left = `${xRelatif}px`;
     floater.style.top = `${yRelatif}px`;
-    el.zoneJeu.appendChild(floater);
+    el.zoneDecor.appendChild(floater);
     floater.addEventListener("animationend", () => floater.remove());
     setTimeout(() => floater.remove(), 900); // filet de sécurité si l'animation ne se déclenche pas (onglet en arrière-plan)
   }
 
   function floaterDepuisEvenement(evt, texte) {
-    const rect = el.zoneJeu.getBoundingClientRect();
+    const rect = el.zoneDecor.getBoundingClientRect();
     afficherFloater(texte, evt.clientX - rect.left, evt.clientY - rect.top);
   }
 
-  function floaterDepuisCarte(carteEl, texte) {
-    const rectZone = el.zoneJeu.getBoundingClientRect();
-    const rectCarte = carteEl.getBoundingClientRect();
+  function floaterDepuisSprite(spriteEl, texte) {
+    const rectZone = el.zoneDecor.getBoundingClientRect();
+    const rectSprite = spriteEl.getBoundingClientRect();
     afficherFloater(
       texte,
-      rectCarte.left - rectZone.left + rectCarte.width / 2,
-      rectCarte.top - rectZone.top
+      rectSprite.left - rectZone.left + rectSprite.width / 2,
+      rectSprite.top - rectZone.top
     );
   }
 
-  // --- Rendu équipe (petits encarts, jusqu'à 6 emplacements plus tard) ---
-  function construireEquipe() {
-    el.equipe.innerHTML = "";
+  // --- Zone décorative : sprites des Pokémon (jusqu'à 6 plus tard), purement visuel ---
+  function construireDecorEquipe() {
+    el.decorEquipe.innerHTML = "";
     for (const membre of game.state.equipe) {
-      const carte = document.createElement("div");
-      carte.className = "carte-pokemon";
-      carte.dataset.membreId = membre.id;
-      carte.innerHTML = `
-        <span class="cp-sprite">🔥</span>
-        <span class="cp-niveau">Nv ${membre.niveau}</span>
-        <div class="cp-xp"><div class="cp-xp-remplissage"></div></div>
-      `;
-      el.equipe.appendChild(carte);
+      const sprite = document.createElement("span");
+      sprite.className = "decor-sprite";
+      sprite.dataset.membreId = membre.id;
+      sprite.textContent = "🔥";
+      el.decorEquipe.appendChild(sprite);
     }
   }
 
-  function actualiserEquipe() {
+  // --- Panel "Pokémon" : niveau, XP / XP max et investissement propres à chaque Pokémon ---
+  function construireListePokemon() {
+    el.listePokemon.innerHTML = "";
+    for (const membre of game.state.equipe) {
+      const ligne = document.createElement("div");
+      ligne.className = "ligne-pokemon";
+      ligne.dataset.membreId = membre.id;
+      ligne.innerHTML = `
+        <span class="lp-sprite">🔥</span>
+        <div class="lp-stats">
+          <div class="lp-nom-niveau">
+            <span class="lp-nom"></span>
+            <span class="lp-niveau"></span>
+          </div>
+          <div class="lp-xp"><div class="lp-xp-remplissage"></div></div>
+          <div class="lp-xp-texte"></div>
+        </div>
+        <div class="lp-actions">
+          <button class="btn-invest" data-action="10">Investir 10</button>
+          <button class="btn-invest" data-action="tout">Tout investir</button>
+        </div>
+      `;
+      const def = game.definitionPokemon(membre.id);
+      ligne.querySelector(".lp-nom").textContent = def.nom;
+
+      ligne.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        game.investirXp(membre.id, 10);
+        actualiserValeurs();
+      });
+      ligne.querySelector('[data-action="tout"]').addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        game.investirXp(membre.id, Math.floor(game.state.pokedollars));
+        actualiserValeurs();
+      });
+
+      el.listePokemon.appendChild(ligne);
+    }
+  }
+
+  function actualiserListePokemon() {
     for (const membre of game.state.equipe) {
       const def = game.definitionPokemon(membre.id);
-      const carte = el.equipe.querySelector(`[data-membre-id="${membre.id}"]`);
-      if (!carte) continue;
-      carte.querySelector(".cp-niveau").textContent = `Nv ${membre.niveau}`;
-      const barre = carte.querySelector(".cp-xp-remplissage");
+      const ligne = el.listePokemon.querySelector(`[data-membre-id="${membre.id}"]`);
+      if (!ligne) continue;
+      ligne.querySelector(".lp-niveau").textContent = `Nv ${membre.niveau}`;
+      const barre = ligne.querySelector(".lp-xp-remplissage");
+      const texte = ligne.querySelector(".lp-xp-texte");
       if (membre.niveau >= 100) {
         barre.style.width = "100%";
+        texte.textContent = "Niveau max";
       } else {
         const seuil = xpRequise(def, membre.niveau + 1);
         barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
+        texte.textContent = `${formatNombre(membre.xp)} / ${formatNombre(seuil)} XP`;
       }
     }
   }
@@ -98,13 +141,25 @@ async function demarrer() {
   function actualiserValeurs() {
     el.pokedollars.textContent = formatNombre(game.state.pokedollars);
     el.prodInfo.textContent = `${formatNombre(game.productionParSeconde())} /s`;
-    actualiserEquipe();
+    actualiserListePokemon();
 
     el.shopListe.querySelectorAll(".icone-item").forEach((btn) => {
       const cout = Number(btn.dataset.cout);
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
     });
   }
+
+  // --- Onglets du bas : change le panel affiché ---
+  function activerOnglet(nom) {
+    el.panelPokemon.hidden = nom !== "pokemon";
+    el.panelBoutique.hidden = nom !== "boutique";
+    el.panelTitre.textContent = TITRES_ONGLETS[nom];
+    el.tabsBtns.forEach((btn) => btn.classList.toggle("actif", btn.dataset.tab === nom));
+  }
+
+  el.tabsBtns.forEach((btn) => {
+    btn.addEventListener("click", () => activerOnglet(btn.dataset.tab));
+  });
 
   // --- Popup de description (boutique / possédées) ---
   function fermerPopup() {
@@ -209,31 +264,19 @@ async function demarrer() {
     reconstruireBoutiqueSiNecessaire();
   }
 
-  // --- Clic manuel : partout dans la zone de jeu (équipe incluse), pas dans la boutique ---
-  el.zoneJeu.addEventListener("click", (evt) => {
+  // --- Clic manuel : uniquement dans la zone décorative ---
+  el.zoneDecor.addEventListener("click", (evt) => {
     game.clic();
     floaterDepuisEvenement(evt, `+${formatNombre(game.productionClic())} 💰`);
-    actualiserValeurs();
-  });
-
-  el.btnInvestir10.addEventListener("click", (evt) => {
-    evt.stopPropagation();
-    game.investirXp(game.state.equipe[0].id, 10);
-    actualiserValeurs();
-  });
-
-  el.btnInvestirTout.addEventListener("click", (evt) => {
-    evt.stopPropagation();
-    game.investirXp(game.state.equipe[0].id, Math.floor(game.state.pokedollars));
     actualiserValeurs();
   });
 
   setInterval(() => {
     game.tick();
     for (const membre of game.state.equipe) {
-      const carte = el.equipe.querySelector(`[data-membre-id="${membre.id}"]`);
+      const sprite = el.decorEquipe.querySelector(`[data-membre-id="${membre.id}"]`);
       const prod = game.productionMembre(membre);
-      if (carte && prod >= 1) floaterDepuisCarte(carte, `+${formatNombre(prod)} 💰`);
+      if (sprite && prod >= 1) floaterDepuisSprite(sprite, `+${formatNombre(prod)} 💰`);
     }
     actualiserValeurs();
   }, 1000);
@@ -241,7 +284,8 @@ async function demarrer() {
   setInterval(() => game.sauvegarder(), 5000);
   window.addEventListener("beforeunload", () => game.sauvegarder());
 
-  construireEquipe();
+  construireDecorEquipe();
+  construireListePokemon();
   reconstruirePossedeesSiNecessaire();
   rafraichirAffichage();
 }

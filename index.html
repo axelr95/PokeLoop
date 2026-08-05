@@ -16,27 +16,36 @@
       <div class="prod-info" id="prod-info">0 /s</div>
     </header>
 
-    <main class="zone-jeu" id="zone-jeu">
-      <div class="equipe" id="equipe"></div>
-
-      <div class="investir-rapide" id="investir-rapide">
-        <button class="btn-invest" id="btn-investir-10">Investir 10</button>
-        <button class="btn-invest" id="btn-investir-tout">Tout investir</button>
-      </div>
-
-      <div class="tap-zone-vide" aria-hidden="true"></div>
+    <!-- Zone décorative : sprites Pokémon façon Donjon Mystère, zone de clic manuel -->
+    <main class="zone-decor" id="zone-decor">
+      <div class="decor-equipe" id="decor-equipe"></div>
     </main>
 
-    <section class="zone-boutique">
-      <div class="boutique-groupe">
-        <h2 class="section-titre">Boutique</h2>
-        <div class="icones-liste" id="shop-liste"></div>
+    <!-- Panel du menu sélectionné : contenu changé par les onglets du bas -->
+    <section class="panel-menu">
+      <h2 class="panel-titre" id="panel-titre">Pokémon</h2>
+
+      <div class="panel-contenu" id="panel-pokemon">
+        <div class="liste-pokemon" id="liste-pokemon"></div>
       </div>
-      <div class="boutique-groupe">
-        <h2 class="section-titre">Possédées</h2>
-        <div class="icones-liste" id="possedees-liste"></div>
+
+      <div class="panel-contenu" id="panel-boutique" hidden>
+        <div class="boutique-groupe">
+          <h3 class="section-titre">Boutique</h3>
+          <div class="icones-liste" id="shop-liste"></div>
+        </div>
+        <div class="boutique-groupe">
+          <h3 class="section-titre">Possédées</h3>
+          <div class="icones-liste" id="possedees-liste"></div>
+        </div>
       </div>
     </section>
+
+    <!-- Onglets du bas : change le panel affiché au-dessus -->
+    <nav class="tabs-bar">
+      <button class="tab-btn actif" id="tab-pokemon" data-tab="pokemon" aria-label="Pokémon">🐾</button>
+      <button class="tab-btn" id="tab-boutique" data-tab="boutique" aria-label="Boutique">🛒</button>
+    </nav>
   </div>
 
   <div class="popup-backdrop" id="popup-backdrop" hidden></div>

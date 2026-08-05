@@ -76,89 +76,33 @@ body {
   font-size: 0.85rem;
 }
 
-.zone-jeu {
+/* Zone décorative : fond façon Donjon Mystère (placeholder en attendant les .png), sprites, clic manuel */
+.zone-decor {
   flex: 1;
   min-height: 0;
   position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem;
   cursor: pointer;
   touch-action: manipulation;
   overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, #3a3455 0%, #221f36 60%, #171526 100%);
 }
 
-.equipe {
-  flex: none;
+.decor-equipe {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
-}
-
-.carte-pokemon {
-  flex: none;
-  width: 76px;
-  height: 92px;
-  background: var(--couleur-surface);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  gap: 0.15rem;
-  padding: 0.3rem;
-  position: relative;
 }
 
-.cp-sprite {
-  font-size: 1.8rem;
+.decor-sprite {
+  font-size: 3rem;
   line-height: 1;
-}
-
-.cp-niveau {
-  font-size: 0.7rem;
-  color: var(--couleur-texte-att);
-}
-
-.cp-xp {
-  width: 90%;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.cp-xp-remplissage {
-  height: 100%;
-  background: var(--couleur-accent);
-}
-
-.investir-rapide {
-  flex: none;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.btn-invest {
-  flex: 1;
-  min-height: 38px;
-  border: none;
-  border-radius: 10px;
-  background: var(--couleur-surface-claire);
-  color: var(--couleur-texte);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-invest:active {
-  filter: brightness(1.3);
-}
-
-.tap-zone-vide {
-  flex: 1;
-  min-height: 0;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.5));
 }
 
 .floater {
@@ -183,20 +127,147 @@ body {
   }
 }
 
-.zone-boutique {
+/* Panel du menu sélectionné (onglets) */
+.panel-menu {
   flex: none;
+  height: 210px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0.6rem 0.75rem 0.8rem;
+  padding: 0.6rem 0.75rem;
   background: var(--couleur-surface);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.panel-titre {
+  flex: none;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--couleur-accent);
+  text-align: center;
+}
+
+.panel-contenu {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.liste-pokemon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ligne-pokemon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--couleur-surface-claire);
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+}
+
+.lp-sprite {
+  font-size: 1.5rem;
+  flex: none;
+}
+
+.lp-stats {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.lp-nom-niveau {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.lp-xp {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lp-xp-remplissage {
+  height: 100%;
+  background: var(--couleur-accent);
+}
+
+.lp-xp-texte {
+  font-size: 0.65rem;
+  color: var(--couleur-texte-att);
+}
+
+.lp-actions {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.btn-invest {
+  min-height: 30px;
+  padding: 0 0.5rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--couleur-surface);
+  color: var(--couleur-texte);
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-invest:active {
+  filter: brightness(1.3);
 }
 
 .boutique-groupe {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+}
+
+/* Barre d'onglets du bas : change le panel affiché au-dessus */
+.tabs-bar {
+  flex: none;
+  display: flex;
+  background: var(--couleur-fond);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.3rem;
+  gap: 0.3rem;
+}
+
+.tab-btn {
+  flex: 1;
+  min-height: 46px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 1.3rem;
+  color: var(--couleur-texte-att);
+  cursor: pointer;
+}
+
+.tab-btn.actif {
+  background: var(--couleur-surface-claire);
+  color: var(--couleur-texte);
 }
 
 .section-titre {
