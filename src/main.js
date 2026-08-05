@@ -188,9 +188,9 @@ async function demarrer() {
       <div class="ce-infos">
         <div class="ce-nom-niveau">
           <span class="ce-nom"></span>
-          <span class="ce-types"></span>
           <span class="ce-niveau"></span>
         </div>
+        <div class="ce-types-badges"></div>
         <div class="ce-normal">
           <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
           <div class="ce-actions">
@@ -203,13 +203,8 @@ async function demarrer() {
     `;
     carte.querySelector(".ce-portrait").src = `${def.sprite_dossier}portrait.png`;
     carte.querySelector(".ce-nom").textContent = def.nom;
-    const typesEl = carte.querySelector(".ce-types");
-    for (const t of def.types) {
-      const icone = document.createElement("span");
-      icone.className = "ce-type-icone";
-      icone.textContent = types[t].icone;
-      typesEl.appendChild(icone);
-    }
+    const typesEl = carte.querySelector(".ce-types-badges");
+    for (const t of def.types) typesEl.appendChild(creerBadgeType(t, { mini: true }));
     carte.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
       evt.stopPropagation();
       game.investirXp(membre.id, 10);
@@ -434,12 +429,14 @@ async function demarrer() {
     reconstruireBoutiqueSiNecessaire();
   }
 
-  function creerBadgeType(typeId) {
+  function creerBadgeType(typeId, { mini = false } = {}) {
     const badge = document.createElement("span");
     const def = types[typeId];
-    badge.className = "type-badge";
+    badge.className = mini ? "type-badge type-badge-mini" : "type-badge";
     badge.style.background = def.couleur;
-    badge.textContent = `${def.icone} ${def.nom}`;
+    // En mini, l'émoji prend une largeur disproportionnée (taille quasi fixe
+    // selon les polices) : on garde juste le libellé pour rester compact.
+    badge.textContent = mini ? def.nom : `${def.icone} ${def.nom}`;
     return badge;
   }
 
