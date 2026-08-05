@@ -214,85 +214,142 @@ body {
   display: none;
 }
 
-.liste-pokemon {
+/* Grille fixe des 6 emplacements d'équipe : remplie, action (starter/recrutement) ou verrouillée */
+.grille-equipe {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.3rem;
+}
+
+.carte-equipe {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--couleur-surface-claire);
+  padding: 0.25rem 0.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.15rem;
 }
 
-.ligne-pokemon {
-  flex: none;
+.ce-haut {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  background: var(--couleur-surface-claire);
-  border-radius: 10px;
-  padding: 0.5rem 0.6rem;
+  gap: 0.3rem;
+  min-width: 0;
 }
 
-.lp-sprite {
+.ce-sprite {
   flex: none;
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   image-rendering: pixelated;
 }
 
-.lp-stats {
+.ce-nom-niveau {
   flex: 1;
   min-width: 0;
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.3rem;
 }
 
-.lp-nom-niveau {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
+.ce-nom {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.68rem;
   font-weight: 600;
 }
 
-.lp-xp {
+.ce-niveau {
+  flex: none;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--couleur-texte-att);
+}
+
+.ce-xp {
   width: 100%;
-  height: 6px;
+  height: 4px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   overflow: hidden;
 }
 
-.lp-xp-remplissage {
+.ce-xp-remplissage {
   height: 100%;
   background: var(--couleur-accent);
 }
 
-.lp-xp-texte {
-  font-size: 0.65rem;
-  color: var(--couleur-texte-att);
-}
-
-.lp-actions {
-  flex: none;
+.ce-actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;
 }
 
-.btn-invest {
-  min-height: 30px;
-  padding: 0 0.5rem;
+.btn-mini {
+  flex: 1;
+  min-width: 0;
+  min-height: 18px;
+  padding: 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--couleur-surface);
   color: var(--couleur-texte);
-  font-size: 0.68rem;
+  font-size: 0.58rem;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.btn-invest:active {
+.btn-mini:active {
   filter: brightness(1.3);
+}
+
+/* Case d'action : choisir le starter, ou recruter le prochain compagnon */
+.carte-equipe-action {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: transparent;
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  color: var(--couleur-texte-att);
+  cursor: pointer;
+}
+
+.carte-equipe-action:active {
+  filter: brightness(1.3);
+}
+
+.carte-equipe-action.non-abordable {
+  opacity: 0.55;
+}
+
+.ce-action-icone {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.ce-action-texte {
+  font-size: 0.58rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+/* Case verrouillée : emplacement pas encore accessible (aucun palier défini) */
+.carte-equipe-verrou {
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 1rem;
 }
 
 .boutique-groupe {
@@ -430,43 +487,6 @@ body {
 .btn-acheter:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-/* État de sélection : aucun starter choisi pour l'instant */
-.selection-starter[hidden] {
-  display: none;
-}
-
-.selection-starter {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  border: 2px dashed rgba(255, 255, 255, 0.25);
-  border-radius: var(--rayon);
-  background: transparent;
-  color: var(--couleur-texte-att);
-  cursor: pointer;
-  padding: 1rem;
-}
-
-.selection-starter:active {
-  filter: brightness(1.3);
-}
-
-.selection-starter.non-abordable {
-  opacity: 0.55;
-}
-
-.selection-icone {
-  font-size: 1.8rem;
-}
-
-.selection-texte {
-  font-size: 0.8rem;
-  font-weight: 600;
 }
 
 /* Modale de choix du starter */

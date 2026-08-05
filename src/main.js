@@ -90,10 +90,7 @@ async function demarrer() {
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
-    listePokemon: document.getElementById("liste-pokemon"),
-    selectionStarter: document.getElementById("selection-starter"),
-    recrutementCta: document.getElementById("recrutement-cta"),
-    recrutementCtaTexte: document.getElementById("recrutement-cta-texte"),
+    grilleEquipe: document.getElementById("grille-equipe"),
     shopListe: document.getElementById("shop-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
     tabsBtns: document.querySelectorAll(".tab-btn"),
@@ -178,62 +175,105 @@ async function demarrer() {
     });
   }
 
-  // --- Panel "Pokémon" : niveau, XP / XP max et investissement propres à chaque Pokémon ---
-  function construireListePokemon() {
-    el.listePokemon.innerHTML = "";
-    for (const membre of game.state.equipe) {
-      const ligne = document.createElement("div");
-      ligne.className = "ligne-pokemon";
-      ligne.dataset.membreId = membre.id;
-      ligne.innerHTML = `
-        <img class="lp-sprite" alt="" />
-        <div class="lp-stats">
-          <div class="lp-nom-niveau">
-            <span class="lp-nom"></span>
-            <span class="lp-niveau"></span>
-          </div>
-          <div class="lp-xp"><div class="lp-xp-remplissage"></div></div>
-          <div class="lp-xp-texte"></div>
-        </div>
-        <div class="lp-actions">
-          <button class="btn-invest" data-action="10">Investir 10</button>
-          <button class="btn-invest" data-action="tout">Tout investir</button>
-        </div>
-      `;
-      const def = game.definitionPokemon(membre.id);
-      ligne.querySelector(".lp-nom").textContent = def.nom;
-      ligne.querySelector(".lp-sprite").src = `${def.sprite_dossier}portrait.png`;
+  // --- Panel "Pokémon" : grille fixe des 6 emplacements (remplis, action, ou verrouillés) ---
+  const NB_EMPLACEMENTS = 6;
 
-      ligne.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
-        evt.stopPropagation();
-        game.investirXp(membre.id, 10);
-        actualiserValeurs();
-      });
-      ligne.querySelector('[data-action="tout"]').addEventListener("click", (evt) => {
-        evt.stopPropagation();
-        game.investirXp(membre.id, Math.floor(game.state.pokedollars));
-        actualiserValeurs();
-      });
+  function creerCarteEquipeRemplie(membre) {
+    const def = game.definitionPokemon(membre.id);
+    const carte = document.createElement("div");
+    carte.className = "carte-equipe";
+    carte.dataset.membreId = membre.id;
+    carte.innerHTML = `
+      <div class="ce-haut">
+        <img class="ce-sprite" alt="" />
+        <div class="ce-nom-niveau">
+          <span class="ce-nom"></span>
+          <span class="ce-niveau"></span>
+        </div>
+      </div>
+      <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
+      <div class="ce-actions">
+        <button class="btn-mini" data-action="10">+10</button>
+        <button class="btn-mini" data-action="tout">Max</button>
+      </div>
+    `;
+    carte.querySelector(".ce-sprite").src = `${def.sprite_dossier}portrait.png`;
+    carte.querySelector(".ce-nom").textContent = def.nom;
+    carte.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      game.investirXp(membre.id, 10);
+      actualiserValeurs();
+    });
+    carte.querySelector('[data-action="tout"]').addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      game.investirXp(membre.id, Math.floor(game.state.pokedollars));
+      actualiserValeurs();
+    });
+    return carte;
+  }
 
-      el.listePokemon.appendChild(ligne);
+  function creerCarteAction(icone, texte, onClick, dataset) {
+    const carte = document.createElement("button");
+    carte.className = "carte-equipe carte-equipe-action";
+    if (dataset) Object.assign(carte.dataset, dataset);
+    carte.innerHTML = `<span class="ce-action-icone">${icone}</span><span class="ce-action-texte">${texte}</span>`;
+    carte.addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      onClick();
+    });
+    return carte;
+  }
+
+  function creerCarteVerrouillee() {
+    const carte = document.createElement("div");
+    carte.className = "carte-equipe carte-equipe-verrou";
+    carte.textContent = "🔒";
+    return carte;
+  }
+
+  function construireGrilleEquipe() {
+    el.grilleEquipe.innerHTML = "";
+    const equipe = game.state.equipe;
+    const palier = game.aChoisiStarter() ? game.prochainRecrutement() : null;
+    for (let index = 0; index < NB_EMPLACEMENTS; index++) {
+      let carte;
+      if (index < equipe.length) {
+        carte = creerCarteEquipeRemplie(equipe[index]);
+      } else if (index === 0 && !game.aChoisiStarter()) {
+        carte = creerCarteAction("❓", "Choisir starter", ouvrirModaleStarter);
+      } else if (palier && palier.emplacement === index + 1) {
+        carte = creerCarteAction(
+          "➕",
+          `Recruter (${formatNombre(palier.cout)} 💰)`,
+          ouvrirModaleRecrutement,
+          { role: "recrutement" }
+        );
+      } else {
+        carte = creerCarteVerrouillee();
+      }
+      el.grilleEquipe.appendChild(carte);
     }
   }
 
-  function actualiserListePokemon() {
+  function actualiserGrilleEquipe() {
     for (const membre of game.state.equipe) {
       const def = game.definitionPokemon(membre.id);
-      const ligne = el.listePokemon.querySelector(`[data-membre-id="${membre.id}"]`);
-      if (!ligne) continue;
-      ligne.querySelector(".lp-niveau").textContent = `Nv ${membre.niveau}`;
-      const barre = ligne.querySelector(".lp-xp-remplissage");
-      const texte = ligne.querySelector(".lp-xp-texte");
+      const carte = el.grilleEquipe.querySelector(`[data-membre-id="${membre.id}"]`);
+      if (!carte) continue;
+      carte.querySelector(".ce-niveau").textContent = `Nv ${membre.niveau}`;
+      const barre = carte.querySelector(".ce-xp-remplissage");
       if (membre.niveau >= 100) {
         barre.style.width = "100%";
-        texte.textContent = "Niveau max";
       } else {
         const seuil = xpRequise(def, membre.niveau + 1);
         barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
-        texte.textContent = `${formatNombre(membre.xp)} / ${formatNombre(seuil)} XP`;
+      }
+    }
+    const carteRecrutement = el.grilleEquipe.querySelector('[data-role="recrutement"]');
+    if (carteRecrutement) {
+      const palier = game.prochainRecrutement();
+      if (palier) {
+        carteRecrutement.classList.toggle("non-abordable", game.state.pokedollars < palier.cout);
       }
     }
   }
@@ -242,19 +282,12 @@ async function demarrer() {
   function actualiserValeurs() {
     el.pokedollars.textContent = formatNombre(game.state.pokedollars);
     el.prodInfo.textContent = `${formatNombre(game.productionParSeconde())} /s`;
-    actualiserListePokemon();
+    actualiserGrilleEquipe();
 
     el.shopListe.querySelectorAll(".icone-item").forEach((btn) => {
       const cout = Number(btn.dataset.cout);
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
     });
-
-    if (!el.recrutementCta.hidden) {
-      const palier = game.prochainRecrutement();
-      if (palier) {
-        el.recrutementCta.classList.toggle("non-abordable", game.state.pokedollars < palier.cout);
-      }
-    }
   }
 
   // --- Onglets du bas : change le panel affiché ---
@@ -402,21 +435,10 @@ async function demarrer() {
   }
 
   function apresChangementEquipe() {
-    actualiserEtatsPanel();
     construireDecorEquipe();
-    construireListePokemon();
+    construireGrilleEquipe();
     actualiserValeurs();
     game.sauvegarder();
-  }
-
-  // --- État du panel Pokémon : sélection du starter, puis proposition de recrutement ---
-  function actualiserEtatsPanel() {
-    el.selectionStarter.hidden = game.aChoisiStarter();
-    const palier = game.aChoisiStarter() ? game.prochainRecrutement() : null;
-    el.recrutementCta.hidden = !palier;
-    if (palier) {
-      el.recrutementCtaTexte.textContent = `Recruter un compagnon (${formatNombre(palier.cout)} 💰)`;
-    }
   }
 
   function fermerModaleStarter() {
@@ -440,7 +462,6 @@ async function demarrer() {
     el.starterBackdrop.hidden = false;
   }
 
-  el.selectionStarter.addEventListener("click", ouvrirModaleStarter);
   el.starterBackdrop.addEventListener("click", fermerModaleStarter);
 
   // --- Recrutement d'un 2e Pokémon (et suivants) : choix fixe défini en data ---
@@ -471,7 +492,6 @@ async function demarrer() {
     el.recrueBackdrop.hidden = false;
   }
 
-  el.recrutementCta.addEventListener("click", ouvrirModaleRecrutement);
   el.recrueBackdrop.addEventListener("click", fermerModaleRecrutement);
 
   // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
@@ -555,10 +575,9 @@ async function demarrer() {
   setInterval(() => appliquerFondDecor(el), 5 * 60 * 1000);
 
   construireDecorEquipe();
-  construireListePokemon();
+  construireGrilleEquipe();
   reconstruirePossedeesSiNecessaire();
   rafraichirAffichage();
-  actualiserEtatsPanel();
   afficherToastHorsLigne();
 }
 
