@@ -21,8 +21,13 @@ const FONDS_PAR_TRANCHE = [
   { debut: 18, fin: 24, fichier: "soir" },
   { debut: 0, fin: 6, fichier: "nuit" },
 ];
+const NOMS_FONDS = FONDS_PAR_TRANCHE.map((t) => t.fichier);
+const ICONES_FONDS = { matin: "🌅", "apres-midi": "☀️", soir: "🌇", nuit: "🌙" };
+
+let indexFondDebug = null; // null = mode normal (heure réelle) ; sinon index dans NOMS_FONDS
 
 function nomFondActuel() {
+  if (indexFondDebug !== null) return NOMS_FONDS[indexFondDebug];
   const heure = new Date().getHours();
   const tranche = FONDS_PAR_TRANCHE.find((t) => heure >= t.debut && heure < t.fin);
   return tranche.fichier;
@@ -30,6 +35,17 @@ function nomFondActuel() {
 
 function appliquerFondDecor(el) {
   el.zoneDecor.style.backgroundImage = `url(assets/backgrounds/${nomFondActuel()}.png)`;
+}
+
+// --- Positionnement en arc de cercle sur le bord de la falaise : 1er au centre, ---
+// --- puis alternance droite/gauche en s'éloignant, en remontant légèrement.     ---
+const ARC_PAS_HORIZONTAL = 46; // px d'écart au centre par cran
+const ARC_PAS_VERTICAL = 10; // px de remontée par cran
+
+function positionArc(index) {
+  const cran = Math.ceil(index / 2);
+  const cote = index === 0 ? 0 : index % 2 === 1 ? 1 : -1;
+  return { x: cote * cran * ARC_PAS_HORIZONTAL, y: cran * ARC_PAS_VERTICAL };
 }
 
 async function demarrer() {
@@ -49,6 +65,7 @@ async function demarrer() {
     zoneDecor: document.getElementById("zone-decor"),
     decorEquipe: document.getElementById("decor-equipe"),
     btnReset: document.getElementById("btn-reset"),
+    btnDebugFond: document.getElementById("btn-debug-fond"),
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
@@ -123,17 +140,19 @@ async function demarrer() {
     el2.style.animation = `cycle-sprite ${(frameCount * 0.15).toFixed(2)}s steps(${frameCount}) infinite`;
   }
 
-  // --- Zone décorative : sprites des Pokémon (jusqu'à 6 plus tard), purement visuel ---
+  // --- Zone décorative : sprites des Pokémon en arc de cercle sur la falaise ---
   function construireDecorEquipe() {
     el.decorEquipe.innerHTML = "";
-    for (const membre of game.state.equipe) {
+    game.state.equipe.forEach((membre, index) => {
       const def = game.definitionPokemon(membre.id);
       const sprite = document.createElement("div");
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
+      const { x, y } = positionArc(index);
+      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(2.4)`;
       el.decorEquipe.appendChild(sprite);
       appliquerSpriteIdle(sprite, def);
-    }
+    });
   }
 
   // --- Panel "Pokémon" : niveau, XP / XP max et investissement propres à chaque Pokémon ---
@@ -499,6 +518,15 @@ async function demarrer() {
     if (window.confirm("Réinitialiser complètement la partie ? Cette action est irréversible.")) {
       reinitialiserJeu();
     }
+  });
+
+  // --- Debug : force le fond à afficher pour tester les 4 tranches horaires ---
+  el.btnDebugFond.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    indexFondDebug = indexFondDebug === null ? 0 : indexFondDebug + 1;
+    if (indexFondDebug >= NOMS_FONDS.length) indexFondDebug = null;
+    appliquerFondDecor(el);
+    el.btnDebugFond.textContent = indexFondDebug === null ? "🕐" : ICONES_FONDS[NOMS_FONDS[indexFondDebug]];
   });
 
   appliquerFondDecor(el);
