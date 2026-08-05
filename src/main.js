@@ -30,6 +30,7 @@ async function demarrer() {
     prodInfo: document.getElementById("prod-info"),
     zoneDecor: document.getElementById("zone-decor"),
     decorEquipe: document.getElementById("decor-equipe"),
+    btnReset: document.getElementById("btn-reset"),
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
@@ -439,7 +440,7 @@ async function demarrer() {
     actualiserValeurs();
   });
 
-  setInterval(() => {
+  const idIntervalleTick = setInterval(() => {
     game.tick();
     for (const membre of game.state.equipe) {
       const sprite = el.decorEquipe.querySelector(`[data-membre-id="${membre.id}"]`);
@@ -449,8 +450,36 @@ async function demarrer() {
     actualiserValeurs();
   }, 1000);
 
-  setInterval(() => game.sauvegarder(), 5000);
-  window.addEventListener("beforeunload", () => game.sauvegarder());
+  const idIntervalleSauvegarde = setInterval(() => game.sauvegarder(), 5000);
+  const sauvegarderAvantFermeture = () => game.sauvegarder();
+  window.addEventListener("beforeunload", sauvegarderAvantFermeture);
+
+  // --- Bouton Reset : efface complètement la partie (storage + caches + cookies du site) ---
+  async function reinitialiserJeu() {
+    clearInterval(idIntervalleTick);
+    clearInterval(idIntervalleSauvegarde);
+    window.removeEventListener("beforeunload", sauvegarderAvantFermeture);
+
+    localStorage.clear();
+    sessionStorage.clear();
+    if (window.caches) {
+      const cles = await caches.keys();
+      await Promise.all(cles.map((c) => caches.delete(c)));
+    }
+    document.cookie.split(";").forEach((c) => {
+      const nom = c.split("=")[0].trim();
+      if (nom) document.cookie = `${nom}=;expires=${new Date(0).toUTCString()};path=/`;
+    });
+
+    location.reload();
+  }
+
+  el.btnReset.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    if (window.confirm("Réinitialiser complètement la partie ? Cette action est irréversible.")) {
+      reinitialiserJeu();
+    }
+  });
 
   construireDecorEquipe();
   construireListePokemon();

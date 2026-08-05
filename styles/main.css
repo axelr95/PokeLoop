@@ -115,6 +115,29 @@ body {
   }
 }
 
+.btn-reset {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--couleur-texte-att);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-reset:active {
+  filter: brightness(1.3);
+}
+
 .floater {
   position: absolute;
   pointer-events: none;
