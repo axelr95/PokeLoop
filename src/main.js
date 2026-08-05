@@ -42,10 +42,21 @@ function appliquerFondDecor(el) {
 const ARC_PAS_HORIZONTAL = 46; // px d'écart au centre par cran
 const ARC_PAS_VERTICAL = 10; // px de remontée par cran
 
-function positionArc(index) {
+// Le rebord de la falaise (transition chemin/herbe) est à ~31% du bas de l'image
+// source (mesuré sur les 4 fonds, identique sur les 4). Comme le fond est calé en
+// largeur (background-size: 100% auto) et ancré en bas, sa hauteur affichée dépend
+// de la largeur de la zone : on recalcule donc ce décalage depuis la largeur réelle.
+const FALAISE_FRACTION_DEPUIS_BAS = 0.31;
+const RATIO_HAUTEUR_IMAGE = 576 / 256;
+
+function decalageFalaisePx(largeurZoneDecor) {
+  return FALAISE_FRACTION_DEPUIS_BAS * RATIO_HAUTEUR_IMAGE * largeurZoneDecor;
+}
+
+function positionArc(index, decalageBase) {
   const cran = Math.ceil(index / 2);
   const cote = index === 0 ? 0 : index % 2 === 1 ? 1 : -1;
-  return { x: cote * cran * ARC_PAS_HORIZONTAL, y: cran * ARC_PAS_VERTICAL };
+  return { x: cote * cran * ARC_PAS_HORIZONTAL, y: decalageBase + cran * ARC_PAS_VERTICAL };
 }
 
 async function demarrer() {
@@ -143,12 +154,13 @@ async function demarrer() {
   // --- Zone décorative : sprites des Pokémon en arc de cercle sur la falaise ---
   function construireDecorEquipe() {
     el.decorEquipe.innerHTML = "";
+    const decalageBase = decalageFalaisePx(el.zoneDecor.getBoundingClientRect().width);
     game.state.equipe.forEach((membre, index) => {
       const def = game.definitionPokemon(membre.id);
       const sprite = document.createElement("div");
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
-      const { x, y } = positionArc(index);
+      const { x, y } = positionArc(index, decalageBase);
       sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(2.4)`;
       el.decorEquipe.appendChild(sprite);
       appliquerSpriteIdle(sprite, def);
