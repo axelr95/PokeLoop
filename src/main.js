@@ -14,6 +14,24 @@ async function obtenirMetaSprite(def) {
   return promesse;
 }
 
+// --- Fond décoratif selon l'heure locale de l'appareil : matin/après-midi/soir/nuit ---
+const FONDS_PAR_TRANCHE = [
+  { debut: 6, fin: 12, fichier: "matin" },
+  { debut: 12, fin: 18, fichier: "apres-midi" },
+  { debut: 18, fin: 24, fichier: "soir" },
+  { debut: 0, fin: 6, fichier: "nuit" },
+];
+
+function nomFondActuel() {
+  const heure = new Date().getHours();
+  const tranche = FONDS_PAR_TRANCHE.find((t) => heure >= t.debut && heure < t.fin);
+  return tranche.fichier;
+}
+
+function appliquerFondDecor(el) {
+  el.zoneDecor.style.backgroundImage = `url(assets/backgrounds/${nomFondActuel()}.png)`;
+}
+
 async function demarrer() {
   const [resources, pokemons, upgrades, types, recrutement] = await Promise.all([
     chargerJson("src/data/resources.json"),
@@ -482,6 +500,9 @@ async function demarrer() {
       reinitialiserJeu();
     }
   });
+
+  appliquerFondDecor(el);
+  setInterval(() => appliquerFondDecor(el), 5 * 60 * 1000);
 
   construireDecorEquipe();
   construireListePokemon();

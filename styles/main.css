@@ -76,19 +76,23 @@ body {
   font-size: 0.85rem;
 }
 
-/* Zone décorative : fond façon Donjon Mystère (placeholder en attendant les .png), sprites, clic manuel */
+/* Zone décorative : fond jour/nuit (paysage), sprites posés sur la falaise, clic manuel */
 .zone-decor {
   flex: 1;
   min-height: 0;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   padding: 0.75rem;
+  padding-bottom: 1.4rem;
   cursor: pointer;
   touch-action: manipulation;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 30%, #3a3455 0%, #221f36 60%, #171526 100%);
+  background-color: #171526;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;
 }
 
 .decor-equipe {
@@ -97,6 +101,7 @@ body {
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: center;
+  row-gap: 0.4rem;
 }
 
 .decor-sprite {
