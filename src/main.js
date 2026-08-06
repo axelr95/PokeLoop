@@ -70,15 +70,16 @@ function positionArc(index, decalageBase, largeurZoneDecor) {
 }
 
 async function demarrer() {
-  const [resources, pokemons, upgrades, types, recrutement] = await Promise.all([
+  const [resources, pokemons, upgrades, types, recrutement, specialisation] = await Promise.all([
     chargerJson("src/data/resources.json"),
     chargerJson("src/data/pokemons.json"),
     chargerJson("src/data/upgrades.json"),
     chargerJson("src/data/types.json"),
     chargerJson("src/data/recrutement.json"),
+    chargerJson("src/data/specialisation.json"),
   ]);
 
-  const game = new Game({ resources, pokemons, upgrades, recrutement });
+  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation });
 
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
@@ -106,6 +107,9 @@ async function demarrer() {
     modalRecrue: document.getElementById("modal-recrue"),
     recrueTitre: document.getElementById("recrue-titre"),
     recrueCartes: document.getElementById("recrue-cartes"),
+    specialisationBackdrop: document.getElementById("specialisation-backdrop"),
+    modalSpecialisation: document.getElementById("modal-specialisation"),
+    specialisationCartes: document.getElementById("specialisation-cartes"),
     toastBackdrop: document.getElementById("toast-backdrop"),
     toastHorsLigne: document.getElementById("toast-hors-ligne"),
     toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
@@ -378,14 +382,28 @@ async function demarrer() {
 
   // --- Boutique / possédées : icônes carrées, popup au clic ---
   function reconstruireBoutiqueSiNecessaire() {
-    const disponibles = game.data.upgrades.filter((u) => game.upgradeDisponible(u));
-    const idsActuels = disponibles.map((u) => u.id).join(",");
+    const disponibles = game.toutesUpgrades().filter((u) => game.upgradeDisponible(u));
+    const specialisationDispo = !game.specialisationChoisie();
+    const idsActuels = `${specialisationDispo ? "spe" : ""}|${disponibles.map((u) => u.id).join(",")}`;
     if (idsActuels === idsBoutiqueAffiches) return;
     idsBoutiqueAffiches = idsActuels;
 
     el.shopListe.innerHTML = "";
-    if (disponibles.length === 0) {
+    if (!specialisationDispo && disponibles.length === 0) {
       el.shopListe.innerHTML = '<div class="vide">Rien à acheter.</div>';
+    }
+    if (specialisationDispo) {
+      const cout = game.coutSpecialisation();
+      const btn = document.createElement("button");
+      btn.className = "icone-item";
+      btn.dataset.cout = cout;
+      btn.textContent = "🎯";
+      btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
+      btn.addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        ouvrirModaleSpecialisation();
+      });
+      el.shopListe.appendChild(btn);
     }
     for (const upgrade of disponibles) {
       const btn = document.createElement("button");
@@ -411,8 +429,9 @@ async function demarrer() {
     if (game.state.upgradesPossedees.length === 0) {
       el.possedeesListe.innerHTML = '<div class="vide">Aucune.</div>';
     }
+    const toutesUpgrades = game.toutesUpgrades();
     for (const id of game.state.upgradesPossedees) {
-      const upgrade = game.data.upgrades.find((u) => u.id === id);
+      const upgrade = toutesUpgrades.find((u) => u.id === id);
       const btn = document.createElement("button");
       btn.className = "icone-item possedee";
       btn.textContent = upgrade.icone;
@@ -519,6 +538,37 @@ async function demarrer() {
   }
 
   el.recrueBackdrop.addEventListener("click", fermerModaleRecrutement);
+
+  // --- Spécialisation de type : choix unique et définitif, débloque 3 upgrades liées ---
+  function fermerModaleSpecialisation() {
+    el.modalSpecialisation.hidden = true;
+    el.specialisationBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleSpecialisation() {
+    const cout = game.coutSpecialisation();
+    const abordable = game.state.pokedollars >= cout;
+    el.specialisationCartes.innerHTML = "";
+    for (const [typeId, def] of Object.entries(types)) {
+      const carte = document.createElement("button");
+      carte.className = "type-carte";
+      carte.disabled = !abordable;
+      carte.style.background = def.couleur;
+      carte.innerHTML = `<span class="type-carte-icone">${def.icone}</span><span class="type-carte-nom">${def.nom}</span>`;
+      carte.addEventListener("click", () => {
+        if (!game.choisirSpecialisation(typeId)) return;
+        fermerModaleSpecialisation();
+        reconstruireBoutiqueSiNecessaire();
+        actualiserValeurs();
+        game.sauvegarder();
+      });
+      el.specialisationCartes.appendChild(carte);
+    }
+    el.modalSpecialisation.hidden = false;
+    el.specialisationBackdrop.hidden = false;
+  }
+
+  el.specialisationBackdrop.addEventListener("click", fermerModaleSpecialisation);
 
   // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
   function afficherToastHorsLigne() {

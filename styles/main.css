@@ -638,6 +638,39 @@ body {
   border-radius: 999px;
 }
 
+/* Grille des 18 types, réutilisée pour le choix de spécialisation */
+.type-cartes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.type-carte {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #1e1b2e;
+}
+
+.type-carte:active {
+  outline: 2px solid var(--couleur-accent);
+}
+
+.type-carte:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.type-carte-icone {
+  font-size: 1.1rem;
+}
+
 /* Toast de progression hors-ligne */
 .toast-hors-ligne {
   position: fixed;

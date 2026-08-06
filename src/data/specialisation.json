@@ -1,0 +1,12 @@
+{
+  "cout_deblocage": 5000,
+  "bonus_choix": {
+    "categorie": "additif_final",
+    "valeur": 1.0
+  },
+  "upgrades_liees": [
+    { "id_suffix": "spe_t1", "cout": 10000, "categorie": "additif_final", "valeur": 0.2 },
+    { "id_suffix": "spe_t2", "cout": 50000, "categorie": "additif_final", "valeur": 0.2 },
+    { "id_suffix": "spe_t3", "cout": 100000, "categorie": "additif_final", "valeur": 0.2 }
+  ]
+}

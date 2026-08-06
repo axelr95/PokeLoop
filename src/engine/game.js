@@ -11,8 +11,14 @@ const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
 const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
 
 export class Game {
-  constructor({ resources, pokemons, upgrades, recrutement }) {
-    this.data = { resources, pokemons, upgrades, recrutement: recrutement || [] };
+  constructor({ resources, pokemons, upgrades, recrutement, specialisation }) {
+    this.data = {
+      resources,
+      pokemons,
+      upgrades,
+      recrutement: recrutement || [],
+      specialisation,
+    };
     this.gainsHorsLigne = null;
     this.state = this.chargerOuInitialiser();
   }
@@ -23,6 +29,7 @@ export class Game {
       try {
         const state = JSON.parse(brut);
         this.state = state;
+        if (state.specialisation === undefined) state.specialisation = null;
         if (state.equipe.length > 0 && state.dernierTick) {
           const ecouleSec = Math.min(
             (Date.now() - state.dernierTick) / 1000,
@@ -44,6 +51,7 @@ export class Game {
       pokedollars: 0,
       equipe: [],
       upgradesPossedees: [],
+      specialisation: null,
       dernierTick: Date.now(),
     };
   }
@@ -91,9 +99,10 @@ export class Game {
     const def = this.definitionPokemon(membre.id);
     const base = productionPokemon(def, membre.niveau);
     const cibles = def.types.map((t) => ({ type: "type_pokemon", valeur: t }));
-    const modifiers = cibles.flatMap((c) =>
-      modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, c)
-    );
+    const modifiers = cibles.flatMap((c) => [
+      ...modifiersPourCible(this.toutesUpgrades(), this.state.upgradesPossedees, c),
+      ...this.modifiersSpecialisationChoix(c),
+    ]);
     return appliquerFacteurs(base, modifiers);
   }
 
@@ -103,11 +112,72 @@ export class Game {
 
   productionClic() {
     const modifiers = modifiersPourCible(
-      this.data.upgrades,
+      this.toutesUpgrades(),
       this.state.upgradesPossedees,
       { type: "clic_manuel" }
     );
     return appliquerFacteurs(1, modifiers);
+  }
+
+  // --- Spécialisation de type : choix unique et définitif pour la run (cf. docs) ---
+  specialisationChoisie() {
+    return Boolean(this.state.specialisation);
+  }
+
+  coutSpecialisation() {
+    return this.data.specialisation.cout_deblocage;
+  }
+
+  choisirSpecialisation(typeId) {
+    if (this.specialisationChoisie()) return false;
+    const cout = this.coutSpecialisation();
+    if (this.state.pokedollars < cout) return false;
+    this.state.pokedollars -= cout;
+    this.state.specialisation = typeId;
+    return true;
+  }
+
+  // Bonus immédiat au choix (+100% final par défaut), appliqué automatiquement
+  // tant qu'aucune upgrade "possédée" ne le représente.
+  modifiersSpecialisationChoix(cible) {
+    if (cible.type !== "type_pokemon") return [];
+    if (!this.specialisationChoisie() || cible.valeur !== this.state.specialisation) return [];
+    const { categorie, valeur } = this.data.specialisation.bonus_choix;
+    return [{ categorie, valeur }];
+  }
+
+  // 3 upgrades liées au type choisi, générées à la volée depuis specialisation.json
+  // (id `<type>_<id_suffix>`, tiers chaînés par prérequis).
+  upgradesSpecialisationGenerees() {
+    if (!this.specialisationChoisie()) return [];
+    const type = this.state.specialisation;
+    const NOMS = ["Spécialisation I", "Spécialisation II", "Spécialisation III"];
+    const ICONES = ["⭐", "🌟", "💫"];
+    let prerequisPrecedent = [];
+    return this.data.specialisation.upgrades_liees.map((tier, index) => {
+      const id = `${type}_${tier.id_suffix}`;
+      const upgrade = {
+        id,
+        nom: NOMS[index] || `Spécialisation (tier ${index + 1})`,
+        icone: ICONES[index] || "✨",
+        description: `+${Math.round(tier.valeur * 100)}% production finale supplémentaire pour le type choisi`,
+        cout: { ressource: "pokedollars", valeur: tier.cout },
+        effet: {
+          categorie: tier.categorie,
+          cible: { type: "type_pokemon", valeur: type },
+          valeur: tier.valeur,
+        },
+        prerequis: [...prerequisPrecedent],
+        exclusif_avec: [],
+      };
+      prerequisPrecedent = [id];
+      return upgrade;
+    });
+  }
+
+  // Upgrades achetables : celles de la data + celles générées par la spécialisation.
+  toutesUpgrades() {
+    return [...this.data.upgrades, ...this.upgradesSpecialisationGenerees()];
   }
 
   tick() {
@@ -175,7 +245,7 @@ export class Game {
   }
 
   acheterUpgrade(upgradeId) {
-    const upgrade = this.data.upgrades.find((u) => u.id === upgradeId);
+    const upgrade = this.toutesUpgrades().find((u) => u.id === upgradeId);
     if (!upgrade || !this.upgradeDisponible(upgrade)) return false;
     if (this.state.pokedollars < upgrade.cout.valeur) return false;
     this.state.pokedollars -= upgrade.cout.valeur;
