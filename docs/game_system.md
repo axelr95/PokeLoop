@@ -3,7 +3,7 @@
 ## 1. Vue d'ensemble
 
 Jeu incrémental (idle game) local, inspiré de **Realm Grinder**, avec une DA Pokémon Donjon Mystère (sprites pixel art).
-Cœur de gameplay : production de ressources, upgrades, synergies, multiplicateurs, prestige.
+Cœur de gameplay : production de ressources, upgrades, spécialisation de type, multiplicateurs, prestige.
 Pas de combat pour l'instant (possible mode annexe futur : Tour de combat / Raids de boss).
 
 **Game loop** : tick toutes les 1 seconde. Toute la production est exprimée "par seconde".
@@ -52,7 +52,7 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 ### 3.2bis Évolutions
 - Une espèce peut porter un champ `evolution: { vers, niveau }` (voir 7bis.1) : dès que le Pokémon atteint ce niveau, sa case dans la grille remplace la barre XP + les boutons d'investissement par un **gros bouton "Évoluer"** (icône, nom et niveau restent affichés).
 - Au clic, le Pokémon devient l'espèce cible (`vers`) : **niveau et XP sont conservés tels quels**, seuls l'espèce (donc sprite, nom, types, production de base) changent.
-- La production de base suit le palier dans la chaîne : **×1 espèce de base, ×1.5 1ère évolution, ×2 2ème évolution** (ex : Salamèche 1 → Reptincel 1.5 → Dracaufeu 2). Valeur stockée directement dans `production_base.valeur_par_niveau` de chaque espèce (pas un multiplicateur séparé).
+- La production de base dépend de la position dans la lignée **complète** de l'espèce (pas d'un palier fixe indépendant de la longueur de la chaîne) : la forme la plus évoluée (3ème palier si la lignée en a 3, 2ème si elle n'en a que 2, ou l'espèce elle-même si elle n'évolue pas du tout) vaut toujours **×2** ; la forme juste en dessous vaut **×1.5** si elle existe (le 2ème palier d'une lignée à 3, ou la forme de base d'une lignée à 2) ; la forme de base d'une lignée à 3 paliers vaut **×1**. Ainsi une espèce sans évolution (ex : Tauros) n'est pas pénalisée face à une lignée à 3 paliers, et la forme finale d'une lignée à 2 paliers (ex : Arcanin) vaut autant que celle d'une lignée à 3 (ex : Salamèche 1 → Reptincel 1.5 → Dracaufeu 2). Valeur stockée directement dans `production_base.valeur_par_niveau` de chaque espèce (pas un multiplicateur séparé).
 - Niveaux d'évolution récupérés depuis les données officielles (PokeAPI, gen 1 rouge/bleu/jaune). Pour les évolutions qui n'ont pas de niveau canonique dans les jeux (pierre ou échange, ex : Pikachu → Raichu), un **niveau par défaut est utilisé (25 pour pierre, 30 pour échange)** afin qu'elles restent jouables uniquement via le niveau, comme le reste du système.
 - **Évoli n'a pas d'évolution pour l'instant** : ses 3 évolutions (pierres Feu/Eau/Foudre) forment un embranchement à choix multiple que le schéma actuel (`evolution` à cible unique) ne gère pas encore.
 ### 3.3 Expérience et niveau
@@ -69,7 +69,7 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 
 - Cliquer sur l'écran génère manuellement des Pokédollars.
 - Production de base du clic : **1 Pokédollar/clic** (fixe au départ).
-- Comme la production passive, cette base est soumise aux mêmes facteurs multiplicatifs/additifs (voir section 5), via des upgrades/synergies dédiées au clic.
+- Comme la production passive, cette base est soumise aux mêmes facteurs multiplicatifs/additifs (voir section 5), via des upgrades dédiées au clic.
 ---
 
 ## 4bis. Progression hors-ligne
@@ -120,7 +120,7 @@ Ce système s'applique **séparément** pour :
 - La production du clic manuel.
 ---
 
-## 6. Upgrades & synergies
+## 6. Upgrades
 
 - Achetées avec des Pokédollars (coût croissant, à définir par upgrade).
 - Une fois achetée, une upgrade reste active en permanence (liste des upgrades actives visible, comme Realm Grinder).
@@ -129,10 +129,10 @@ Ce système s'applique **séparément** pour :
   - Le **clic manuel** spécifiquement.
   - Toute la prod globale (tous types confondus).
 - Les upgrades de type peuvent être exclusives (ex : choix initial entre Feu / Eau / Plante) ou cumulables selon leur nature — à définir upgrade par upgrade dans la data.
-- **Synergies** : bonus conditionnels croisés (ex : posséder X upgrades Feu débloque un bonus supplémentaire). Mécanique à détailler plus tard, mais rentre dans le même système à 4 facteurs.
+- L'idée initiale de "synergies" (bonus conditionnels croisés) a été abandonnée comme mécanique séparée : c'est la **spécialisation de type** qui en tient lieu — achat unique dans la boutique, choix définitif d'un type pour la run (+100% final immédiat sur ce type), qui débloque ensuite 3 upgrades dédiées à ce type (une déclinaison par type, cf. `upgrades.json`).
 ### Table des types
 - Utilise les types Pokémon classiques (Feu, Eau, Plante, Électrik, etc.).
-- **Pas de logique d'efficacité de type (super efficace / pas très efficace) pour l'instant** — les types servent uniquement de tag pour cibler upgrades/synergies.
+- **Pas de logique d'efficacité de type (super efficace / pas très efficace) pour l'instant** — les types servent uniquement de tag pour cibler les upgrades.
 - Cette logique de type sera réutilisée telle quelle si un mode annexe combat (Tour de combat, Raids de boss/légendaires) est ajouté plus tard.
 ---
 
@@ -172,7 +172,7 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
 - `sprite_dossier` : dossier contenant les sprites façon Donjon Mystère (un dossier par Pokémon) : `portrait.png` (portrait "Normal", affiché dans le panel Pokémon et les modales de choix), `idle.png` (bande de frames de l'animation Idle, direction bas-gauche uniquement, rejouée en CSS), `sleep.png` (même principe pour l'animation Sleep, récupéré mais pas encore utilisé en jeu), `meta.json` (dimensions/nombre de frames de chaque bande, pour construire l'animation CSS).
 - `starter` : présent (`true`) uniquement sur les 3 Pokémon proposés au choix initial (Bulbizarre, Salamèche, Carapuce). Absent sinon.
 - `evolution` : optionnel, cf. section 3.2bis. `vers` référence un autre `id` de ce même fichier ; `niveau` est le seuil d'affichage du bouton Évoluer. Absent pour les espèces sans évolution suivante (formes finales, ou Évoli en attendant l'embranchement).
-- `production_base.valeur_par_niveau` : varie selon le palier d'évolution de l'espèce (1 / 1.5 / 2, cf. 3.2bis) — ce n'est donc plus une constante à 1 pour les 151 entrées comme au tour précédent.
+- `production_base.valeur_par_niveau` : varie selon la position de l'espèce dans sa lignée complète (1 / 1.5 / 2, cf. 3.2bis) — ce n'est donc plus une constante à 1 pour les 151 entrées comme au tour précédent.
 - `xp_courbe` : **commune à tous les Pokémon pour l'instant** (même formule `base × niveau^facteur`, cf. section 3.3). On ne différencie pas encore par Pokémon/légendaire — l'écart entre types de Pokémon viendra plutôt d'upgrades qui réduisent le coût d'XP pour un type donné, créant une variation naturelle selon les runs plutôt qu'une valeur figée par Pokémon.
 - `production_base` : formule paramétrée (pas un tableau de valeurs par niveau, trop lourd à maintenir). Calculée à la volée par le moteur : `production(niveau)`.
   - `type: "lineaire"` → `valeur_par_niveau × niveau` (cas standard, ex : Salamèche = 1/niveau). Tous les 151 Pokémon utilisent ce type pour l'instant.
@@ -215,23 +215,24 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
 - `emplacement` : taille d'équipe que ce palier permet d'atteindre (le moteur cherche l'entrée où `emplacement === equipe.length + 1`).
 - `cout` : prix en Pokédollars pour recruter (pas de champ `ressource` ici, une seule ressource existe pour l'instant).
 - `choix` : liste fixe d'`id` Pokémon (doivent exister dans `pokemons.json`) proposés dans la modale de recrutement ; le joueur en choisit un.
-- Deux paliers sont définis à ce jour (emplacements 2 et 3). Ajouter les paliers 4 à 6 se fera en ajoutant des entrées, sans changer le moteur.
+- Les 5 paliers (emplacements 2 à 6) sont désormais tous définis, l'équipe peut donc être complétée jusqu'à 6 Pokémon.
 ---
 
 ## 8. Structure data-driven (rappel architecture)
 
-Toute la logique de contenu (upgrades, synergies, coûts, Pokémon, prestige) vit dans des fichiers de données séparés (JSON), lus génériquement par le moteur :
+Toute la logique de contenu (upgrades, coûts, Pokémon, prestige) vit dans des fichiers de données séparés (JSON), lus génériquement par le moteur :
 
 
 ```
 /src/data
-  resources.json    → ressources (Pokédollars, futures ressources)
-  pokemons.json     → Pokédex complet 151 (types, niveau de départ, sprite, starter)
-  upgrades.json     → upgrades (coût, catégorie de facteur, cible type/clic/global)
-  synergies.json    → bonus croisés
-  types.json        → libellé/emoji/couleur par type, pour les badges affichés en UI
-  recrutement.json  → paliers de déblocage d'emplacement d'équipe (coût, choix)
-  prestige.json     → trophées, règles de reset
+  resources.json      → ressources (Pokédollars, futures ressources)
+  pokemons.json       → Pokédex complet 151 (types, niveau de départ, sprite, starter)
+  upgrades.json       → upgrades (coût, catégorie de facteur, cible type/clic/global),
+                         y compris les 3 upgrades par type débloquées par la spécialisation
+  specialisation.json → coût de déblocage et bonus immédiat de la spécialisation de type
+  types.json          → libellé/emoji/couleur par type, pour les badges affichés en UI
+  recrutement.json    → paliers de déblocage d'emplacement d'équipe (coût, choix)
+  prestige.json       → trophées, règles de reset
 
 /assets/sprites/<dex>_<id>/  → portrait.png, idle.png, sleep.png, meta.json par Pokémon
 ```
@@ -254,10 +255,8 @@ Un bouton (sous le bouton debug fond, coin haut-droit) efface `localStorage`/`se
 ## 9. Points ouverts (à trancher plus tard)
 
 - Système de continuation au-delà du niveau 100.
-- Paliers de recrutement pour les emplacements 4 à 6 (coût, choix proposés) — mécanique en place (section 3.1bis), seul le contenu manque.
 - Embranchement d'évolution à choix multiple (Évoli et ses 3 pierres) — le schéma `evolution: {vers, niveau}` ne gère qu'une cible unique pour l'instant.
 - Niveaux par défaut (25 pierre / 30 échange) utilisés pour les évolutions sans seuil canonique : choix arbitraire, à retravailler si le rythme de progression ne convient pas à l'usage.
 - Ressources futures (Gems, Rubis...) et leur rôle exact.
-- Détail des synergies (conditions de déclenchement).
 - Mode combat annexe (Tour de combat / Raids) et réintroduction de l'efficacité des types.
 - Choix du starter au prestige (aléatoire vs Pokédex débloqué — les 151 sont déjà en data, reste à décider comment ils se débloquent au fil des runs).
