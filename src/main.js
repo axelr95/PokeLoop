@@ -393,8 +393,11 @@ async function demarrer() {
 
   el.btnXpAll.addEventListener("click", (evt) => {
     evt.stopPropagation();
-    const montant = xpSelectionnee === "max" ? Infinity : xpSelectionnee;
-    if (game.investirXpEquipe(montant)) {
+    const ok =
+      xpSelectionnee === "max"
+        ? game.investirXpEquipeMax()
+        : game.investirXpEquipe(xpSelectionnee);
+    if (ok) {
       actualiserValeurs();
       game.sauvegarder();
     }

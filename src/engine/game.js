@@ -241,6 +241,35 @@ export class Game {
     return true;
   }
 
+  // Bouton ALL en mode "MAX" : répartit tous les Pokédollars possédés à parts
+  // égales entre les membres de l'équipe (pas d'exigence de tous les monter à
+  // 100 comme investirXpEquipe) — chaque part est plafonnée individuellement
+  // au niveau 100, donc un surplus (reste de la division, ou parts non
+  // utilisées par un Pokémon déjà proche de 100) reste normalement non dépensé.
+  investirXpEquipeMax() {
+    if (this.state.equipe.length === 0) return false;
+    const montantParMembre = Math.floor(this.state.pokedollars / this.state.equipe.length);
+    if (montantParMembre <= 0) return false;
+    let depenseTotale = 0;
+    for (const membre of this.state.equipe) {
+      const def = this.definitionPokemon(membre.id);
+      const xpRestant = xpRestantPourNiveau100(def, membre.niveau, membre.xp);
+      const atteintNiveau100 = montantParMembre >= xpRestant;
+      const montant = atteintNiveau100 ? xpRestant : montantParMembre;
+      if (montant <= 0) continue;
+      depenseTotale += montant;
+      if (atteintNiveau100) {
+        membre.niveau = 100;
+        membre.xp = 0;
+      } else {
+        this.appliquerGainXp(membre, def, montant);
+      }
+    }
+    if (depenseTotale <= 0) return false;
+    this.state.pokedollars -= depenseTotale;
+    return true;
+  }
+
   peutEvoluer(membre) {
     const def = this.definitionPokemon(membre.id);
     return Boolean(def.evolution) && membre.niveau >= def.evolution.niveau;
