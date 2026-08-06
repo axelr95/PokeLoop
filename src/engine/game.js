@@ -11,13 +11,14 @@ const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
 const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
 
 export class Game {
-  constructor({ resources, pokemons, upgrades, recrutement, specialisation }) {
+  constructor({ resources, pokemons, upgrades, recrutement, specialisation, types }) {
     this.data = {
       resources,
       pokemons,
       upgrades,
       recrutement: recrutement || [],
       specialisation,
+      types: types || {},
     };
     this.gainsHorsLigne = null;
     this.state = this.chargerOuInitialiser();
@@ -147,20 +148,24 @@ export class Game {
   }
 
   // 3 upgrades liées au type choisi, générées à la volée depuis specialisation.json
-  // (id `<type>_<id_suffix>`, tiers chaînés par prérequis).
+  // (id `<type>_<id_suffix>`, tiers chaînés par prérequis) — une déclinaison par
+  // type existe donc bien dans le jeu, mais sans dupliquer 18 fois la même donnée :
+  // seul le type choisi pour la run produit ses 3 upgrades.
   upgradesSpecialisationGenerees() {
     if (!this.specialisationChoisie()) return [];
     const type = this.state.specialisation;
-    const NOMS = ["Spécialisation I", "Spécialisation II", "Spécialisation III"];
+    const typeNom = (this.data.types[type] || {}).nom || type;
+    const CHIFFRES_ROMAINS = ["I", "II", "III"];
     const ICONES = ["⭐", "🌟", "💫"];
     let prerequisPrecedent = [];
     return this.data.specialisation.upgrades_liees.map((tier, index) => {
       const id = `${type}_${tier.id_suffix}`;
+      const chiffre = CHIFFRES_ROMAINS[index] || String(index + 1);
       const upgrade = {
         id,
-        nom: NOMS[index] || `Spécialisation (tier ${index + 1})`,
+        nom: `Spécialisation ${typeNom} ${chiffre}`,
         icone: ICONES[index] || "✨",
-        description: `+${Math.round(tier.valeur * 100)}% production finale supplémentaire pour le type choisi`,
+        description: `+${Math.round(tier.valeur * 100)}% production finale supplémentaire pour les Pokémon de type ${typeNom}`,
         cout: { ressource: "pokedollars", valeur: tier.cout },
         effet: {
           categorie: tier.categorie,

@@ -79,7 +79,7 @@ async function demarrer() {
     chargerJson("src/data/specialisation.json"),
   ]);
 
-  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation });
+  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation, types });
 
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
@@ -110,6 +110,7 @@ async function demarrer() {
     specialisationBackdrop: document.getElementById("specialisation-backdrop"),
     modalSpecialisation: document.getElementById("modal-specialisation"),
     specialisationCartes: document.getElementById("specialisation-cartes"),
+    specialisationBadge: document.getElementById("specialisation-badge"),
     toastBackdrop: document.getElementById("toast-backdrop"),
     toastHorsLigne: document.getElementById("toast-hors-ligne"),
     toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
@@ -336,7 +337,7 @@ async function demarrer() {
     el.popupBackdrop.hidden = true;
   }
 
-  function ouvrirPopupUpgrade(upgrade, ancreEl, { achetable }) {
+  function ouvrirPopupUpgrade(upgrade, ancreEl, { achetable, libelleBouton = "Acheter", onAcheter } = {}) {
     el.popupTitre.textContent = upgrade.nom;
     el.popupDescription.textContent = upgrade.description;
 
@@ -344,14 +345,18 @@ async function demarrer() {
       const abordable = game.state.pokedollars >= upgrade.cout.valeur;
       el.popupFooter.innerHTML = `
         <span class="popup-cout">${formatNombre(upgrade.cout.valeur)} 💰</span>
-        <button class="btn-acheter" ${abordable ? "" : "disabled"}>Acheter</button>
+        <button class="btn-acheter" ${abordable ? "" : "disabled"}>${libelleBouton}</button>
       `;
       el.popupFooter.querySelector("button").addEventListener("click", () => {
-        game.acheterUpgrade(upgrade.id);
         fermerPopup();
-        reconstruireBoutiqueSiNecessaire();
-        reconstruirePossedeesSiNecessaire();
-        actualiserValeurs();
+        if (onAcheter) {
+          onAcheter();
+        } else {
+          game.acheterUpgrade(upgrade.id);
+          reconstruireBoutiqueSiNecessaire();
+          reconstruirePossedeesSiNecessaire();
+          actualiserValeurs();
+        }
       });
     } else {
       el.popupFooter.innerHTML = "";
@@ -401,7 +406,16 @@ async function demarrer() {
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
       btn.addEventListener("click", (evt) => {
         evt.stopPropagation();
-        ouvrirModaleSpecialisation();
+        ouvrirPopupUpgrade(
+          {
+            nom: "Spécialisation de type",
+            description:
+              "Choisis un type, de façon définitive pour cette run : +100% production finale immédiate sur ce type, et débloque 3 upgrades supplémentaires dédiées à ce type.",
+            cout: { valeur: cout },
+          },
+          btn,
+          { achetable: true, libelleBouton: "Choisir un type", onAcheter: ouvrirModaleSpecialisation }
+        );
       });
       el.shopListe.appendChild(btn);
     }
@@ -540,6 +554,17 @@ async function demarrer() {
   el.recrueBackdrop.addEventListener("click", fermerModaleRecrutement);
 
   // --- Spécialisation de type : choix unique et définitif, débloque 3 upgrades liées ---
+  function actualiserBadgeSpecialisation() {
+    if (!game.specialisationChoisie()) {
+      el.specialisationBadge.hidden = true;
+      return;
+    }
+    const def = types[game.state.specialisation];
+    el.specialisationBadge.hidden = false;
+    el.specialisationBadge.style.background = def.couleur;
+    el.specialisationBadge.textContent = `${def.icone} Spécialisation ${def.nom}`;
+  }
+
   function fermerModaleSpecialisation() {
     el.modalSpecialisation.hidden = true;
     el.specialisationBackdrop.hidden = true;
@@ -559,6 +584,7 @@ async function demarrer() {
         if (!game.choisirSpecialisation(typeId)) return;
         fermerModaleSpecialisation();
         reconstruireBoutiqueSiNecessaire();
+        actualiserBadgeSpecialisation();
         actualiserValeurs();
         game.sauvegarder();
       });
@@ -653,6 +679,7 @@ async function demarrer() {
   construireDecorEquipe();
   construireGrilleEquipe();
   reconstruirePossedeesSiNecessaire();
+  actualiserBadgeSpecialisation();
   rafraichirAffichage();
   afficherToastHorsLigne();
 }
