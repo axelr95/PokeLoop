@@ -204,6 +204,7 @@ async function demarrer() {
           </div>
         </div>
         <button class="btn-evoluer" hidden>Évoluer</button>
+        <div class="ce-niveau-max" hidden>Niveau max</div>
       </div>
     `;
     carte.querySelector(".ce-portrait").src = `${def.sprite_dossier}portrait.png`;
@@ -286,16 +287,14 @@ async function demarrer() {
       carte.querySelector(".ce-niveau").textContent = `Nv ${membre.niveau}`;
 
       const peutEvoluer = game.peutEvoluer(membre);
-      carte.querySelector(".ce-normal").hidden = peutEvoluer;
+      const niveauMax = !peutEvoluer && membre.niveau >= 100;
+      carte.querySelector(".ce-normal").hidden = peutEvoluer || niveauMax;
       carte.querySelector(".btn-evoluer").hidden = !peutEvoluer;
-      if (!peutEvoluer) {
+      carte.querySelector(".ce-niveau-max").hidden = !niveauMax;
+      if (!peutEvoluer && !niveauMax) {
         const barre = carte.querySelector(".ce-xp-remplissage");
-        if (membre.niveau >= 100) {
-          barre.style.width = "100%";
-        } else {
-          const seuil = xpRequise(def, membre.niveau + 1);
-          barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
-        }
+        const seuil = xpRequise(def, membre.niveau + 1);
+        barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
       }
     }
     const carteRecrutement = el.grilleEquipe.querySelector('[data-role="recrutement"]');

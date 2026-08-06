@@ -337,6 +337,22 @@ body {
   filter: brightness(1.15);
 }
 
+.ce-niveau-max[hidden] {
+  display: none;
+}
+
+.ce-niveau-max {
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--couleur-texte-att);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
 .ce-xp {
   width: 100%;
   height: 4px;
@@ -671,14 +687,15 @@ body {
   font-size: 1.1rem;
 }
 
-/* Badge de la spécialisation choisie, affiché juste au-dessus des onglets */
+/* Badge de la spécialisation choisie, affiché juste au-dessus des menus */
 .specialisation-badge {
   flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.35rem 0.6rem;
-  font-size: 0.8rem;
+  gap: 0.3rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: #1e1b2e;
 }
