@@ -47,7 +47,7 @@ const EMPLACEMENTS_EQUIPE = [
   { dx: 0.21, dy: -0.14 }, // 3 : bas-droite
   { dx: 0.18, dy: 0.13 }, // 4 : haut-droite
   { dx: 0, dy: -0.23 }, // 5 : bas-centre
-  { dx: -0.12, dy: 0.1 }, // 6 : haut-gauche
+  { dx: -0.23, dy: 0.1 }, // 6 : haut-gauche
 ];
 
 // Vers le centre de la bande d'herbe (pas encore pile sur le rebord — à affiner

@@ -1,7 +1,7 @@
 [
   { "emplacement": 2, "cout": 1000, "choix": ["pidgey", "bellsprout", "machop"] },
   { "emplacement": 3, "cout": 5000, "choix": ["pikachu", "meowth", "cubone"] },
-  { "emplacement": 4, "cout": 15000, "choix": ["omanyte", "kabuto", "shellder"] },
+  { "emplacement": 4, "cout": 15000, "choix": ["shellder", "jigglypuff", "primeape"] },
   { "emplacement": 5, "cout": 40000, "choix": ["eevee", "growlithe", "magikarp"] },
   { "emplacement": 6, "cout": 100000, "choix": ["gastly", "dratini", "abra"] }
 ]
