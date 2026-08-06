@@ -88,6 +88,7 @@ async function demarrer() {
     decorEquipe: document.getElementById("decor-equipe"),
     btnReset: document.getElementById("btn-reset"),
     btnDebugFond: document.getElementById("btn-debug-fond"),
+    btnDebugArgent: document.getElementById("btn-debug-argent"),
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
@@ -669,6 +670,14 @@ async function demarrer() {
     indexFondDebug = indexFondDebug === null ? 0 : (indexFondDebug + 1) % NOMS_FONDS.length;
     appliquerFondDecor(el);
     el.btnDebugFond.textContent = ICONES_FONDS[NOMS_FONDS[indexFondDebug]];
+  });
+
+  // --- Debug : double les Pokédollars possédés, pour tester rapidement ---
+  el.btnDebugArgent.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    game.state.pokedollars *= 2;
+    actualiserValeurs();
+    game.sauvegarder();
   });
 
   appliquerFondDecor(el);
