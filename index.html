@@ -25,11 +25,17 @@
       <button class="btn-debug-argent" id="btn-debug-argent" aria-label="Doubler les Pokédollars (debug)">💸</button>
     </main>
 
-    <div class="specialisation-badge" id="specialisation-badge" hidden></div>
+    <div class="specialisation-badge" id="specialisation-badge"></div>
 
     <!-- Panel du menu sélectionné : contenu changé par les onglets du bas -->
     <section class="panel-menu">
-      <h2 class="panel-titre" id="panel-titre">Pokémon</h2>
+      <div class="panel-header">
+        <h2 class="panel-titre" id="panel-titre">Pokémon</h2>
+        <div class="xp-header-actions" id="xp-header-actions">
+          <button class="btn-xp-all" id="btn-xp-all" aria-label="Ajouter l'XP sélectionnée à toute l'équipe">ALL</button>
+          <button class="btn-xp-select" id="btn-xp-select" aria-label="Choisir la quantité d'XP"></button>
+        </div>
+      </div>
 
       <div class="panel-contenu" id="panel-pokemon">
         <div class="grille-equipe" id="grille-equipe"></div>
@@ -52,6 +58,15 @@
       <button class="tab-btn actif" id="tab-pokemon" data-tab="pokemon" aria-label="Pokémon">🐾</button>
       <button class="tab-btn" id="tab-boutique" data-tab="boutique" aria-label="Boutique">🛒</button>
     </nav>
+  </div>
+
+  <div class="popup-backdrop" id="xp-slider-backdrop" hidden></div>
+  <div class="xp-slider" id="xp-slider" hidden>
+    <button class="xp-slider-choix" data-valeur="1">+1</button>
+    <button class="xp-slider-choix" data-valeur="10">+10</button>
+    <button class="xp-slider-choix" data-valeur="100">+100</button>
+    <button class="xp-slider-choix" data-valeur="1000">+1000</button>
+    <button class="xp-slider-choix" data-valeur="max">MAX</button>
   </div>
 
   <div class="popup-backdrop" id="popup-backdrop" hidden></div>

@@ -92,6 +92,11 @@ async function demarrer() {
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
+    xpHeaderActions: document.getElementById("xp-header-actions"),
+    btnXpAll: document.getElementById("btn-xp-all"),
+    btnXpSelect: document.getElementById("btn-xp-select"),
+    xpSliderBackdrop: document.getElementById("xp-slider-backdrop"),
+    xpSlider: document.getElementById("xp-slider"),
     grilleEquipe: document.getElementById("grille-equipe"),
     shopListe: document.getElementById("shop-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
@@ -122,6 +127,11 @@ async function demarrer() {
   const TITRES_ONGLETS = { pokemon: "Pokémon", boutique: "Boutique" };
   let idsBoutiqueAffiches = null;
   let idsPossedeesAffiches = null;
+
+  // --- Valeur d'XP sélectionnée dans le header (partagée par le bouton dynamique
+  // de chaque carte et le bouton ALL) : un nombre fixe, ou "max" ---
+  let xpSelectionnee = 1;
+  const libelleXp = (valeur) => (valeur === "max" ? "MAX" : `+${valeur} XP`);
 
   // --- Feedback flottant "+X", ancré dans la zone décorative (seule zone cliquable) ---
   function afficherFloater(texte, xRelatif, yRelatif) {
@@ -200,8 +210,8 @@ async function demarrer() {
         <div class="ce-normal">
           <div class="ce-xp"><div class="ce-xp-remplissage"></div></div>
           <div class="ce-actions">
-            <button class="btn-mini" data-action="10">+10</button>
-            <button class="btn-mini" data-action="tout">Max</button>
+            <button class="btn-mini" data-action="xp-select"></button>
+            <button class="btn-mini" data-action="niveau-suivant">+1 LVL</button>
           </div>
         </div>
         <button class="btn-evoluer" hidden>Évoluer</button>
@@ -212,15 +222,21 @@ async function demarrer() {
     carte.querySelector(".ce-nom").textContent = def.nom;
     const typesEl = carte.querySelector(".ce-types-badges");
     for (const t of def.types) typesEl.appendChild(creerBadgeType(t, { mini: true }));
-    carte.querySelector('[data-action="10"]').addEventListener("click", (evt) => {
+    carte.querySelector('[data-action="xp-select"]').textContent = libelleXp(xpSelectionnee);
+    carte.querySelector('[data-action="xp-select"]').addEventListener("click", (evt) => {
       evt.stopPropagation();
-      game.investirXp(membre.id, 10);
-      actualiserValeurs();
+      const montant = xpSelectionnee === "max" ? Math.floor(game.state.pokedollars) : xpSelectionnee;
+      if (game.investirXp(membre.id, montant)) {
+        actualiserValeurs();
+        game.sauvegarder();
+      }
     });
-    carte.querySelector('[data-action="tout"]').addEventListener("click", (evt) => {
+    carte.querySelector('[data-action="niveau-suivant"]').addEventListener("click", (evt) => {
       evt.stopPropagation();
-      game.investirXp(membre.id, Math.floor(game.state.pokedollars));
-      actualiserValeurs();
+      if (game.investirNiveauSuivant(membre.id)) {
+        actualiserValeurs();
+        game.sauvegarder();
+      }
     });
     carte.querySelector(".btn-evoluer").addEventListener("click", (evt) => {
       evt.stopPropagation();
@@ -296,6 +312,9 @@ async function demarrer() {
         const barre = carte.querySelector(".ce-xp-remplissage");
         const seuil = xpRequise(def, membre.niveau + 1);
         barre.style.width = `${Math.min(100, (membre.xp / seuil) * 100)}%`;
+        const coutNiveauSuivant = game.xpPourProchainNiveau(membre);
+        carte.querySelector('[data-action="niveau-suivant"]').disabled =
+          coutNiveauSuivant <= 0 || game.state.pokedollars < coutNiveauSuivant;
       }
     }
     const carteRecrutement = el.grilleEquipe.querySelector('[data-role="recrutement"]');
@@ -324,12 +343,64 @@ async function demarrer() {
     el.panelPokemon.hidden = nom !== "pokemon";
     el.panelBoutique.hidden = nom !== "boutique";
     el.panelTitre.textContent = TITRES_ONGLETS[nom];
+    el.xpHeaderActions.hidden = nom !== "pokemon";
     el.tabsBtns.forEach((btn) => btn.classList.toggle("actif", btn.dataset.tab === nom));
   }
 
   el.tabsBtns.forEach((btn) => {
     btn.addEventListener("click", () => activerOnglet(btn.dataset.tab));
   });
+
+  // --- Header Pokémon : ALL (rouge, toute l'équipe) et sélecteur d'XP (vert, slider) ---
+  function actualiserLibelleXp() {
+    const libelle = libelleXp(xpSelectionnee);
+    el.btnXpSelect.textContent = libelle;
+    el.grilleEquipe.querySelectorAll('[data-action="xp-select"]').forEach((btn) => {
+      btn.textContent = libelle;
+    });
+  }
+
+  function fermerSliderXp() {
+    el.xpSlider.hidden = true;
+    el.xpSliderBackdrop.hidden = true;
+  }
+
+  function ouvrirSliderXp() {
+    const rect = el.btnXpSelect.getBoundingClientRect();
+    el.xpSlider.style.left = `${rect.right}px`;
+    el.xpSlider.style.top = `${rect.top - 8}px`;
+    el.xpSlider.style.transform = "translate(-100%, -100%)";
+    el.xpSlider.hidden = false;
+    el.xpSliderBackdrop.hidden = false;
+  }
+
+  el.btnXpSelect.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    ouvrirSliderXp();
+  });
+
+  el.xpSliderBackdrop.addEventListener("click", fermerSliderXp);
+
+  el.xpSlider.querySelectorAll(".xp-slider-choix").forEach((btn) => {
+    btn.addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      const v = btn.dataset.valeur;
+      xpSelectionnee = v === "max" ? "max" : Number(v);
+      actualiserLibelleXp();
+      fermerSliderXp();
+    });
+  });
+
+  el.btnXpAll.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    const montant = xpSelectionnee === "max" ? Infinity : xpSelectionnee;
+    if (game.investirXpEquipe(montant)) {
+      actualiserValeurs();
+      game.sauvegarder();
+    }
+  });
+
+  actualiserLibelleXp();
 
   // --- Popup de description (boutique / possédées) ---
   function fermerPopup() {
@@ -385,6 +456,14 @@ async function demarrer() {
 
   el.popupBackdrop.addEventListener("click", fermerPopup);
 
+  // Fond coloré (couleur du type) pour faire ressortir les upgrades liées à un type
+  function colorerSelonType(btn, upgrade) {
+    const cible = upgrade.effet && upgrade.effet.cible;
+    if (!cible || cible.type !== "type_pokemon") return;
+    const def = types[cible.valeur];
+    if (def) btn.style.background = def.couleur;
+  }
+
   // --- Boutique / possédées : icônes carrées, popup au clic ---
   function reconstruireBoutiqueSiNecessaire() {
     const disponibles = game.data.upgrades.filter((u) => game.upgradeDisponible(u));
@@ -424,6 +503,7 @@ async function demarrer() {
       btn.className = "icone-item";
       btn.dataset.cout = upgrade.cout.valeur;
       btn.textContent = upgrade.icone;
+      colorerSelonType(btn, upgrade);
       const abordable = game.state.pokedollars >= upgrade.cout.valeur;
       btn.classList.toggle("non-abordable", !abordable);
       btn.addEventListener("click", (evt) => {
@@ -448,6 +528,7 @@ async function demarrer() {
       const btn = document.createElement("button");
       btn.className = "icone-item possedee";
       btn.textContent = upgrade.icone;
+      colorerSelonType(btn, upgrade);
       btn.addEventListener("click", (evt) => {
         evt.stopPropagation();
         ouvrirPopupUpgrade(upgrade, btn, { achetable: false });
@@ -555,11 +636,11 @@ async function demarrer() {
   // --- Spécialisation de type : choix unique et définitif, débloque 3 upgrades liées ---
   function actualiserBadgeSpecialisation() {
     if (!game.specialisationChoisie()) {
-      el.specialisationBadge.hidden = true;
+      el.specialisationBadge.style.visibility = "hidden";
       return;
     }
     const def = types[game.state.specialisation];
-    el.specialisationBadge.hidden = false;
+    el.specialisationBadge.style.visibility = "visible";
     el.specialisationBadge.style.background = def.couleur;
     el.specialisationBadge.textContent = `${def.icone} Spécialisation ${def.nom}`;
   }

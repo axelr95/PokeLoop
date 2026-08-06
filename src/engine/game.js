@@ -1,6 +1,7 @@
 import {
   productionPokemon,
   xpRequise,
+  xpRestantPourNiveau100,
   appliquerFacteurs,
   modifiersPourCible,
   conditionRemplie,
@@ -159,13 +160,9 @@ export class Game {
     return montant > 0 && montant <= this.state.pokedollars;
   }
 
-  investirXp(membreId, montant) {
-    if (!this.peutInvestir(montant)) return;
-    const membre = this.state.equipe.find((m) => m.id === membreId);
-    const def = this.definitionPokemon(membreId);
-    this.state.pokedollars -= montant;
+  // Applique un gain d'XP déjà payé : montée(s) de niveau en cascade, cap à 100.
+  appliquerGainXp(membre, def, montant) {
     membre.xp += montant;
-
     let seuil = xpRequise(def, membre.niveau + 1);
     while (membre.niveau < 100 && membre.xp >= seuil) {
       membre.xp -= seuil;
@@ -176,6 +173,72 @@ export class Game {
       membre.niveau = 100;
       membre.xp = 0;
     }
+  }
+
+  // Investit jusqu'à `montantDemande` d'XP sur un Pokémon : plafonné à ce qu'il
+  // faut pour atteindre pile le niveau 100 (jamais de surplus payé pour rien).
+  // Le cas "plafonné" force directement niveau 100/xp 0 plutôt que de compter
+  // sur la boucle de montée en niveau pour retomber pile sur zéro en flottant
+  // (une longue chaîne d'additions/soustractions peut dériver de quelques
+  // 1e-11 et laisser le Pokémon bloqué juste sous le seuil).
+  investirXp(membreId, montantDemande) {
+    const membre = this.state.equipe.find((m) => m.id === membreId);
+    const def = this.definitionPokemon(membreId);
+    const xpRestant = xpRestantPourNiveau100(def, membre.niveau, membre.xp);
+    const atteintNiveau100 = montantDemande >= xpRestant;
+    const montant = atteintNiveau100 ? xpRestant : montantDemande;
+    if (!this.peutInvestir(montant)) return false;
+    this.state.pokedollars -= montant;
+    if (atteintNiveau100) {
+      membre.niveau = 100;
+      membre.xp = 0;
+    } else {
+      this.appliquerGainXp(membre, def, montant);
+    }
+    return true;
+  }
+
+  // XP exactement nécessaire pour finir le niveau en cours et passer au suivant.
+  xpPourProchainNiveau(membre) {
+    if (membre.niveau >= 100) return 0;
+    const def = this.definitionPokemon(membre.id);
+    return Math.max(0, xpRequise(def, membre.niveau + 1) - membre.xp);
+  }
+
+  investirNiveauSuivant(membreId) {
+    const membre = this.state.equipe.find((m) => m.id === membreId);
+    const cout = this.xpPourProchainNiveau(membre);
+    if (cout <= 0 || this.state.pokedollars < cout) return false;
+    const def = this.definitionPokemon(membreId);
+    this.state.pokedollars -= cout;
+    this.appliquerGainXp(membre, def, cout);
+    return true;
+  }
+
+  // Investit `montantDemande` d'XP (chacun plafonné au niveau 100) sur TOUTE
+  // l'équipe d'un coup, de façon atomique : soit tout le monde reçoit son
+  // gain (si le coût total est finançable), soit rien ne se passe.
+  investirXpEquipe(montantDemande) {
+    const plan = this.state.equipe.map((membre) => {
+      const def = this.definitionPokemon(membre.id);
+      const xpRestant = xpRestantPourNiveau100(def, membre.niveau, membre.xp);
+      const atteintNiveau100 = montantDemande >= xpRestant;
+      const montant = atteintNiveau100 ? xpRestant : Math.max(0, montantDemande);
+      return { membre, def, montant, atteintNiveau100 };
+    });
+    const total = plan.reduce((acc, p) => acc + p.montant, 0);
+    if (total <= 0 || total > this.state.pokedollars) return false;
+    this.state.pokedollars -= total;
+    for (const { membre, def, montant, atteintNiveau100 } of plan) {
+      if (montant <= 0) continue;
+      if (atteintNiveau100) {
+        membre.niveau = 100;
+        membre.xp = 0;
+      } else {
+        this.appliquerGainXp(membre, def, montant);
+      }
+    }
+    return true;
   }
 
   peutEvoluer(membre) {

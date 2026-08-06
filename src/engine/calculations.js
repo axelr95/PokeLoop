@@ -12,6 +12,18 @@ export function xpRequise(pokemon, niveau) {
   return base * Math.pow(niveau, facteur);
 }
 
+// XP encore nécessaire pour atteindre exactement le niveau 100 depuis
+// (niveau, xpActuelle) — sert à ne jamais faire payer un surplus d'XP
+// inutile quand un investissement dépasse ce qu'il faut pour capper.
+export function xpRestantPourNiveau100(pokemon, niveau, xpActuelle) {
+  if (niveau >= 100) return 0;
+  let total = -xpActuelle;
+  for (let n = niveau + 1; n <= 100; n++) {
+    total += xpRequise(pokemon, n);
+  }
+  return Math.max(0, total);
+}
+
 // modifiers: liste de { categorie, valeur, type? } déjà filtrée pour la cible concernée
 // type: "flat" → valeur ajoutée directement à la base (5e layer, avant les 4 facteurs).
 export function appliquerFacteurs(base, modifiers) {

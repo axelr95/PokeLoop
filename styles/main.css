@@ -202,8 +202,12 @@ body {
   overflow: hidden;
 }
 
-.panel-titre {
+.panel-header {
+  position: relative;
   flex: none;
+}
+
+.panel-titre {
   margin: 0;
   font-size: 0.75rem;
   font-weight: 700;
@@ -213,6 +217,78 @@ body {
   text-align: center;
 }
 
+/* Actions XP à droite du header, affichées uniquement sur l'onglet Pokémon (cf. main.js) */
+.xp-header-actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0.3rem;
+}
+
+.xp-header-actions[hidden] {
+  display: none;
+}
+
+.btn-xp-all,
+.btn-xp-select {
+  border: none;
+  border-radius: 999px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+}
+
+.btn-xp-all:active,
+.btn-xp-select:active {
+  filter: brightness(1.15);
+}
+
+.btn-xp-all {
+  background: #e5484d;
+  color: #fff;
+}
+
+.btn-xp-select {
+  background: var(--couleur-succes);
+  color: #0d2a1d;
+}
+
+/* Slider de choix de quantité d'XP, ouvert au-dessus du bouton +X XP du header */
+.xp-slider[hidden] {
+  display: none;
+}
+
+.xp-slider {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  gap: 0.3rem;
+  background: var(--couleur-surface);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 0.4rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.xp-slider-choix {
+  border: none;
+  border-radius: 8px;
+  background: var(--couleur-surface-claire);
+  color: var(--couleur-texte);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.4rem 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.xp-slider-choix:active {
+  filter: brightness(1.3);
+}
+
 .panel-contenu {
   flex: 1;
   min-height: 0;
@@ -220,6 +296,29 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+}
+
+/* Scrollbar fine et discrète, réutilisée sur tous les éléments défilables de l'appli */
+.panel-contenu,
+.modal-starter {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
+}
+
+.panel-contenu::-webkit-scrollbar,
+.modal-starter::-webkit-scrollbar {
+  width: 4px;
+}
+
+.panel-contenu::-webkit-scrollbar-track,
+.modal-starter::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panel-contenu::-webkit-scrollbar-thumb,
+.modal-starter::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
 }
 
 .panel-contenu[hidden] {
@@ -395,6 +494,11 @@ body {
   filter: brightness(1.3);
 }
 
+.btn-mini:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 /* Case d'action : choisir le starter, ou recruter le prochain compagnon */
 .carte-equipe-action {
   align-items: center;
@@ -476,8 +580,8 @@ body {
 
 .icones-liste {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  overflow-x: auto;
   min-height: 44px;
 }
 
@@ -693,17 +797,22 @@ body {
   font-size: 1.1rem;
 }
 
-/* Badge de la spécialisation choisie, affiché juste au-dessus des menus */
+/* Badge de la spécialisation choisie, affiché juste au-dessus des menus.
+   Hauteur fixe et toujours réservée (masqué via visibility, pas display) :
+   la zone décorative au-dessus (flex:1) ne doit jamais changer de taille
+   selon que ce badge est vide/rempli, sinon le fond qu'elle affiche saute. */
 .specialisation-badge {
   flex: none;
+  height: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  padding: 0.15rem 0.5rem;
+  padding: 0 0.5rem;
   font-size: 0.68rem;
   font-weight: 700;
   color: #1e1b2e;
+  visibility: hidden;
 }
 
 /* Toast de progression hors-ligne */
