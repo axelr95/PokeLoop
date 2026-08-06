@@ -79,7 +79,7 @@ async function demarrer() {
     chargerJson("src/data/specialisation.json"),
   ]);
 
-  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation, types });
+  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation });
 
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
@@ -387,7 +387,7 @@ async function demarrer() {
 
   // --- Boutique / possédées : icônes carrées, popup au clic ---
   function reconstruireBoutiqueSiNecessaire() {
-    const disponibles = game.toutesUpgrades().filter((u) => game.upgradeDisponible(u));
+    const disponibles = game.data.upgrades.filter((u) => game.upgradeDisponible(u));
     const specialisationDispo = !game.specialisationChoisie();
     const idsActuels = `${specialisationDispo ? "spe" : ""}|${disponibles.map((u) => u.id).join(",")}`;
     if (idsActuels === idsBoutiqueAffiches) return;
@@ -443,9 +443,8 @@ async function demarrer() {
     if (game.state.upgradesPossedees.length === 0) {
       el.possedeesListe.innerHTML = '<div class="vide">Aucune.</div>';
     }
-    const toutesUpgrades = game.toutesUpgrades();
     for (const id of game.state.upgradesPossedees) {
-      const upgrade = toutesUpgrades.find((u) => u.id === id);
+      const upgrade = game.data.upgrades.find((u) => u.id === id);
       const btn = document.createElement("button");
       btn.className = "icone-item possedee";
       btn.textContent = upgrade.icone;

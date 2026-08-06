@@ -51,14 +51,17 @@ const OPERATEURS_CONDITION = {
   "!=": (a, b) => a !== b,
 };
 
-// condition: string du style "equipe_taille >= 3", ou undefined/null (toujours vrai).
+// condition: string du style "equipe_taille >= 3" ou "specialisation == feu",
+// ou undefined/null (toujours vrai). La valeur comparée peut être numérique ou
+// un simple mot (comparé alors comme chaîne, ex. l'id d'un type Pokémon).
 // variables: objet { nom_variable: valeur } fourni par l'appelant (état du jeu).
 export function conditionRemplie(condition, variables) {
   if (!condition) return true;
-  const match = condition.match(/^(\w+)\s*(>=|<=|==|!=|>|<)\s*(-?\d+(?:\.\d+)?)$/);
+  const match = condition.match(/^(\w+)\s*(>=|<=|==|!=|>|<)\s*(-?\d+(?:\.\d+)?|\w+)$/);
   if (!match) throw new Error(`Condition de déblocage invalide: ${condition}`);
-  const [, variable, operateur, valeur] = match;
-  return OPERATEURS_CONDITION[operateur](variables[variable], Number(valeur));
+  const [, variable, operateur, valeurBrute] = match;
+  const valeur = /^-?\d+(\.\d+)?$/.test(valeurBrute) ? Number(valeurBrute) : valeurBrute;
+  return OPERATEURS_CONDITION[operateur](variables[variable], valeur);
 }
 
 function cibleCorrespond(cibleUpgrade, cibleRecherchee) {
