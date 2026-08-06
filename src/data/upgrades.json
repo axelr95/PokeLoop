@@ -1,44 +1,233 @@
 [
   {
+    "id": "clic_1",
+    "nom": "Poignet souple",
+    "icone": "✊",
+    "description": "+1 Pokédollar par clic (valeur fixe, avant les multiplicateurs)",
+    "cout": { "ressource": "pokedollars", "valeur": 50 },
+    "effet": {
+      "categorie": "additif_base",
+      "type": "flat",
+      "cible": { "type": "clic_manuel" },
+      "valeur": 1
+    },
+    "prerequis": [],
+    "exclusif_avec": []
+  },
+  {
+    "id": "clic_2",
+    "nom": "Gants d'entraînement",
+    "icone": "🧤",
+    "description": "×1.5 production de base du clic manuel",
+    "cout": { "ressource": "pokedollars", "valeur": 300 },
+    "effet": {
+      "categorie": "multiplicatif_base",
+      "cible": { "type": "clic_manuel" },
+      "valeur": 1.5
+    },
+    "prerequis": ["clic_1"],
+    "exclusif_avec": []
+  },
+  {
+    "id": "clic_3",
+    "nom": "Réflexes dresseur",
+    "icone": "⚡",
+    "description": "+100% production finale du clic manuel",
+    "cout": { "ressource": "pokedollars", "valeur": 1500 },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": { "type": "clic_manuel" },
+      "valeur": 1.0
+    },
+    "prerequis": ["clic_2"],
+    "exclusif_avec": []
+  },
+
+  {
     "id": "spe_feu_1",
-    "nom": "Spécialisation Feu",
+    "nom": "Instinct Feu",
     "icone": "🔥",
     "description": "+50% production finale sur les Pokémon de type Feu",
-    "cout": { "ressource": "pokedollars", "valeur": 100 },
+    "cout": { "ressource": "pokedollars", "valeur": 200 },
     "effet": {
       "categorie": "multiplicatif_final",
       "cible": { "type": "type_pokemon", "valeur": "feu" },
       "valeur": 1.5
     },
     "prerequis": [],
-    "exclusif_avec": []
+    "exclusif_avec": ["spe_eau_1", "spe_plante_1"]
   },
   {
-    "id": "clic_boost_1",
-    "nom": "Poigne ferme",
-    "icone": "👊",
-    "description": "+50% production finale du clic manuel",
-    "cout": { "ressource": "pokedollars", "valeur": 50 },
+    "id": "spe_eau_1",
+    "nom": "Instinct Eau",
+    "icone": "💧",
+    "description": "+50% production finale sur les Pokémon de type Eau",
+    "cout": { "ressource": "pokedollars", "valeur": 200 },
     "effet": {
-      "categorie": "additif_final",
-      "cible": { "type": "clic_manuel" },
-      "valeur": 0.5
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "eau" },
+      "valeur": 1.5
+    },
+    "prerequis": [],
+    "exclusif_avec": ["spe_feu_1", "spe_plante_1"]
+  },
+  {
+    "id": "spe_plante_1",
+    "nom": "Instinct Plante",
+    "icone": "🌿",
+    "description": "+50% production finale sur les Pokémon de type Plante",
+    "cout": { "ressource": "pokedollars", "valeur": 200 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "plante" },
+      "valeur": 1.5
+    },
+    "prerequis": [],
+    "exclusif_avec": ["spe_feu_1", "spe_eau_1"]
+  },
+
+  {
+    "id": "global_1",
+    "nom": "Ranch d'élevage",
+    "icone": "🐄",
+    "description": "+25% production de base sur tous les Pokémon",
+    "cout": { "ressource": "pokedollars", "valeur": 800 },
+    "effet": {
+      "categorie": "additif_base",
+      "cible": { "type": "global" },
+      "valeur": 0.25
     },
     "prerequis": [],
     "exclusif_avec": []
   },
   {
-    "id": "prod_globale_1",
-    "nom": "Élevage motivé",
-    "icone": "🌾",
-    "description": "+20% production de base sur tous les Pokémon",
-    "cout": { "ressource": "pokedollars", "valeur": 250 },
+    "id": "global_2",
+    "nom": "Alimentation renforcée",
+    "icone": "🍖",
+    "description": "+25% production de base sur tous les Pokémon (cumulable)",
+    "cout": { "ressource": "pokedollars", "valeur": 2000 },
     "effet": {
       "categorie": "additif_base",
       "cible": { "type": "global" },
-      "valeur": 0.2
+      "valeur": 0.25
+    },
+    "prerequis": ["global_1"],
+    "exclusif_avec": []
+  },
+  {
+    "id": "global_3",
+    "nom": "Centre d'entraînement",
+    "icone": "🏋️",
+    "description": "×1.3 production de base sur tous les Pokémon",
+    "cout": { "ressource": "pokedollars", "valeur": 4000 },
+    "effet": {
+      "categorie": "multiplicatif_base",
+      "cible": { "type": "global" },
+      "valeur": 1.3
+    },
+    "prerequis": ["global_2"],
+    "exclusif_avec": []
+  },
+
+  {
+    "id": "spe_vol_1",
+    "nom": "Instinct Vol",
+    "icone": "🕊️",
+    "description": "+50% production finale sur les Pokémon de type Vol",
+    "cout": { "ressource": "pokedollars", "valeur": 1200 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "vol" },
+      "valeur": 1.5
+    },
+    "prerequis": [],
+    "exclusif_avec": ["spe_psy_1", "spe_combat_1"]
+  },
+  {
+    "id": "spe_psy_1",
+    "nom": "Instinct Psy",
+    "icone": "🔮",
+    "description": "+50% production finale sur les Pokémon de type Psy",
+    "cout": { "ressource": "pokedollars", "valeur": 1200 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "psy" },
+      "valeur": 1.5
+    },
+    "prerequis": [],
+    "exclusif_avec": ["spe_vol_1", "spe_combat_1"]
+  },
+  {
+    "id": "spe_combat_1",
+    "nom": "Instinct Combat",
+    "icone": "🥋",
+    "description": "+50% production finale sur les Pokémon de type Combat",
+    "cout": { "ressource": "pokedollars", "valeur": 1200 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "combat" },
+      "valeur": 1.5
+    },
+    "prerequis": [],
+    "exclusif_avec": ["spe_vol_1", "spe_psy_1"]
+  },
+
+  {
+    "id": "spe_feu_2",
+    "nom": "Maîtrise Feu",
+    "icone": "🔥",
+    "description": "+50% production finale supplémentaire sur les Pokémon de type Feu",
+    "cout": { "ressource": "pokedollars", "valeur": 3000 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "feu" },
+      "valeur": 1.5
     },
     "prerequis": ["spe_feu_1"],
     "exclusif_avec": []
+  },
+  {
+    "id": "spe_eau_2",
+    "nom": "Maîtrise Eau",
+    "icone": "💧",
+    "description": "+50% production finale supplémentaire sur les Pokémon de type Eau",
+    "cout": { "ressource": "pokedollars", "valeur": 3000 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "eau" },
+      "valeur": 1.5
+    },
+    "prerequis": ["spe_eau_1"],
+    "exclusif_avec": []
+  },
+  {
+    "id": "spe_plante_2",
+    "nom": "Maîtrise Plante",
+    "icone": "🌿",
+    "description": "+50% production finale supplémentaire sur les Pokémon de type Plante",
+    "cout": { "ressource": "pokedollars", "valeur": 3000 },
+    "effet": {
+      "categorie": "multiplicatif_final",
+      "cible": { "type": "type_pokemon", "valeur": "plante" },
+      "valeur": 1.5
+    },
+    "prerequis": ["spe_plante_1"],
+    "exclusif_avec": []
+  },
+
+  {
+    "id": "final_boost_1",
+    "nom": "Synchronisation d'équipe",
+    "icone": "🤝",
+    "description": "+50% production finale sur tous les Pokémon, débloqué à partir de 3 Pokémon en équipe",
+    "cout": { "ressource": "pokedollars", "valeur": 6000 },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": { "type": "global" },
+      "valeur": 0.5
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "equipe_taille >= 3"
   }
 ]

@@ -3,6 +3,7 @@ import {
   xpRequise,
   appliquerFacteurs,
   modifiersPourCible,
+  conditionRemplie,
 } from "./calculations.js";
 
 const SAVE_KEY = "pokeloop_save_v1";
@@ -154,6 +155,13 @@ export class Game {
     return true;
   }
 
+  variablesEtat() {
+    return {
+      equipe_taille: this.state.equipe.length,
+      pokedollars: this.state.pokedollars,
+    };
+  }
+
   upgradeDisponible(upgrade) {
     if (this.state.upgradesPossedees.includes(upgrade.id)) return false;
     const prerequisOk = upgrade.prerequis.every((id) =>
@@ -162,7 +170,8 @@ export class Game {
     const exclueParPossedee = upgrade.exclusif_avec.some((id) =>
       this.state.upgradesPossedees.includes(id)
     );
-    return prerequisOk && !exclueParPossedee;
+    const conditionOk = conditionRemplie(upgrade.condition_deblocage, this.variablesEtat());
+    return prerequisOk && !exclueParPossedee && conditionOk;
   }
 
   acheterUpgrade(upgradeId) {
