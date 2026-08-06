@@ -69,6 +69,28 @@ function positionArc(index, decalageBase, largeurZoneDecor) {
   };
 }
 
+// --- Échelle des sprites : les feuilles de sprites PMD ne sont pas toutes
+// cadrées à la même taille de canevas (32px pour Magicarpe, 128px de haut
+// pour Léviator...). Un scale() fixe fait donc paraître certains Pokémon
+// démesurés et décalés vers le haut (ancrés par le bas, cf. transform-origin
+// center bottom). On calcule à la place une échelle par sprite, ramenée à une
+// taille de rendu de référence, plafonnée pour garder un minimum de variété
+// de gabarit sur les espèces réellement imposantes (Léviator, Onix, oiseaux
+// légendaires...) sans qu'elles dominent l'écran.
+const ECHELLE_SPRITE_BASE = 2.4;
+const ECHELLE_SPRITE_MIN = 1.4;
+const DIMENSION_REFERENCE_SPRITE = 40; // taille de canevas "normale" (médiane observée sur les 151 sprites)
+
+function echelleSprite(meta) {
+  if (!meta || !meta.idle) return ECHELLE_SPRITE_BASE;
+  const dimensionMax = Math.max(meta.idle.frameWidth, meta.idle.frameHeight);
+  if (dimensionMax <= DIMENSION_REFERENCE_SPRITE) return ECHELLE_SPRITE_BASE;
+  return Math.max(
+    ECHELLE_SPRITE_MIN,
+    ECHELLE_SPRITE_BASE * (DIMENSION_REFERENCE_SPRITE / dimensionMax)
+  );
+}
+
 async function demarrer() {
   const [resources, pokemons, upgrades, types, recrutement, specialisation] = await Promise.all([
     chargerJson("src/data/resources.json"),
@@ -161,8 +183,9 @@ async function demarrer() {
   }
 
   // --- Applique l'animation idle (bas-gauche, 3 frames en moyenne) sur un élément donné ---
-  async function appliquerSpriteIdle(el2, def) {
+  async function appliquerSpriteIdle(el2, def, x, y) {
     const meta = await obtenirMetaSprite(def);
+    el2.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${echelleSprite(meta)})`;
     if (!meta || !meta.idle) return;
     const { frameWidth, frameHeight, frameCount } = meta.idle;
     el2.style.width = `${frameWidth}px`;
@@ -185,9 +208,9 @@ async function demarrer() {
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
       const { x, y } = positionArc(index, decalageBase, largeurZone);
-      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(2.4)`;
+      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE_BASE})`;
       el.decorEquipe.appendChild(sprite);
-      appliquerSpriteIdle(sprite, def);
+      appliquerSpriteIdle(sprite, def, x, y);
     });
   }
 
