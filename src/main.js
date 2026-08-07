@@ -179,10 +179,11 @@ async function demarrer() {
     recrueCartes: document.getElementById("recrue-cartes"),
     pokedexBackdrop: document.getElementById("pokedex-backdrop"),
     modalPokedex: document.getElementById("modal-pokedex"),
-    pokedexVueGrille: document.getElementById("pokedex-vue-grille"),
     pokedexCompteur: document.getElementById("pokedex-compteur"),
+    pokedexCorps: document.getElementById("pokedex-corps"),
     pokedexGrille: document.getElementById("pokedex-grille"),
-    pokedexVueFiche: document.getElementById("pokedex-vue-fiche"),
+    pokedexFicheBackdrop: document.getElementById("pokedex-fiche-backdrop"),
+    modalPokedexFiche: document.getElementById("modal-pokedex-fiche"),
     btnPokedexRetour: document.getElementById("btn-pokedex-retour"),
     pokedexFichePortrait: document.getElementById("pokedex-fiche-portrait"),
     pokedexFicheNom: document.getElementById("pokedex-fiche-nom"),
@@ -977,9 +978,10 @@ async function demarrer() {
 
   el.specialisationBackdrop.addEventListener("click", fermerModaleSpecialisation);
 
-  // --- Pokédex (6quater) : vue grille des 151 Pokémon + vue fiche détaillée, dans la
-  // même modale. Consultable même non découvert (portrait grisé, nom visible, pas de lore
-  // ni de lignée pour éviter de spoiler le contenu). ---
+  // --- Pokédex (6quater) : modale grille des 151 Pokémon, + modale fiche détaillée
+  // empilée par-dessus (la grille reste affichée derrière, pas remplacée). Consultable
+  // même non découvert (portrait grisé, nom visible, pas de lore ni de lignée pour
+  // éviter de spoiler le contenu). ---
   function creerVignettePokedex(def) {
     const decouvert = game.estDecouvert(def.id);
     const vignette = document.createElement("button");
@@ -1005,11 +1007,6 @@ async function demarrer() {
     }
   }
 
-  function afficherVuePokedex(vue) {
-    el.pokedexVueGrille.hidden = vue !== "grille";
-    el.pokedexVueFiche.hidden = vue !== "fiche";
-  }
-
   function ouvrirFichePokedex(pokemonId) {
     const def = game.definitionPokemon(pokemonId);
     const decouvert = game.estDecouvert(pokemonId);
@@ -1026,57 +1023,62 @@ async function demarrer() {
       el.pokedexFicheDescription.className = "pokedex-fiche-indisponible";
       el.pokedexFicheDescription.textContent =
         "Pokémon non découvert. Fais-le rejoindre ton équipe pour révéler sa fiche.";
-      afficherVuePokedex("fiche");
-      return;
+    } else {
+      for (const t of def.types) el.pokedexFicheTypes.appendChild(creerBadgeType(t));
+
+      const lignee = game.ligneeComplete(pokemonId);
+      lignee.forEach((etape, index) => {
+        if (index > 0) {
+          const fleche = document.createElement("span");
+          fleche.className = "pokedex-lignee-fleche";
+          fleche.textContent = `→ Nv ${etape.niveauRequis}`;
+          el.pokedexFicheLignee.appendChild(fleche);
+        }
+        const bloc = document.createElement("div");
+        bloc.className = `pokedex-lignee-etape${etape.def.id === pokemonId ? " pokedex-etape-actuelle" : ""}`;
+        const img = document.createElement("img");
+        img.src = `${etape.def.sprite_dossier}portrait.png`;
+        img.alt = "";
+        const nom = document.createElement("span");
+        nom.textContent = etape.def.nom;
+        bloc.append(img, nom);
+        el.pokedexFicheLignee.appendChild(bloc);
+      });
+
+      el.pokedexFicheDescription.className = "pokedex-fiche-description";
+      el.pokedexFicheDescription.textContent = def.description;
     }
 
-    for (const t of def.types) el.pokedexFicheTypes.appendChild(creerBadgeType(t));
-
-    const lignee = game.ligneeComplete(pokemonId);
-    lignee.forEach((etape, index) => {
-      if (index > 0) {
-        const fleche = document.createElement("span");
-        fleche.className = "pokedex-lignee-fleche";
-        fleche.textContent = `→ Nv ${etape.niveauRequis}`;
-        el.pokedexFicheLignee.appendChild(fleche);
-      }
-      const bloc = document.createElement("div");
-      bloc.className = `pokedex-lignee-etape${etape.def.id === pokemonId ? " pokedex-etape-actuelle" : ""}`;
-      const img = document.createElement("img");
-      img.src = `${etape.def.sprite_dossier}portrait.png`;
-      img.alt = "";
-      const nom = document.createElement("span");
-      nom.textContent = etape.def.nom;
-      bloc.append(img, nom);
-      el.pokedexFicheLignee.appendChild(bloc);
-    });
-
-    el.pokedexFicheDescription.className = "pokedex-fiche-description";
-    el.pokedexFicheDescription.textContent = def.description;
-
-    afficherVuePokedex("fiche");
+    el.modalPokedexFiche.hidden = false;
+    el.pokedexFicheBackdrop.hidden = false;
   }
 
+  // Ne referme que la fiche : la grille du Pokédex reste affichée derrière (si elle
+  // était déjà ouverte) — pas de "retour" qui ferme tout puis rouvre la grille.
+  function fermerFichePokedex() {
+    el.modalPokedexFiche.hidden = true;
+    el.pokedexFicheBackdrop.hidden = true;
+  }
+
+  // Referme tout le flux Pokédex (fiche + grille), déclenché par le fond sombre extérieur.
   function fermerModalePokedex() {
+    fermerFichePokedex();
     el.modalPokedex.hidden = true;
     el.pokedexBackdrop.hidden = true;
   }
 
   function ouvrirModalePokedex() {
     construirePokedexGrille();
-    afficherVuePokedex("grille");
     el.modalPokedex.hidden = false;
     el.pokedexBackdrop.hidden = false;
   }
 
-  // Ouvre directement la vue fiche (ex : clic sur le portrait d'un membre de
-  // l'équipe) — construit quand même la grille en arrière-plan pour que le
-  // bouton Retour retrouve une vue à jour plutôt qu'une grille vide/périmée.
+  // Ouvre la fiche par-dessus la grille (ex : clic sur le portrait d'un membre de
+  // l'équipe) — la grille est construite/affichée en arrière-plan pour rester
+  // consultable directement si le joueur ferme la fiche sans tout refermer.
   function ouvrirPokedexSurFiche(pokemonId) {
-    construirePokedexGrille();
+    ouvrirModalePokedex();
     ouvrirFichePokedex(pokemonId);
-    el.modalPokedex.hidden = false;
-    el.pokedexBackdrop.hidden = false;
   }
 
   el.btnPokedex.addEventListener("click", (evt) => {
@@ -1086,11 +1088,13 @@ async function demarrer() {
 
   el.btnPokedexRetour.addEventListener("click", (evt) => {
     evt.stopPropagation();
-    afficherVuePokedex("grille");
+    fermerFichePokedex();
   });
 
   el.pokedexBackdrop.addEventListener("click", fermerModalePokedex);
-  activerDefilementSouris(el.modalPokedex);
+  el.pokedexFicheBackdrop.addEventListener("click", fermerFichePokedex);
+  activerDefilementSouris(el.pokedexCorps);
+  activerDefilementSouris(el.modalPokedexFiche);
 
   // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
   function afficherToastHorsLigne() {

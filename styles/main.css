@@ -761,13 +761,19 @@ img {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
 }
 
-/* Défilement à la souris activé sur la modale Pokédex (cf. main.js,
-   activerDefilementSouris) : curseur "main" pour indiquer que le glissement scrolle. */
-.modal-pokedex {
+/* Fiche Pokémon empilée par-dessus la grille du Pokédex, qui reste affichée/assombrie
+   derrière au lieu d'être remplacée (cf. main.js, ouvrirPokedexSurFiche). */
+.popup-backdrop-scrim {
+  z-index: 61;
+  background: rgba(10, 8, 20, 0.55);
+}
+
+.modal-pokedex-fiche {
+  z-index: 62;
   cursor: grab;
 }
 
-.modal-pokedex:active {
+.modal-pokedex-fiche:active {
   cursor: grabbing;
 }
 
@@ -894,9 +900,38 @@ img {
   visibility: hidden;
 }
 
-/* Modale Pokédex : vue grille (151 portraits) + vue fiche détaillée (cf. pokedex.md) */
+/* Modale Pokédex (grille des 151 portraits) : en-tête (titre + compteur) figé, seule
+   la grille en dessous scrolle — cf. main.js, activerDefilementSouris(#pokedex-corps). */
 .modal-pokedex {
   width: min(94vw, 440px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* display: flex ci-dessus prime sur le display: none par défaut de [hidden] (un style
+   auteur passe toujours devant le style user-agent) : il faut le redéclarer ici. */
+.modal-pokedex[hidden] {
+  display: none;
+}
+
+.pokedex-entete {
+  flex: none;
+  padding: 1rem 1rem 0.6rem;
+}
+
+.pokedex-corps {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  touch-action: pan-y;
+  cursor: grab;
+  padding: 0 1rem 1rem;
+}
+
+.pokedex-corps:active {
+  cursor: grabbing;
 }
 
 .pokedex-compteur {
