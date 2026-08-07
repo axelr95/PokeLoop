@@ -879,14 +879,14 @@ async function demarrer() {
     reconstruireBoutiqueSiNecessaire();
   }
 
+  // Les pastilles assets/icons/types/*.png contiennent déjà l'icône, la couleur et le
+  // nom du type (rendues façon Bulbapédia) : le badge est directement l'image, pas
+  // besoin de recréer un fond coloré + libellé texte par-dessus.
   function creerBadgeType(typeId, { mini = false } = {}) {
-    const badge = document.createElement("span");
-    const def = types[typeId];
+    const badge = document.createElement("img");
     badge.className = mini ? "type-badge type-badge-mini" : "type-badge";
-    badge.style.background = def.couleur;
-    // En mini, l'émoji prend une largeur disproportionnée (taille quasi fixe
-    // selon les polices) : on garde juste le libellé pour rester compact.
-    badge.textContent = mini ? def.nom : `${def.icone} ${def.nom}`;
+    badge.src = `assets/icons/types/${typeId}.png`;
+    badge.alt = types[typeId].nom;
     return badge;
   }
 
@@ -979,7 +979,7 @@ async function demarrer() {
     const def = types[game.state.specialisation];
     el.specialisationBadge.style.visibility = "visible";
     el.specialisationBadge.style.background = def.couleur;
-    el.specialisationBadge.textContent = `${def.icone} Spécialisation ${def.nom}`;
+    el.specialisationBadge.innerHTML = `Spécialisation <img class="specialisation-badge-icone" src="assets/icons/types/${game.state.specialisation}.png" alt="${def.nom}" />`;
   }
 
   function fermerModaleSpecialisation() {
@@ -996,7 +996,7 @@ async function demarrer() {
       carte.className = "type-carte";
       carte.disabled = !abordable;
       carte.style.background = def.couleur;
-      carte.innerHTML = `<span class="type-carte-icone">${def.icone}</span><span class="type-carte-nom">${def.nom}</span>`;
+      carte.innerHTML = `<img class="type-carte-icone" src="assets/icons/types/${typeId}.png" alt="${def.nom}" />`;
       carte.addEventListener("click", () => {
         if (!game.choisirSpecialisation(typeId)) return;
         fermerModaleSpecialisation();
