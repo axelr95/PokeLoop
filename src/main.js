@@ -1077,6 +1077,9 @@ async function demarrer() {
         const nom = document.createElement("span");
         nom.textContent = etape.def.nom;
         bloc.append(img, nom);
+        if (etape.def.id !== pokemonId) {
+          bloc.addEventListener("click", () => ouvrirFichePokedex(etape.def.id));
+        }
         el.pokedexFicheLignee.appendChild(bloc);
       });
 

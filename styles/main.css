@@ -943,7 +943,7 @@ img {
 
 .pokedex-grille {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0.35rem;
 }
 
@@ -1029,6 +1029,11 @@ img {
   align-items: center;
   gap: 0.15rem;
   width: 62px;
+  cursor: pointer;
+}
+
+.pokedex-etape-actuelle {
+  cursor: default;
 }
 
 .pokedex-lignee-etape img {
