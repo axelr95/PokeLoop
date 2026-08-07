@@ -770,6 +770,7 @@ img {
 
 .modal-pokedex-fiche {
   z-index: 62;
+  height: 420px;
   cursor: grab;
 }
 
