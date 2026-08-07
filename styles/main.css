@@ -417,6 +417,15 @@ img {
   padding: 0.15rem 0.35rem;
 }
 
+/* Nom + badges de type restent collés en haut ; le reste (barre XP/actions,
+   Évoluer, ou Niveau max) est poussé vers le bas via marge auto, plutôt que
+   l'espace libre réparti également entre les trois par justify-content: center. */
+.ce-normal,
+.btn-evoluer,
+.ce-niveau-max {
+  margin-top: auto;
+}
+
 .ce-nom-niveau {
   flex: 1;
   min-width: 0;
@@ -842,7 +851,7 @@ img {
 }
 
 .type-badge-mini {
-  height: 0.5rem;
+  height: 0.65rem;
 }
 
 /* Grille des 18 types, réutilisée pour le choix de spécialisation */
