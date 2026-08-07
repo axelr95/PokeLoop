@@ -99,6 +99,21 @@ function origineSprite(meta) {
   return `${((centreX / b.frameWidth) * 100).toFixed(2)}% ${((b.maxY / b.frameHeight) * 100).toFixed(2)}%`;
 }
 
+// L'élément est positionné en CSS via left:50%/bottom:0, c'est-à-dire calé sur
+// le bord bas et le centre du CANEVAS complet (frameWidth/frameHeight), pas
+// sur le contenu réel. Le transform-origin ci-dessus rend bien le point
+// centre-bas du corps invariant sous scale(), mais sa position de base
+// (avant translate) reste décalée de la différence entre le canevas et la
+// bbox : un sprite avec beaucoup de vide sous ou à côté de son dessin
+// s'affiche donc trop haut / trop excentré si on ne corrige pas le translate
+// en conséquence. On calcule ici cette correction, à retrancher de (x, y).
+function correctionAncrage(meta) {
+  const b = bboxSprite(meta);
+  if (!b || !b.frameWidth || !b.frameHeight) return { dx: 0, dy: 0 };
+  const centreX = (b.minX + b.maxX) / 2;
+  return { dx: centreX - b.frameWidth / 2, dy: b.frameHeight - b.maxY };
+}
+
 async function demarrer() {
   const [resources, pokemons, upgrades, types, recrutement, specialisation] = await Promise.all([
     chargerJson("src/data/resources.json"),
@@ -194,7 +209,8 @@ async function demarrer() {
   async function appliquerSpriteIdle(el2, def, x, y) {
     const meta = await obtenirMetaSprite(def);
     el2.style.transformOrigin = origineSprite(meta);
-    el2.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE})`;
+    const { dx, dy } = correctionAncrage(meta);
+    el2.style.transform = `translate(calc(-50% + ${x - dx}px), -${y - dy}px) scale(${ECHELLE_SPRITE})`;
     if (!meta || !meta.idle) return;
     const { frameWidth, frameHeight, frameCount } = meta.idle;
     el2.style.width = `${frameWidth}px`;
