@@ -36,12 +36,23 @@ body {
   justify-content: center;
   align-items: stretch;
 
-  /* Pas de sélection de texte ni de callout iOS (copier/rechercher) sur toute l'appli */
+  /* Pas de sélection de texte ni de callout iOS (copier/rechercher) sur toute l'appli.
+     user-select est une propriété héritée : ce seul réglage sur body suffit à couvrir
+     tous les textes de l'appli (popups, fiches, etc.), pas besoin de le répéter ailleurs. */
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Aucune image (sprites, portraits) ne doit pouvoir être glissée/déposée par le
+   navigateur : ça casserait à la fois le clic et le scroll tactile dessus (cf. main.js,
+   qui bloque aussi dragstart en JS pour les navigateurs qui ignorent -webkit-user-drag). */
+img {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: auto;
 }
 
 .app {
@@ -319,6 +330,10 @@ body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  /* Indique explicitement au navigateur qu'un glissement vertical ici est un
+     scroll (pas un geste à interpréter/retarder) : rend le scroll tactile plus
+     réactif sur mobile. */
+  touch-action: pan-y;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -738,11 +753,22 @@ body {
   width: min(92vw, 420px);
   max-height: 80vh;
   overflow-y: auto;
+  touch-action: pan-y;
   background: var(--couleur-surface);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--rayon);
   padding: 1rem;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* Défilement à la souris activé sur la modale Pokédex (cf. main.js,
+   activerDefilementSouris) : curseur "main" pour indiquer que le glissement scrolle. */
+.modal-pokedex {
+  cursor: grab;
+}
+
+.modal-pokedex:active {
+  cursor: grabbing;
 }
 
 .modal-titre {

@@ -199,6 +199,66 @@ async function demarrer() {
     toastHorsLigneFermer: document.getElementById("toast-hors-ligne-fermer"),
   };
 
+  // Empêche le drag-and-drop natif du navigateur sur les sprites/portraits (le CSS
+  // -webkit-user-drag: none ne suffit pas partout, ex: Firefox) : sans ça, un clic
+  // suivi d'un mouvement sur une image lance un fantôme d'image draggable au lieu
+  // d'un simple tap/clic, ce qui casse aussi bien le clic que le scroll tactile.
+  document.addEventListener("dragstart", (evt) => {
+    if (evt.target.tagName === "IMG") evt.preventDefault();
+  });
+
+  // --- Défilement à la souris (clic gauche + glisser), en plus du scroll tactile natif
+  // déjà fonctionnel au doigt sur mobile : pratique pour tester ce comportement tactile
+  // depuis un navigateur desktop. Ignoré pour les pointeurs tactiles/stylet (le touch-scroll
+  // natif s'en charge déjà, pas besoin de dupliquer). Un clic simple (pas de glissement
+  // significatif) reste un clic normal sur les boutons/vignettes à l'intérieur.
+  function activerDefilementSouris(conteneur) {
+    const SEUIL_GLISSEMENT_PX = 6;
+    let actif = false;
+    let aGlisse = false;
+    let dernierY = 0;
+    let dernierX = 0;
+
+    conteneur.addEventListener("pointerdown", (evt) => {
+      if (evt.pointerType !== "mouse" || evt.button !== 0) return;
+      actif = true;
+      aGlisse = false;
+      dernierY = evt.clientY;
+      dernierX = evt.clientX;
+    });
+
+    conteneur.addEventListener("pointermove", (evt) => {
+      if (!actif) return;
+      const deltaY = evt.clientY - dernierY;
+      const deltaX = evt.clientX - dernierX;
+      if (!aGlisse && Math.hypot(deltaX, deltaY) < SEUIL_GLISSEMENT_PX) return;
+      aGlisse = true;
+      conteneur.scrollTop -= deltaY;
+      dernierY = evt.clientY;
+      dernierX = evt.clientX;
+    });
+
+    const arreterGlissement = () => {
+      actif = false;
+    };
+    conteneur.addEventListener("pointerup", arreterGlissement);
+    conteneur.addEventListener("pointerleave", arreterGlissement);
+    conteneur.addEventListener("pointercancel", arreterGlissement);
+
+    // Après un glissement, on avale le clic qui suit pour ne pas déclencher
+    // accidentellement l'action du bouton/de la vignette relâché(e) dessous.
+    conteneur.addEventListener(
+      "click",
+      (evt) => {
+        if (!aGlisse) return;
+        aGlisse = false;
+        evt.stopPropagation();
+        evt.preventDefault();
+      },
+      true
+    );
+  }
+
   const formatNombre = (n) => Math.floor(n).toLocaleString("fr-FR");
   const TITRES_ONGLETS = { pokemon: "Pokémon", boutique: "Boutique" };
   let idsBoutiqueAffiches = null;
@@ -1030,6 +1090,7 @@ async function demarrer() {
   });
 
   el.pokedexBackdrop.addEventListener("click", fermerModalePokedex);
+  activerDefilementSouris(el.modalPokedex);
 
   // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
   function afficherToastHorsLigne() {
