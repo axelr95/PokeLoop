@@ -106,11 +106,24 @@ export class Game {
   productionMembre(membre) {
     const def = this.definitionPokemon(membre.id);
     const base = productionPokemon(def, membre.niveau);
+    // Modifiers globaux : récupérés une seule fois, indépendamment du nombre de
+    // types du Pokémon. cibleCorrespond fait matcher "global" sans condition sur
+    // cibleRecherchee (utile pour productionClic, qui interroge en un seul appel) —
+    // il ne faut donc PAS rappeler modifiersPourCible(this.data.upgrades, ...) une
+    // fois par type sous peine de compter les upgrades globales en double pour un
+    // Pokémon bi-type (ex : Crustabri Eau/Glace toucherait 2x global_1/2/3).
+    const modifiersGlobaux = modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, {
+      type: "global",
+    });
+    const upgradesParType = this.data.upgrades.filter((u) => u.effet.cible.type === "type_pokemon");
     const cibles = def.types.map((t) => ({ type: "type_pokemon", valeur: t }));
-    const modifiers = cibles.flatMap((c) => [
-      ...modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, c),
-      ...this.modifiersSpecialisationChoix(c),
-    ]);
+    const modifiers = [
+      ...modifiersGlobaux,
+      ...cibles.flatMap((c) => [
+        ...modifiersPourCible(upgradesParType, this.state.upgradesPossedees, c),
+        ...this.modifiersSpecialisationChoix(c),
+      ]),
+    ];
     const cibleEspece = { type: "pokemon_id", valeur: membre.espece_ligne };
     modifiers.push(
       ...modifiersPourCible(
