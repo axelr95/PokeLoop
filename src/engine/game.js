@@ -379,13 +379,17 @@ export class Game {
     const chaine = [{ def: racine, niveauRequis: null }];
     let courant = racine;
     while (courant.evolution) {
+      // À un embranchement, on ne connaît la bonne branche que si pokemonId en est
+      // une cible directe ; sinon (ex : fiche d'Évoli lui-même) on s'arrête là plutôt
+      // que d'en choisir une au hasard. Sur une chaîne classique à cible unique, on
+      // continue toujours jusqu'au bout — la lignée complète reste affichée même en
+      // consultant une forme intermédiaire (ex : Herbizarre doit montrer Florizarre).
       const versId = Array.isArray(courant.evolution.vers)
         ? courant.evolution.vers.find((id) => id === pokemonId)
         : courant.evolution.vers;
-      if (!versId) break; // embranchement dont la branche affichée n'a pas encore de cible connue
+      if (!versId) break;
       const suivant = this.definitionPokemon(versId);
       chaine.push({ def: suivant, niveauRequis: courant.evolution.niveau });
-      if (suivant.id === pokemonId) break;
       courant = suivant;
     }
     return chaine;
