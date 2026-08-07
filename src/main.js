@@ -42,12 +42,12 @@ function appliquerFondDecor(el) {
 // fourni par l'utilisateur ; dy positif = vers le haut). Trois rangées : le 1
 // seul en haut, 2/3 en rangée médiane, 5/4/6 en rangée basse.
 const EMPLACEMENTS_EQUIPE = [
-  { dx: 0, dy: 0.22 }, // 1 : haut-centre
-  { dx: -0.27, dy: 0.06 }, // 2 : milieu-gauche
-  { dx: 0.27, dy: 0.06 }, // 3 : milieu-droite
-  { dx: 0, dy: -0.1 }, // 4 : bas-centre
-  { dx: -0.27, dy: -0.1 }, // 5 : bas-gauche
-  { dx: 0.27, dy: -0.1 }, // 6 : bas-droite
+  { dx: 0, dy: 0.28 }, // 1 : haut-centre
+  { dx: -0.36, dy: 0.1 }, // 2 : milieu-gauche
+  { dx: 0.36, dy: 0.1 }, // 3 : milieu-droite
+  { dx: 0, dy: -0.16 }, // 4 : bas-centre
+  { dx: -0.36, dy: -0.16 }, // 5 : bas-gauche
+  { dx: 0.36, dy: -0.16 }, // 6 : bas-droite
 ];
 
 // Vers le centre de la bande d'herbe (pas encore pile sur le rebord — à affiner
