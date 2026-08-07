@@ -69,26 +69,48 @@ function positionArc(index, decalageBase, largeurZoneDecor) {
   };
 }
 
-// --- Échelle des sprites : les feuilles de sprites PMD ne sont pas toutes
-// cadrées à la même taille de canevas (32px pour Magicarpe, 128px de haut
-// pour Léviator...). Un scale() fixe fait donc paraître certains Pokémon
-// démesurés et décalés vers le haut (ancrés par le bas, cf. transform-origin
-// center bottom). On calcule à la place une échelle par sprite, ramenée à une
-// taille de rendu de référence, plafonnée pour garder un minimum de variété
-// de gabarit sur les espèces réellement imposantes (Léviator, Onix, oiseaux
-// légendaires...) sans qu'elles dominent l'écran.
-const ECHELLE_SPRITE_BASE = 2.4;
-const ECHELLE_SPRITE_MIN = 1.4;
-const DIMENSION_REFERENCE_SPRITE = 40; // taille de canevas "normale" (médiane observée sur les 151 sprites)
+// --- Échelle et ancrage des sprites : les feuilles de sprites PMD ne sont ni
+// cadrées à la même taille de canevas, ni centrées de la même façon dans leur
+// canevas (marges transparentes variables autour du dessin réel). Se baser sur
+// frameWidth/frameHeight (bruts) fait donc paraître certains Pokémon démesurés
+// et mal ancrés. On utilise à la place, pour chaque espèce, la bbox du contenu
+// opaque réellement dessiné (calculée hors-ligne par pixel-analysis alpha sur
+// toutes les frames idle, cf. bbox dans chaque meta.json) : l'échelle est
+// ramenée à cette taille de contenu réelle, et le transform-origin est placé
+// dynamiquement au centre horizontal / bas réel du corps, pour un ancrage au
+// sol cohérent quel que soit le padding du canevas source.
+const ECHELLE_SPRITE_CIBLE = 80; // taille de rendu visée (px) pour la plus grande dimension de la bbox
+const ECHELLE_SPRITE_MIN = 1.5;
+const ECHELLE_SPRITE_MAX = 3.0;
+const ECHELLE_SPRITE_DEFAUT = 2.2; // utilisée tant que le meta n'est pas encore chargé
+
+function bboxSprite(meta) {
+  if (!meta || !meta.idle) return null;
+  const { frameWidth, frameHeight } = meta.idle;
+  const bbox = meta.bbox || { minX: 0, minY: 0, maxX: frameWidth, maxY: frameHeight };
+  return { ...bbox, frameWidth, frameHeight };
+}
 
 function echelleSprite(meta) {
-  if (!meta || !meta.idle) return ECHELLE_SPRITE_BASE;
-  const dimensionMax = Math.max(meta.idle.frameWidth, meta.idle.frameHeight);
-  if (dimensionMax <= DIMENSION_REFERENCE_SPRITE) return ECHELLE_SPRITE_BASE;
-  return Math.max(
-    ECHELLE_SPRITE_MIN,
-    ECHELLE_SPRITE_BASE * (DIMENSION_REFERENCE_SPRITE / dimensionMax)
+  const b = bboxSprite(meta);
+  if (!b) return ECHELLE_SPRITE_DEFAUT;
+  const dimensionMax = Math.max(b.maxX - b.minX, b.maxY - b.minY);
+  if (dimensionMax <= 0) return ECHELLE_SPRITE_DEFAUT;
+  return Math.min(
+    ECHELLE_SPRITE_MAX,
+    Math.max(ECHELLE_SPRITE_MIN, ECHELLE_SPRITE_CIBLE / dimensionMax)
   );
+}
+
+// Centre horizontal et bas réels du corps, en % du canevas de la frame :
+// ce point reste fixe visuellement quand scale() est appliqué, donc ancrer le
+// transform-origin dessus aligne le vrai bas du corps sur la position au sol
+// (x, y) demandée, quel que soit le padding transparent du canevas source.
+function origineSprite(meta) {
+  const b = bboxSprite(meta);
+  if (!b || !b.frameWidth || !b.frameHeight) return "50% 100%";
+  const centreX = (b.minX + b.maxX) / 2;
+  return `${((centreX / b.frameWidth) * 100).toFixed(2)}% ${((b.maxY / b.frameHeight) * 100).toFixed(2)}%`;
 }
 
 async function demarrer() {
@@ -185,6 +207,7 @@ async function demarrer() {
   // --- Applique l'animation idle (bas-gauche, 3 frames en moyenne) sur un élément donné ---
   async function appliquerSpriteIdle(el2, def, x, y) {
     const meta = await obtenirMetaSprite(def);
+    el2.style.transformOrigin = origineSprite(meta);
     el2.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${echelleSprite(meta)})`;
     if (!meta || !meta.idle) return;
     const { frameWidth, frameHeight, frameCount } = meta.idle;
@@ -208,7 +231,7 @@ async function demarrer() {
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
       const { x, y } = positionArc(index, decalageBase, largeurZone);
-      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE_BASE})`;
+      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE_DEFAUT})`;
       el.decorEquipe.appendChild(sprite);
       appliquerSpriteIdle(sprite, def, x, y);
     });

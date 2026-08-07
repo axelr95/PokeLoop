@@ -1,1 +1,1 @@
-{"idle": {"frameWidth": 32, "frameHeight": 48, "frameCount": 2}, "sleep": {"frameWidth": 32, "frameHeight": 32, "frameCount": 2}}
+{"idle": {"frameWidth": 32, "frameHeight": 48, "frameCount": 2}, "sleep": {"frameWidth": 32, "frameHeight": 32, "frameCount": 2}, "bbox": {"minX": 7, "minY": 4, "maxX": 29, "maxY": 31}}
