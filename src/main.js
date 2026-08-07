@@ -37,17 +37,17 @@ function appliquerFondDecor(el) {
   el.zoneDecor.style.backgroundImage = `url(assets/backgrounds/${nomFondActuel()}.png)`;
 }
 
-// --- Positionnement des 6 emplacements d'équipe, en cercle autour du centre ---
+// --- Positionnement des 6 emplacements d'équipe, en triangle/quinconce ---
 // (dx, dy en fractions de la largeur de la zone décorative, d'après le croquis
-// fourni par l'utilisateur ; dy positif = vers le haut). Le 1er reste au centre,
-// pile sur le repère de la falaise.
+// fourni par l'utilisateur ; dy positif = vers le haut). Trois rangées : le 1
+// seul en haut, 2/3 en rangée médiane, 5/4/6 en rangée basse.
 const EMPLACEMENTS_EQUIPE = [
-  { dx: 0, dy: 0 }, // 1 : centre
-  { dx: -0.23, dy: -0.11 }, // 2 : bas-gauche
-  { dx: 0.21, dy: -0.14 }, // 3 : bas-droite
-  { dx: 0.18, dy: 0.13 }, // 4 : haut-droite
-  { dx: 0, dy: -0.23 }, // 5 : bas-centre
-  { dx: -0.23, dy: 0.1 }, // 6 : haut-gauche
+  { dx: 0, dy: 0.22 }, // 1 : haut-centre
+  { dx: -0.27, dy: 0.06 }, // 2 : milieu-gauche
+  { dx: 0.27, dy: 0.06 }, // 3 : milieu-droite
+  { dx: 0, dy: -0.1 }, // 4 : bas-centre
+  { dx: -0.27, dy: -0.1 }, // 5 : bas-gauche
+  { dx: 0.27, dy: -0.1 }, // 6 : bas-droite
 ];
 
 // Vers le centre de la bande d'herbe (pas encore pile sur le rebord — à affiner
@@ -69,37 +69,23 @@ function positionArc(index, decalageBase, largeurZoneDecor) {
   };
 }
 
-// --- Échelle et ancrage des sprites : les feuilles de sprites PMD ne sont ni
-// cadrées à la même taille de canevas, ni centrées de la même façon dans leur
-// canevas (marges transparentes variables autour du dessin réel). Se baser sur
-// frameWidth/frameHeight (bruts) fait donc paraître certains Pokémon démesurés
-// et mal ancrés. On utilise à la place, pour chaque espèce, la bbox du contenu
-// opaque réellement dessiné (calculée hors-ligne par pixel-analysis alpha sur
-// toutes les frames idle, cf. bbox dans chaque meta.json) : l'échelle est
-// ramenée à cette taille de contenu réelle, et le transform-origin est placé
-// dynamiquement au centre horizontal / bas réel du corps, pour un ancrage au
-// sol cohérent quel que soit le padding du canevas source.
-const ECHELLE_SPRITE_CIBLE = 80; // taille de rendu visée (px) pour la plus grande dimension de la bbox
-const ECHELLE_SPRITE_MIN = 1.5;
-const ECHELLE_SPRITE_MAX = 3.0;
-const ECHELLE_SPRITE_DEFAUT = 2.2; // utilisée tant que le meta n'est pas encore chargé
+// --- Échelle et ancrage des sprites ---
+// Même échelle fixe pour tous les sprites (pas de variation par espèce) afin
+// que la taille d'un pixel du sprite reste identique partout, quelle que soit
+// l'espèce. Seul l'ancrage varie : les feuilles de sprites PMD ne sont pas
+// toutes centrées de la même façon dans leur canevas (marges transparentes
+// variables autour du dessin réel), donc le transform-origin est calculé
+// dynamiquement à partir de la bbox du contenu opaque réellement dessiné
+// (calculée hors-ligne par pixel-analysis alpha sur toutes les frames idle,
+// cf. bbox dans chaque meta.json), pour que le bas réel du corps touche
+// toujours le sol au bon endroit, quel que soit le padding du canevas source.
+const ECHELLE_SPRITE = 2.4;
 
 function bboxSprite(meta) {
   if (!meta || !meta.idle) return null;
   const { frameWidth, frameHeight } = meta.idle;
   const bbox = meta.bbox || { minX: 0, minY: 0, maxX: frameWidth, maxY: frameHeight };
   return { ...bbox, frameWidth, frameHeight };
-}
-
-function echelleSprite(meta) {
-  const b = bboxSprite(meta);
-  if (!b) return ECHELLE_SPRITE_DEFAUT;
-  const dimensionMax = Math.max(b.maxX - b.minX, b.maxY - b.minY);
-  if (dimensionMax <= 0) return ECHELLE_SPRITE_DEFAUT;
-  return Math.min(
-    ECHELLE_SPRITE_MAX,
-    Math.max(ECHELLE_SPRITE_MIN, ECHELLE_SPRITE_CIBLE / dimensionMax)
-  );
 }
 
 // Centre horizontal et bas réels du corps, en % du canevas de la frame :
@@ -208,7 +194,7 @@ async function demarrer() {
   async function appliquerSpriteIdle(el2, def, x, y) {
     const meta = await obtenirMetaSprite(def);
     el2.style.transformOrigin = origineSprite(meta);
-    el2.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${echelleSprite(meta)})`;
+    el2.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE})`;
     if (!meta || !meta.idle) return;
     const { frameWidth, frameHeight, frameCount } = meta.idle;
     el2.style.width = `${frameWidth}px`;
@@ -231,7 +217,7 @@ async function demarrer() {
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
       const { x, y } = positionArc(index, decalageBase, largeurZone);
-      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE_DEFAUT})`;
+      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE})`;
       el.decorEquipe.appendChild(sprite);
       appliquerSpriteIdle(sprite, def, x, y);
     });
