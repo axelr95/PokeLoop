@@ -319,6 +319,7 @@ export class Game {
     if (!membre || !this.peutEvoluer(membre)) return false;
     const def = this.definitionPokemon(membre.id);
     membre.id = def.evolution.vers;
+    this.decouvrirPokemon(membre.id);
     return true;
   }
 
