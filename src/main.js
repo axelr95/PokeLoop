@@ -79,7 +79,19 @@ function positionArc(index, decalageBase, largeurZoneDecor) {
 // (calculée hors-ligne par pixel-analysis alpha sur toutes les frames idle,
 // cf. bbox dans chaque meta.json), pour que le bas réel du corps touche
 // toujours le sol au bon endroit, quel que soit le padding du canevas source.
-const ECHELLE_SPRITE = 2.4;
+//
+// L'échelle elle-même doit rester relative à la largeur de la zone décorative
+// (comme les positions des emplacements, en dx/dy) : un scale() en px fixes
+// ne rétrécit pas sur les écrans de téléphone plus étroits que la largeur de
+// référence utilisée pour calibrer les emplacements (480px, cf. .app dans
+// styles/main.css), ce qui fait "mordre" les grands sprites (Léviator...)
+// sur les emplacements voisins une fois la mise en page resserrée.
+const ECHELLE_SPRITE_REFERENCE = 2.4;
+const LARGEUR_ZONE_REFERENCE = 480;
+
+function echelleSprite(largeurZone) {
+  return ECHELLE_SPRITE_REFERENCE * (largeurZone / LARGEUR_ZONE_REFERENCE);
+}
 
 function bboxSprite(meta) {
   if (!meta || !meta.idle) return null;
@@ -206,11 +218,11 @@ async function demarrer() {
   }
 
   // --- Applique l'animation idle (bas-gauche, 3 frames en moyenne) sur un élément donné ---
-  async function appliquerSpriteIdle(el2, def, x, y) {
+  async function appliquerSpriteIdle(el2, def, x, y, largeurZone) {
     const meta = await obtenirMetaSprite(def);
     el2.style.transformOrigin = origineSprite(meta);
     const { dx, dy } = correctionAncrage(meta);
-    el2.style.transform = `translate(calc(-50% + ${x - dx}px), -${y - dy}px) scale(${ECHELLE_SPRITE})`;
+    el2.style.transform = `translate(calc(-50% + ${x - dx}px), -${y - dy}px) scale(${echelleSprite(largeurZone)})`;
     if (!meta || !meta.idle) return;
     const { frameWidth, frameHeight, frameCount } = meta.idle;
     el2.style.width = `${frameWidth}px`;
@@ -233,9 +245,9 @@ async function demarrer() {
       sprite.className = "decor-sprite";
       sprite.dataset.membreId = membre.id;
       const { x, y } = positionArc(index, decalageBase, largeurZone);
-      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${ECHELLE_SPRITE})`;
+      sprite.style.transform = `translate(calc(-50% + ${x}px), -${y}px) scale(${echelleSprite(largeurZone)})`;
       el.decorEquipe.appendChild(sprite);
-      appliquerSpriteIdle(sprite, def, x, y);
+      appliquerSpriteIdle(sprite, def, x, y, largeurZone);
     });
   }
 
