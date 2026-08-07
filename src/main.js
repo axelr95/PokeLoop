@@ -299,6 +299,10 @@ async function demarrer() {
       </div>
     `;
     carte.querySelector(".ce-portrait").src = `${def.sprite_dossier}portrait.png`;
+    carte.querySelector(".ce-portrait").addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      ouvrirPokedexSurFiche(membre.id);
+    });
     carte.querySelector(".ce-nom").textContent = def.nom;
     const typesEl = carte.querySelector(".ce-types-badges");
     for (const t of def.types) typesEl.appendChild(creerBadgeType(t, { mini: true }));
@@ -1001,6 +1005,16 @@ async function demarrer() {
   function ouvrirModalePokedex() {
     construirePokedexGrille();
     afficherVuePokedex("grille");
+    el.modalPokedex.hidden = false;
+    el.pokedexBackdrop.hidden = false;
+  }
+
+  // Ouvre directement la vue fiche (ex : clic sur le portrait d'un membre de
+  // l'équipe) — construit quand même la grille en arrière-plan pour que le
+  // bouton Retour retrouve une vue à jour plutôt qu'une grille vide/périmée.
+  function ouvrirPokedexSurFiche(pokemonId) {
+    construirePokedexGrille();
+    ouvrirFichePokedex(pokemonId);
     el.modalPokedex.hidden = false;
     el.pokedexBackdrop.hidden = false;
   }

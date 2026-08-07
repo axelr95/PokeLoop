@@ -389,6 +389,7 @@ body {
   object-fit: cover;
   image-rendering: pixelated;
   background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
 }
 
 .ce-infos {
