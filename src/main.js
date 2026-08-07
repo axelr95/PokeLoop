@@ -127,16 +127,18 @@ function correctionAncrage(meta) {
 }
 
 async function demarrer() {
-  const [resources, pokemons, upgrades, types, recrutement, specialisation] = await Promise.all([
-    chargerJson("src/data/resources.json"),
-    chargerJson("src/data/pokemons.json"),
-    chargerJson("src/data/upgrades.json"),
-    chargerJson("src/data/types.json"),
-    chargerJson("src/data/recrutement.json"),
-    chargerJson("src/data/specialisation.json"),
-  ]);
+  const [resources, pokemons, upgrades, types, recrutement, specialisation, paliersPokemon] =
+    await Promise.all([
+      chargerJson("src/data/resources.json"),
+      chargerJson("src/data/pokemons.json"),
+      chargerJson("src/data/upgrades.json"),
+      chargerJson("src/data/types.json"),
+      chargerJson("src/data/recrutement.json"),
+      chargerJson("src/data/specialisation.json"),
+      chargerJson("src/data/paliers_pokemon.json"),
+    ]);
 
-  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation });
+  const game = new Game({ resources, pokemons, upgrades, recrutement, specialisation, paliersPokemon });
 
   const el = {
     pokedollars: document.getElementById("pokedollars-valeur"),
@@ -156,6 +158,7 @@ async function demarrer() {
     xpSlider: document.getElementById("xp-slider"),
     grilleEquipe: document.getElementById("grille-equipe"),
     shopListe: document.getElementById("shop-liste"),
+    paliersListe: document.getElementById("paliers-liste"),
     possedeesListe: document.getElementById("possedees-liste"),
     tabsBtns: document.querySelectorAll(".tab-btn"),
     popupBackdrop: document.getElementById("popup-backdrop"),
@@ -183,6 +186,7 @@ async function demarrer() {
   const formatNombre = (n) => Math.floor(n).toLocaleString("fr-FR");
   const TITRES_ONGLETS = { pokemon: "Pokémon", boutique: "Boutique" };
   let idsBoutiqueAffiches = null;
+  let idsPaliersAffiches = null;
   let idsPossedeesAffiches = null;
 
   // --- Valeur d'XP sélectionnée dans le header (partagée par le bouton dynamique
@@ -391,8 +395,13 @@ async function demarrer() {
     el.pokedollars.textContent = formatNombre(game.state.pokedollars);
     el.prodInfo.textContent = `${formatNombre(game.productionParSeconde())} /s`;
     actualiserGrilleEquipe();
+    reconstruirePaliersSiNecessaire();
 
     el.shopListe.querySelectorAll(".icone-item").forEach((btn) => {
+      const cout = Number(btn.dataset.cout);
+      btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
+    });
+    el.paliersListe.querySelectorAll(".icone-item").forEach((btn) => {
       const cout = Number(btn.dataset.cout);
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
     });
@@ -527,6 +536,65 @@ async function demarrer() {
     if (def) btn.style.background = def.couleur;
   }
 
+  // --- Paliers de niveau (6ter) : 1 emplacement par Pokémon, portrait + chiffre romain ---
+  function descriptionPalier(especeLigne, palier) {
+    const def = game.definitionPokemon(especeLigne);
+    const incrementPct = Math.round(palier.valeur * 100);
+    const cumulePct = Math.round(game.valeurCumuleePalier(especeLigne, palier.id) * 100);
+    return `+${incrementPct}% production finale pour ${def.nom} (cumulé palier ${palier.tier_romain} : +${cumulePct}%)`;
+  }
+
+  function creerIconePalier(especeLigne, palier, { possedee = false } = {}) {
+    const def = game.definitionPokemon(especeLigne);
+    const btn = document.createElement("button");
+    btn.className = `icone-item icone-item-palier${possedee ? " possedee" : ""}`;
+    btn.dataset.cout = palier.cout.valeur;
+    btn.innerHTML = `
+      <img class="icone-item-palier-img" src="${def.sprite_dossier}portrait.png" alt="" />
+      <span class="icone-item-palier-tier">${palier.tier_romain}</span>
+    `;
+    return btn;
+  }
+
+  function ouvrirPopupPalier(especeLigne, palier, btn, options) {
+    ouvrirPopupUpgrade(
+      { nom: palier.nom, description: descriptionPalier(especeLigne, palier), cout: palier.cout },
+      btn,
+      options
+    );
+  }
+
+  function reconstruirePaliersSiNecessaire() {
+    const entrees = game.state.equipe
+      .map((membre) => ({ membre, palier: game.prochainPalier(membre) }))
+      .filter((e) => e.palier);
+    const idsActuels = entrees.map((e) => e.palier.id).join(",");
+    if (idsActuels === idsPaliersAffiches) return;
+    idsPaliersAffiches = idsActuels;
+
+    el.paliersListe.innerHTML = "";
+    if (entrees.length === 0) {
+      el.paliersListe.innerHTML = '<div class="vide">Rien à acheter.</div>';
+    }
+    for (const { membre, palier } of entrees) {
+      const btn = creerIconePalier(membre.espece_ligne, palier);
+      btn.classList.toggle("non-abordable", game.state.pokedollars < palier.cout.valeur);
+      btn.addEventListener("click", (evt) => {
+        evt.stopPropagation();
+        ouvrirPopupPalier(membre.espece_ligne, palier, btn, {
+          achetable: true,
+          onAcheter: () => {
+            game.acheterPalier(membre.id);
+            reconstruirePaliersSiNecessaire();
+            reconstruirePossedeesSiNecessaire();
+            actualiserValeurs();
+          },
+        });
+      });
+      el.paliersListe.appendChild(btn);
+    }
+  }
+
   // --- Boutique / possédées : icônes carrées, popup au clic ---
   function reconstruireBoutiqueSiNecessaire() {
     const disponibles = game.data.upgrades.filter((u) => game.upgradeDisponible(u));
@@ -586,15 +654,28 @@ async function demarrer() {
     if (game.state.upgradesPossedees.length === 0) {
       el.possedeesListe.innerHTML = '<div class="vide">Aucune.</div>';
     }
+    const paliersConnus = game.toutesLesUpgradesPaliers();
     for (const id of game.state.upgradesPossedees) {
       const upgrade = game.data.upgrades.find((u) => u.id === id);
-      const btn = document.createElement("button");
-      btn.className = "icone-item possedee";
-      btn.textContent = upgrade.icone;
-      colorerSelonType(btn, upgrade);
+      if (upgrade) {
+        const btn = document.createElement("button");
+        btn.className = "icone-item possedee";
+        btn.textContent = upgrade.icone;
+        colorerSelonType(btn, upgrade);
+        btn.addEventListener("click", (evt) => {
+          evt.stopPropagation();
+          ouvrirPopupUpgrade(upgrade, btn, { achetable: false });
+        });
+        el.possedeesListe.appendChild(btn);
+        continue;
+      }
+      const palier = paliersConnus.find((p) => p.id === id);
+      if (!palier) continue;
+      const especeLigne = palier.effet.cible.valeur;
+      const btn = creerIconePalier(especeLigne, palier, { possedee: true });
       btn.addEventListener("click", (evt) => {
         evt.stopPropagation();
-        ouvrirPopupUpgrade(upgrade, btn, { achetable: false });
+        ouvrirPopupPalier(especeLigne, palier, btn, { achetable: false });
       });
       el.possedeesListe.appendChild(btn);
     }

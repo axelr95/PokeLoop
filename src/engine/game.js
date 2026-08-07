@@ -12,13 +12,14 @@ const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
 const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
 
 export class Game {
-  constructor({ resources, pokemons, upgrades, recrutement, specialisation }) {
+  constructor({ resources, pokemons, upgrades, recrutement, specialisation, paliersPokemon }) {
     this.data = {
       resources,
       pokemons,
       upgrades,
       recrutement: recrutement || [],
       specialisation,
+      paliersPokemon,
     };
     this.gainsHorsLigne = null;
     this.state = this.chargerOuInitialiser();
@@ -31,6 +32,12 @@ export class Game {
         const state = JSON.parse(brut);
         this.state = state;
         if (state.specialisation === undefined) state.specialisation = null;
+        // Migration : les sauvegardes antérieures aux paliers de niveau (6ter) n'ont pas
+        // de champ espece_ligne — à défaut de l'historique d'évolution, l'espèce actuelle
+        // est la meilleure approximation disponible (correcte pour tout membre pas encore évolué).
+        for (const membre of state.equipe) {
+          if (!membre.espece_ligne) membre.espece_ligne = membre.id;
+        }
         if (state.equipe.length > 0 && state.dernierTick) {
           const ecouleSec = Math.min(
             (Date.now() - state.dernierTick) / 1000,
@@ -69,7 +76,7 @@ export class Game {
     if (this.aChoisiStarter()) return false;
     const def = this.definitionPokemon(pokemonId);
     if (!def || !def.starter) return false;
-    this.state.equipe.push({ id: def.id, niveau: def.niveau_depart, xp: 0 });
+    this.state.equipe.push({ id: def.id, espece_ligne: def.id, niveau: def.niveau_depart, xp: 0 });
     return true;
   }
 
@@ -88,7 +95,7 @@ export class Game {
     if (this.state.pokedollars < palier.cout) return false;
     const def = this.definitionPokemon(pokemonId);
     this.state.pokedollars -= palier.cout;
-    this.state.equipe.push({ id: def.id, niveau: def.niveau_depart, xp: 0 });
+    this.state.equipe.push({ id: def.id, espece_ligne: def.id, niveau: def.niveau_depart, xp: 0 });
     return true;
   }
 
@@ -104,6 +111,14 @@ export class Game {
       ...modifiersPourCible(this.data.upgrades, this.state.upgradesPossedees, c),
       ...this.modifiersSpecialisationChoix(c),
     ]);
+    const cibleEspece = { type: "pokemon_id", valeur: membre.espece_ligne };
+    modifiers.push(
+      ...modifiersPourCible(
+        this.paliersPourEspece(membre.espece_ligne),
+        this.state.upgradesPossedees,
+        cibleEspece
+      )
+    );
     return appliquerFacteurs(base, modifiers);
   }
 
@@ -281,6 +296,67 @@ export class Game {
     const def = this.definitionPokemon(membre.id);
     membre.id = def.evolution.vers;
     return true;
+  }
+
+  // --- Paliers de niveau par Pokémon (cf. docs/paliers_pokemon.md) : 10 upgrades
+  // instanciées dynamiquement par lignée évolutive (espece_ligne), pas en dur en data. ---
+
+  // Instancie le template des 10 paliers pour une lignée donnée. Ciblage sur
+  // espece_ligne (jamais espece_actuelle/membre.id) : reste actif après évolution.
+  paliersPourEspece(especeLigne) {
+    const def = this.definitionPokemon(especeLigne);
+    return this.data.paliersPokemon.paliers.map((p) => ({
+      id: `${especeLigne}_${p.id_suffix}`,
+      nom: `Palier ${p.tier_romain} — ${def.nom}`,
+      tier_romain: p.tier_romain,
+      niveau_requis: p.niveau_requis,
+      valeur: p.valeur,
+      cout: { ressource: "pokedollars", valeur: p.cout },
+      spriteDossier: def.sprite_dossier,
+      effet: {
+        categorie: "additif_final",
+        cible: { type: "pokemon_id", valeur: especeLigne },
+        valeur: p.valeur,
+      },
+    }));
+  }
+
+  // Somme des valeurs de tous les paliers jusqu'à (et y compris) celui donné,
+  // pour l'affichage de la valeur cumulée dans la popup de description.
+  valeurCumuleePalier(especeLigne, palierId) {
+    const paliers = this.paliersPourEspece(especeLigne);
+    const index = paliers.findIndex((p) => p.id === palierId);
+    return paliers.slice(0, index + 1).reduce((acc, p) => acc + p.valeur, 0);
+  }
+
+  // Le prochain palier achetable pour ce membre : le plus bas tier non encore
+  // acheté dont le niveau requis est atteint (garantit un achat toujours dans
+  // l'ordre, sans dépendre d'un système de prérequis séparé). null si aucun
+  // (niveau < 10, ou les 10 tiers déjà achetés).
+  prochainPalier(membre) {
+    const paliers = this.paliersPourEspece(membre.espece_ligne);
+    return (
+      paliers.find(
+        (p) => membre.niveau >= p.niveau_requis && !this.state.upgradesPossedees.includes(p.id)
+      ) || null
+    );
+  }
+
+  acheterPalier(membreId) {
+    const membre = this.state.equipe.find((m) => m.id === membreId);
+    if (!membre) return false;
+    const palier = this.prochainPalier(membre);
+    if (!palier || this.state.pokedollars < palier.cout.valeur) return false;
+    this.state.pokedollars -= palier.cout.valeur;
+    this.state.upgradesPossedees.push(palier.id);
+    return true;
+  }
+
+  // Paliers instanciés pour toutes les lignées actuellement en équipe — sert à
+  // retrouver l'objet complet d'un palier déjà acheté (affichage "Possédées").
+  toutesLesUpgradesPaliers() {
+    const especesLigne = [...new Set(this.state.equipe.map((m) => m.espece_ligne))];
+    return especesLigne.flatMap((e) => this.paliersPourEspece(e));
   }
 
   variablesEtat() {

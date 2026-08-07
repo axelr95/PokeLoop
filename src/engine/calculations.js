@@ -84,5 +84,8 @@ function cibleCorrespond(cibleUpgrade, cibleRecherchee) {
   if (cibleUpgrade.type === "clic_manuel" && cibleRecherchee.type === "clic_manuel") {
     return true;
   }
+  if (cibleUpgrade.type === "pokemon_id" && cibleRecherchee.type === "pokemon_id") {
+    return cibleUpgrade.valeur === cibleRecherchee.valeur;
+  }
   return false;
 }

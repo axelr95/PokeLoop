@@ -609,6 +609,32 @@ body {
   border: 1px solid rgba(76, 175, 130, 0.4);
 }
 
+/* Palier de niveau par Pokémon (6ter) : portrait de espece_ligne + chiffre romain en overlay */
+.icone-item-palier {
+  padding: 0;
+  overflow: hidden;
+}
+
+.icone-item-palier-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.icone-item-palier-tier {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  padding: 0 0.2rem;
+  border-radius: 4px;
+  background: rgba(20, 18, 30, 0.85);
+  color: var(--couleur-accent);
+  font-size: 0.55rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
 .vide {
   color: var(--couleur-texte-att);
   font-size: 0.75rem;

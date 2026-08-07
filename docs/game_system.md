@@ -54,6 +54,7 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 ### 3.2bis Évolutions
 - Une espèce peut porter un champ `evolution: { vers, niveau }` (voir 7bis.1) : dès que le Pokémon atteint ce niveau, sa case dans la grille remplace la barre XP + les boutons d'investissement par un **gros bouton "Évoluer"** (icône, nom et niveau restent affichés).
 - Au clic, le Pokémon devient l'espèce cible (`vers`) : **niveau et XP sont conservés tels quels**, seuls l'espèce (donc sprite, nom, types, production de base) changent.
+- **Distinction espèce actuelle / lignée d'origine** : l'instance équipe stocke deux champs — `espece_actuelle` (change à chaque évolution, détermine sprite/prod de base/types affichés) et `espece_ligne` (figée à l'espèce choisie au recrutement/starter, ne change **jamais**). Nécessaire pour que les upgrades de palier (cf. 6ter) et l'affichage restent cohérents après évolution : un Dracaufeu affiche toujours le portrait Salamèche sur ses upgrades, façon PokeRogue.
 - La production de base dépend de la position dans la lignée **complète** de l'espèce (pas d'un palier fixe indépendant de la longueur de la chaîne) : la forme la plus évoluée (3ème palier si la lignée en a 3, 2ème si elle n'en a que 2, ou l'espèce elle-même si elle n'évolue pas du tout) vaut toujours **×2** ; la forme juste en dessous vaut **×1.5** si elle existe (le 2ème palier d'une lignée à 3, ou la forme de base d'une lignée à 2) ; la forme de base d'une lignée à 3 paliers vaut **×1**. Ainsi une espèce sans évolution (ex : Tauros) n'est pas pénalisée face à une lignée à 3 paliers, et la forme finale d'une lignée à 2 paliers (ex : Arcanin) vaut autant que celle d'une lignée à 3 (ex : Salamèche 1 → Reptincel 1.5 → Dracaufeu 2). Valeur stockée directement dans `production_base.valeur_par_niveau` de chaque espèce (pas un multiplicateur séparé).
 - Niveaux d'évolution récupérés depuis les données officielles (PokeAPI, gen 1 rouge/bleu/jaune). Pour les évolutions qui n'ont pas de niveau canonique dans les jeux (pierre ou échange, ex : Pikachu → Raichu), un **niveau par défaut est utilisé (25 pour pierre, 30 pour échange)** afin qu'elles restent jouables uniquement via le niveau, comme le reste du système.
 - **Évoli n'a pas d'évolution pour l'instant** : ses 3 évolutions (pierres Feu/Eau/Foudre) forment un embranchement à choix multiple que le schéma actuel (`evolution` à cible unique) ne gère pas encore.
@@ -71,7 +72,7 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 
 - Cliquer sur l'écran génère manuellement des Pokédollars.
 - Production de base du clic : **1 Pokédollar/clic** (fixe au départ).
-- Comme la production passive, cette base est soumise aux mêmes facteurs multiplicatifs/additifs (voir section 5), via des upgrades dédiées au clic.
+- Comme la production passive, cette base est soumise aux mêmes facteurs additifs/multiplicatifs (voir section 5), via des upgrades dédiées au clic.
 ---
 
 ## 4bis. Progression hors-ligne
@@ -105,6 +106,9 @@ Chaque upgrade/passif se déclare dans **une seule** de ces 4 catégories :
 2. Multiplicatif base
 3. Additif final
 4. Multiplicatif final
+
+**⚠️ Convention de balancing (règle par défaut) :** tous les bonus en % sont classés **additif** (`additif_base` ou `additif_final`) par défaut. La catégorie **multiplicatif** (`multiplicatif_base`/`multiplicatif_final`) est réservée à des bonus **rares et faibles** (ex : +10%), et n'est utilisée que si explicitement qualifiée de "multiplicateur final" ou "**more**" au moment de la conception. En pratique, la quasi-totalité des upgrades actuelles (clic, global, spécialisation) utilisent `additif_base`/`additif_final`.
+
 **Exemple concret** (donné par l'utilisateur) :
 
 ```
@@ -127,22 +131,103 @@ Ce système s'applique **séparément** pour :
 - Achetées avec des Pokédollars (coût croissant, à définir par upgrade).
 - Une fois achetée, une upgrade reste active en permanence (liste des upgrades actives visible, comme Realm Grinder).
 - Une upgrade peut cibler :
-  - Un **type** précis (ex : "+50% prod Feu" → catégorie multiplicatif final, filtré type Feu).
+  - Un **type** précis (ex : "+20% prod Feu" → catégorie additif final, filtré type Feu).
   - Le **clic manuel** spécifiquement.
   - Toute la prod globale (tous types confondus).
-- Les upgrades de type peuvent être exclusives (ex : choix initial entre Feu / Eau / Plante) ou cumulables selon leur nature — à définir upgrade par upgrade dans la data.
-- L'idée initiale de "synergies" (bonus conditionnels croisés) a été abandonnée comme mécanique séparée : c'est la **spécialisation de type** qui en tient lieu — achat unique dans la boutique, choix définitif d'un type pour la run (+100% final immédiat sur ce type), qui débloque ensuite 3 upgrades dédiées à ce type (une déclinaison par type, cf. `upgrades.json`).
+- Les upgrades de type peuvent être exclusives ou cumulables selon leur nature — à définir upgrade par upgrade dans la data.
+- L'idée initiale de "synergies" (bonus conditionnels croisés) a été abandonnée comme mécanique séparée : c'est la **spécialisation de type** qui en tient lieu (voir 6bis).
+
+### Upgrades actuelles (`upgrades.json`, 7 entrées)
+
+| id | nom | coût | effet |
+|---|---|---|---|
+| `clic_1` | Poignet souple | 50 | additif_base, clic, **+1 flat** (cas spécial, cf. 7bis.2) |
+| `clic_2` | Gants d'entraînement | 300 | additif_base, clic, +50% (prereq `clic_1`) |
+| `clic_3` | Réflexes dresseur | 1500 | additif_final, clic, +100% (prereq `clic_2`) |
+| `global_1` | Ranch d'élevage | 800 | additif_base, global, +25% |
+| `global_2` | Alimentation renforcée | 2000 | additif_base, global, +25% (prereq `global_1`) |
+| `global_3` | Centre d'entraînement | 4000 | additif_base, global, +30% (prereq `global_2`) |
+| `final_boost_1` | Synchronisation d'équipe | 6000 | additif_final, global, +50% (débloqué si équipe ≥ 3, cf. `condition_deblocage`) |
+
+Les anciennes upgrades de type en dur (`spe_feu_1`, `spe_eau_1`, etc.) ont été **retirées** — remplacées par le système générique de spécialisation ci-dessous.
+
 ### Table des types
-- Utilise les types Pokémon classiques (Feu, Eau, Plante, Électrik, etc.).
+- Utilise les types Pokémon classiques (Feu, Eau, Plante, Électrik, etc. — 18 au total).
 - **Pas de logique d'efficacité de type (super efficace / pas très efficace) pour l'instant** — les types servent uniquement de tag pour cibler les upgrades.
 - Cette logique de type sera réutilisée telle quelle si un mode annexe combat (Tour de combat, Raids de boss/légendaires) est ajouté plus tard.
+
+---
+
+## 6bis. Spécialisation de type (run-lock)
+
+Nouvelle case dans le shop, achat unique à **5000 Pokédollars**. Contrairement aux upgrades classiques, l'achat n'applique pas d'effet directement : il **ouvre une modale de choix** parmi les 18 types Pokémon (réutilise `types.json`, même pattern visuel que le choix du starter — cf. 3.1).
+
+- Choix **définitif pour la run** (verrouillé jusqu'à reset/prestige), comme le starter.
+- Au choix : le type sélectionné devient `run.specialisation` (nouvel état global à sauvegarder).
+
+**Effet immédiat au choix** — upgrade générée dynamiquement (pas en dur dans `upgrades.json`) :
+```json
+{ "categorie": "additif_final", "cible": { "type": "type_pokemon", "valeur": "<type_choisi>" }, "valeur": 1.0 }
+```
+→ +100% prod finale pour les Pokémon du type choisi.
+
+**Déblocage de 3 upgrades liées au type choisi** (effets placeholders, à équilibrer) :
+
+| tier | coût | effet |
+|---|---|---|
+| 1 | 10 000 | additif_final, type choisi, +20% |
+| 2 | 50 000 | additif_final, type choisi, +20% (prereq tier 1) |
+| 3 | 100 000 | additif_final, type choisi, +20% (prereq tier 2) |
+
+**Data model : `specialisation.json`** (nouveau fichier, template générique — pas 18 entrées dupliquées) :
+```json
+{
+  "cout_deblocage": 5000,
+  "bonus_choix": { "categorie": "additif_final", "valeur": 1.0 },
+  "upgrades_liees": [
+    { "id_suffix": "spe_t1", "cout": 10000, "categorie": "additif_final", "valeur": 0.2 },
+    { "id_suffix": "spe_t2", "cout": 50000, "categorie": "additif_final", "valeur": 0.2 },
+    { "id_suffix": "spe_t3", "cout": 100000, "categorie": "additif_final", "valeur": 0.2 }
+  ]
+}
+```
+Les ids générés en jeu suivent le pattern `<type>_<id_suffix>` (ex : `feu_spe_t1`). Le moteur instancie ce template pour le type choisi au lieu d'upgrades en dur par type.
+
+---
+
+## 6ter. Paliers de niveau par Pokémon (upgrades individuelles)
+
+Chaque Pokémon jouable (starter + recrues débloquées) génère **10 upgrades dédiées**, une par palier de niveau (10/20/30.../100). Achat unique, catégorie `additif_final`, ciblant `espece_ligne` de ce Pokémon (pas `espece_actuelle`, cf. 3.2bis — l'upgrade reste active après évolution).
+
+**Valeurs** (motif en vague 25%/50%/100% répété 3 fois, palier final renforcé) :
+
+| tier | niveau requis | valeur ajoutée | cumulé affiché |
+|---|---|---|---|
+| I | 10 | 25% | 25% |
+| II | 20 | 50% | 75% |
+| III | 30 | 100% | 175% |
+| IV | 40 | 25% | 200% |
+| V | 50 | 50% | 250% |
+| VI | 60 | 100% | 350% |
+| VII | 70 | 25% | 375% |
+| VIII | 80 | 50% | 425% |
+| IX | 90 | 100% | 525% |
+| X | 100 | 175% | 700% |
+
+- `valeur` stockée = incrément individuel (le moteur somme automatiquement via `additif_final`). Le "cumulé affiché" est une valeur calculée pour la description au clic, pas stockée séparément.
+- **Coût** (v1, à équilibrer) : `cout(tier) = 100 × 4^(tier-1)` — de 100 (tier I) à 26 214 400 (tier X). Uniforme pour tous les Pokémon en v1, sera probablement différencié par lignée plus tard.
+- **Icône** : portrait de `espece_ligne` (jamais `espece_actuelle`) + chiffre romain (I-X) en overlay bas-droite, généré côté UI.
+- **Affichage shop** : 1 seul emplacement visible par Pokémon (pas 10 lignes) — affiche le prochain tier achetable, remplacé visuellement après achat par le suivant. N'apparaît pas du tout si le Pokémon n'a pas atteint le niveau 10.
+- **Data model** : template générique (`paliers_pokemon.json`), instancié dynamiquement par le moteur pour chaque Pokémon jouable — pas d'entrées en dur par Pokémon. Voir `paliers_pokemon.md` pour le détail complet.
+- Volume : instancié **par lignée évolutive** (pas par espèce individuelle — Bulbizarre/Herbizarre/Florizarre = 1 seul set), seulement pour les lignées jouables de la run en cours (max 6 → 60 upgrades), grâce au template.
+
 ---
 
 ## 7. Prestige
 
 > **Non prioritaire — pas à coder pour le moment.** Cette section pose seulement l'intention générale pour ne pas fermer de portes dans l'architecture. Le détail sera retravaillé le moment venu.
 
-- Reset complet de la partie : ressources, niveau/XP du/des Pokémon, upgrades achetées → tout remis à zéro.
+- Reset complet de la partie : ressources, niveau/XP du/des Pokémon, upgrades achetées, spécialisation choisie → tout remis à zéro.
 - Retour au choix du starter (possibilité future : choix parmi les Pokémon déjà rencontrés/Pokédex).
 - **Conservé après reset** :
   - **Trophées** : plutôt pensés comme des **succès à déverrouiller** (accomplissements, ex : "Atteindre niveau 50", "Faire 3 prestiges"...) qui donnent des bonus permanents pour accélérer le début des runs suivantes, plutôt que des upgrades achetées avec une ressource de prestige. **Mécanique encore à voir plus tard**, rien de figé.
@@ -185,24 +270,26 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
 
 ```json
 {
-  "id": "spe_feu_1",
-  "nom": "Spécialisation Feu",
-  "cout": { "ressource": "pokedollars", "valeur": 100 },
+  "id": "global_1",
+  "nom": "Ranch d'élevage",
+  "cout": { "ressource": "pokedollars", "valeur": 800 },
   "effet": {
-    "categorie": "multiplicatif_final",
-    "cible": { "type": "type_pokemon", "valeur": "feu" },
-    "valeur": 1.5
+    "categorie": "additif_base",
+    "cible": { "type": "global" },
+    "valeur": 0.25
   },
   "prerequis": [],
-  "exclusif_avec": ["spe_eau_1", "spe_plante_1"]
+  "exclusif_avec": []
 }
 ```
 
 
-- `effet.categorie` : une des 4 catégories de la section 5 (`additif_base`, `multiplicatif_base`, `additif_final`, `multiplicatif_final`).
-- `effet.cible.type` : `"type_pokemon"` (filtré par type), `"global"` (tous les Pokémon), ou `"clic_manuel"`. Le ciblage d'un Pokémon précis n'est pas mis en place tout de suite mais la structure est prévue pour l'accueillir plus tard (`"type": "pokemon_id"`).
-- `prerequis` : liste d'`id` d'upgrades à posséder avant de pouvoir acheter celle-ci. Mis en place dès maintenant pour préparer les arbres à tiers façon factions Realm Grinder (les tiers eux-mêmes viendront plus tard).
-- `exclusif_avec` : liste d'`id` d'upgrades qui se retirent mutuellement du shop si l'une d'elles est achetée (ex : choix exclusif Feu / Eau / Plante).
+- `effet.categorie` : une des 4 catégories de la section 5 (`additif_base`, `multiplicatif_base`, `additif_final`, `multiplicatif_final`) — cf. convention additif-par-défaut en section 5.
+- `effet.type` : champ optionnel, valeur `"flat"` pour les cas où l'effet est une valeur plate ajoutée à la prod de base plutôt qu'un %/multiplicateur (ex : `clic_1`, +1 flat). Absent = comportement standard en %.
+- `effet.cible.type` : `"type_pokemon"` (filtré par type), `"global"` (tous les Pokémon), `"clic_manuel"`, ou `"pokemon_id"` (ciblage d'un Pokémon précis via son `espece_ligne` — utilisé par les paliers de niveau, cf. 6ter).
+- `prerequis` : liste d'`id` d'upgrades à posséder avant de pouvoir acheter celle-ci.
+- `exclusif_avec` : liste d'`id` d'upgrades qui se retirent mutuellement du shop si l'une d'elles est achetée.
+- `condition_deblocage` : champ optionnel, condition d'état du jeu (ex : `"equipe_taille >= 3"`) à évaluer en plus de `prerequis`, pour les upgrades qui dépendent d'autre chose que la possession d'une autre upgrade.
 - Toutes les upgrades sont à **achat unique** pour l'instant : une fois achetée, elle passe dans la liste des upgrades possédées (affichée comme dans Realm Grinder) et disparaît du shop.
 
 ### 7bis.3 Palier de recrutement (`recrutement.json`)
@@ -221,6 +308,14 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
 - `cout` : prix en Pokédollars pour recruter (pas de champ `ressource` ici, une seule ressource existe pour l'instant).
 - `choix` : liste fixe d'`id` Pokémon (doivent exister dans `pokemons.json`) proposés dans la modale de recrutement ; le joueur en choisit un.
 - Les 5 paliers (emplacements 2 à 6) sont désormais tous définis, l'équipe peut donc être complétée jusqu'à 6 Pokémon.
+
+### 7bis.4 Spécialisation (`specialisation.json`)
+
+Voir section 6bis pour le détail complet. Un seul objet template (pas 18 entrées par type), instancié dynamiquement par le moteur pour le type choisi en run.
+
+### 7bis.5 Paliers de niveau (`paliers_pokemon.json`)
+
+Voir section 6ter et `paliers_pokemon.md` pour le détail complet. Un seul objet template (10 paliers), instancié dynamiquement par le moteur pour chaque Pokémon jouable de la run (ciblage sur `espece_ligne`).
 ---
 
 ## 8. Structure data-driven (rappel architecture)
@@ -232,9 +327,9 @@ Toute la logique de contenu (upgrades, coûts, Pokémon, prestige) vit dans des 
 /src/data
   resources.json      → ressources (Pokédollars, futures ressources)
   pokemons.json       → Pokédex complet 151 (types, niveau de départ, sprite, starter)
-  upgrades.json       → upgrades (coût, catégorie de facteur, cible type/clic/global),
-                         y compris les 3 upgrades par type débloquées par la spécialisation
-  specialisation.json → coût de déblocage et bonus immédiat de la spécialisation de type
+  upgrades.json       → upgrades génériques (clic, global) — 7 entrées actuellement
+  specialisation.json → template de spécialisation de type (coût déblocage, bonus choix, 3 upgrades liées)
+  paliers_pokemon.json → template des 10 paliers de niveau par Pokémon (valeurs, coûts, cf. 6ter)
   types.json          → libellé/emoji/couleur par type, pour les badges affichés en UI
   recrutement.json    → paliers de déblocage d'emplacement d'équipe (coût, choix)
   prestige.json       → trophées, règles de reset
@@ -265,3 +360,6 @@ Un bouton (sous le bouton debug fond, coin haut-droit) efface `localStorage`/`se
 - Ressources futures (Gems, Rubis...) et leur rôle exact.
 - Mode combat annexe (Tour de combat / Raids) et réintroduction de l'efficacité des types.
 - Choix du starter au prestige (aléatoire vs Pokédex débloqué — les 151 sont déjà en data, reste à décider comment ils se débloquent au fil des runs).
+- Équilibrage des 3 upgrades de spécialisation (valeurs placeholders +20% × 3, cf. 6bis).
+- Équilibrage de la courbe de coût des paliers de niveau (formule ×4 provisoire, cf. 6ter) — à ajuster une fois testée en jeu.
+- Différenciation possible du coût des paliers selon le Pokémon (starter vs recrue tardive) — uniforme pour l'instant.
