@@ -655,6 +655,15 @@ async function demarrer() {
       el.possedeesListe.innerHTML = '<div class="vide">Aucune.</div>';
     }
     const paliersConnus = game.toutesLesUpgradesPaliers();
+    // Un Pokémon peut posséder plusieurs tiers (achetés dans l'ordre, jamais en
+    // sautant un niveau) : on ne garde que le plus haut par lignée, qui affiche
+    // déjà la valeur cumulée (cf. descriptionPalier), pour n'avoir qu'un seul
+    // emplacement par Pokémon comme dans la boutique (regroupement, pas 1 par tier).
+    const meilleurPalierParEspece = new Map();
+    for (const id of game.state.upgradesPossedees) {
+      const palier = paliersConnus.find((p) => p.id === id);
+      if (palier) meilleurPalierParEspece.set(palier.effet.cible.valeur, palier);
+    }
     for (const id of game.state.upgradesPossedees) {
       const upgrade = game.data.upgrades.find((u) => u.id === id);
       if (upgrade) {
@@ -672,6 +681,7 @@ async function demarrer() {
       const palier = paliersConnus.find((p) => p.id === id);
       if (!palier) continue;
       const especeLigne = palier.effet.cible.valeur;
+      if (meilleurPalierParEspece.get(especeLigne).id !== palier.id) continue;
       const btn = creerIconePalier(especeLigne, palier, { possedee: true });
       btn.addEventListener("click", (evt) => {
         evt.stopPropagation();
