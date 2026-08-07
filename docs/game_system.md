@@ -22,9 +22,9 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 
 ### 3.0 Pokédex disponible
 - `pokemons.json` contient désormais les **151 Pokémon de la 1ère génération** (nom FR, types, courbe XP/production standard — cf. 7bis.1), pour que le moteur puisse gérer n'importe lequel d'entre eux dès qu'il rejoint l'équipe.
-- Seuls certains sont *jouables* pour l'instant : les 3 starters (choix initial) et les Pokémon listés dans les paliers de `recrutement.json` (voir 3.1bis). Le reste de la Pokédex attend de futurs paliers de recrutement (emplacements 4 à 6, non définis).
+- Seuls certains sont *jouables* pour l'instant : les 3 starters (choix initial) et les Pokémon listés dans les paliers de `recrutement.json` (voir 3.1bis). Le reste de la Pokédex attend d'être ajouté à un palier de recrutement existant ou à un futur mécanisme de déblocage.
 ### 3.1 Généralités
-- Un Pokémon appartient à l'équipe (6 emplacements, dont 3 exploitables pour l'instant : starter + 2 paliers de recrutement).
+- Un Pokémon appartient à l'équipe (6 emplacements, tous exploitables : starter + 5 paliers de recrutement).
 - L'équipe démarre **vide** : un état de sélection s'affiche dans le panel Pokémon tant qu'aucun starter n'est choisi.
 - **Choix du starter** : modale à 3 choix (Bulbizarre / Salamèche / Carapuce), chacun affichant son portrait, son nom et ses badges de type. Choix définitif pour la run (pas de retour en arrière hors reset/prestige).
 - Chaque Pokémon possède **son propre niveau et sa propre XP**, indépendants des autres (comme les bâtiments de Realm Grinder).
@@ -34,10 +34,12 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 ### 3.1bis Recrutement de coéquipiers
 - Débloque l'emplacement suivant contre des Pokédollars : une case d'action apparaît dans la grille du panel Pokémon (même système que le choix du starter, cf. 3.1ter) dès qu'un palier est disponible pour la taille d'équipe actuelle.
 - Chaque palier est défini en data (`recrutement.json`) : `emplacement` (taille d'équipe visée), `cout` (en Pokédollars), `choix` (liste fixe d'`id` Pokémon proposés, façon mini-starter).
-- Paliers actuellement définis :
-  - emplacement 2, coût 1 000 Pokédollars, choix entre Roucool / Abra / Machoc.
+- Les 5 paliers sont désormais tous définis, l'équipe peut être complétée jusqu'à 6 Pokémon :
+  - emplacement 2, coût 1 000 Pokédollars, choix entre Roucool / Chétiflor / Machoc.
   - emplacement 3, coût 5 000 Pokédollars, choix entre Pikachu / Miaouss / Osselait.
-- Les emplacements 4 à 6 n'ont pas encore de palier défini dans la data — cette case reste verrouillée (🔒) tant qu'aucun palier ne correspond à la taille d'équipe suivante.
+  - emplacement 4, coût 15 000 Pokédollars, choix entre Kokiyas / Rondoudou / Férosinge.
+  - emplacement 5, coût 40 000 Pokédollars, choix entre Évoli / Caninos / Magicarpe.
+  - emplacement 6, coût 100 000 Pokédollars, choix entre Fantominus / Minidraco / Abra.
 
 ### 3.1ter Panel Pokémon : grille des 6 emplacements
 - Le panel affiche une grille fixe **2 colonnes × 3 lignes**, toujours entièrement visible sans scroll (contrainte mobile).
@@ -98,7 +100,7 @@ Prod_finale       = Prod_base_finale
 ```
 
 
-Chaque upgrade/synergie/passif se déclare dans **une seule** de ces 4 catégories :
+Chaque upgrade/passif se déclare dans **une seule** de ces 4 catégories :
 1. Additif base
 2. Multiplicatif base
 3. Additif final
@@ -207,8 +209,11 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
 
 ```json
 [
-  { "emplacement": 2, "cout": 1000, "choix": ["pidgey", "abra", "machop"] },
-  { "emplacement": 3, "cout": 5000, "choix": ["pikachu", "meowth", "cubone"] }
+  { "emplacement": 2, "cout": 1000, "choix": ["pidgey", "bellsprout", "machop"] },
+  { "emplacement": 3, "cout": 5000, "choix": ["pikachu", "meowth", "cubone"] },
+  { "emplacement": 4, "cout": 15000, "choix": ["shellder", "jigglypuff", "mankey"] },
+  { "emplacement": 5, "cout": 40000, "choix": ["eevee", "growlithe", "magikarp"] },
+  { "emplacement": 6, "cout": 100000, "choix": ["gastly", "dratini", "abra"] }
 ]
 ```
 
