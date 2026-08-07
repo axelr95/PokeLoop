@@ -387,4 +387,34 @@ export class Game {
     this.state.upgradesPossedees.push(upgrade.id);
     return true;
   }
+
+  // Bouton "BUY ALL" de la boutique : achète en boucle la moins chère des
+  // upgrades/paliers actuellement abordables, jusqu'à épuisement des fonds ou
+  // du contenu disponible. Réévalue la liste à chaque achat pour capter les
+  // déblocages en cascade (ex : global_1 -> global_2) et le tier suivant de
+  // chaque Pokémon. N'inclut pas la spécialisation de type (nécessite un choix
+  // de type, pas un simple achat) — cohérent avec la case dédiée du shop.
+  acheterToutDisponible() {
+    let nbAchats = 0;
+    for (;;) {
+      const candidatsUpgrades = this.data.upgrades
+        .filter((u) => this.upgradeDisponible(u))
+        .map((u) => ({ cout: u.cout.valeur, acheter: () => this.acheterUpgrade(u.id) }));
+      const candidatsPaliers = this.state.equipe
+        .map((membre) => ({ membre, palier: this.prochainPalier(membre) }))
+        .filter((c) => c.palier)
+        .map(({ membre, palier }) => ({
+          cout: palier.cout.valeur,
+          acheter: () => this.acheterPalier(membre.id),
+        }));
+      const abordables = [...candidatsUpgrades, ...candidatsPaliers].filter(
+        (c) => c.cout <= this.state.pokedollars
+      );
+      if (abordables.length === 0) break;
+      abordables.sort((a, b) => a.cout - b.cout);
+      abordables[0].acheter();
+      nbAchats += 1;
+    }
+    return nbAchats;
+  }
 }

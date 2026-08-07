@@ -154,6 +154,8 @@ async function demarrer() {
     xpHeaderActions: document.getElementById("xp-header-actions"),
     btnXpAll: document.getElementById("btn-xp-all"),
     btnXpSelect: document.getElementById("btn-xp-select"),
+    boutiqueHeaderActions: document.getElementById("boutique-header-actions"),
+    btnBoutiqueBuyAll: document.getElementById("btn-boutique-buy-all"),
     xpSliderBackdrop: document.getElementById("xp-slider-backdrop"),
     xpSlider: document.getElementById("xp-slider"),
     grilleEquipe: document.getElementById("grille-equipe"),
@@ -413,6 +415,7 @@ async function demarrer() {
     el.panelBoutique.hidden = nom !== "boutique";
     el.panelTitre.textContent = TITRES_ONGLETS[nom];
     el.xpHeaderActions.hidden = nom !== "pokemon";
+    el.boutiqueHeaderActions.hidden = nom !== "boutique";
     el.tabsBtns.forEach((btn) => btn.classList.toggle("actif", btn.dataset.tab === nom));
   }
 
@@ -473,6 +476,19 @@ async function demarrer() {
   });
 
   actualiserLibelleXp();
+
+  // --- Header Boutique : BUY ALL, achète en cascade tout ce qui est abordable ---
+  el.btnBoutiqueBuyAll.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    const nbAchats = game.acheterToutDisponible();
+    if (nbAchats > 0) {
+      reconstruireBoutiqueSiNecessaire();
+      reconstruirePaliersSiNecessaire();
+      reconstruirePossedeesSiNecessaire();
+      actualiserValeurs();
+      game.sauvegarder();
+    }
+  });
 
   // --- Popup de description (boutique / possédées) ---
   function fermerPopup() {
@@ -595,9 +611,46 @@ async function demarrer() {
     }
   }
 
+  // Ordre logique d'affichage (boutique ET possédées) : les upgrades liées entre
+  // elles restent groupées et dans l'ordre de leur progression (clic, puis global,
+  // puis spécialisation de type, puis paliers de niveau par Pokémon — cf. docs
+  // section 6/6bis/6ter). Un rang par catégorie de cible, puis un ordre secondaire
+  // qui respecte les tiers : position dans upgrades.json (déjà écrit dans l'ordre
+  // de progression) pour les upgrades classiques, position dans l'équipe pour les
+  // paliers (pas d'ordre naturel en data puisqu'ils sont générés dynamiquement).
+  const RANG_CIBLE_UPGRADE = { clic_manuel: 0, global: 1, type_pokemon: 2 };
+
+  function rangUpgrade(upgrade) {
+    return RANG_CIBLE_UPGRADE[upgrade.effet.cible.type] ?? 3;
+  }
+
+  function rangPalier() {
+    return 4; // toujours après les upgrades classiques (cf. section 6ter, après 6/6bis)
+  }
+
+  function trierItemsBoutique(items) {
+    return items
+      .map((item, indexOrigine) => ({ item, indexOrigine }))
+      .sort((a, b) => {
+        const rangA = a.item.palier ? rangPalier() : rangUpgrade(a.item.upgrade);
+        const rangB = b.item.palier ? rangPalier() : rangUpgrade(b.item.upgrade);
+        if (rangA !== rangB) return rangA - rangB;
+        const ordreA = a.item.palier
+          ? game.state.equipe.findIndex((m) => m.espece_ligne === a.item.especeLigne)
+          : game.data.upgrades.indexOf(a.item.upgrade);
+        const ordreB = b.item.palier
+          ? game.state.equipe.findIndex((m) => m.espece_ligne === b.item.especeLigne)
+          : game.data.upgrades.indexOf(b.item.upgrade);
+        return ordreA - ordreB || a.indexOrigine - b.indexOrigine;
+      })
+      .map(({ item }) => item);
+  }
+
   // --- Boutique / possédées : icônes carrées, popup au clic ---
   function reconstruireBoutiqueSiNecessaire() {
-    const disponibles = game.data.upgrades.filter((u) => game.upgradeDisponible(u));
+    const disponibles = trierItemsBoutique(
+      game.data.upgrades.filter((u) => game.upgradeDisponible(u)).map((upgrade) => ({ upgrade }))
+    ).map(({ upgrade }) => upgrade);
     const specialisationDispo = !game.specialisationChoisie();
     const idsActuels = `${specialisationDispo ? "spe" : ""}|${disponibles.map((u) => u.id).join(",")}`;
     if (idsActuels === idsBoutiqueAffiches) return;
@@ -643,41 +696,6 @@ async function demarrer() {
       });
       el.shopListe.appendChild(btn);
     }
-  }
-
-  // Ordre logique d'affichage (boutique ET possédées) : les upgrades liées entre
-  // elles restent groupées et dans l'ordre de leur progression (clic, puis global,
-  // puis spécialisation de type, puis paliers de niveau par Pokémon — cf. docs
-  // section 6/6bis/6ter). Un rang par catégorie de cible, puis un ordre secondaire
-  // qui respecte les tiers : position dans upgrades.json (déjà écrit dans l'ordre
-  // de progression) pour les upgrades classiques, position dans l'équipe pour les
-  // paliers (pas d'ordre naturel en data puisqu'ils sont générés dynamiquement).
-  const RANG_CIBLE_UPGRADE = { clic_manuel: 0, global: 1, type_pokemon: 2 };
-
-  function rangUpgrade(upgrade) {
-    return RANG_CIBLE_UPGRADE[upgrade.effet.cible.type] ?? 3;
-  }
-
-  function rangPalier() {
-    return 4; // toujours après les upgrades classiques (cf. section 6ter, après 6/6bis)
-  }
-
-  function trierItemsBoutique(items) {
-    return items
-      .map((item, indexOrigine) => ({ item, indexOrigine }))
-      .sort((a, b) => {
-        const rangA = a.item.palier ? rangPalier() : rangUpgrade(a.item.upgrade);
-        const rangB = b.item.palier ? rangPalier() : rangUpgrade(b.item.upgrade);
-        if (rangA !== rangB) return rangA - rangB;
-        const ordreA = a.item.palier
-          ? game.state.equipe.findIndex((m) => m.espece_ligne === a.item.especeLigne)
-          : game.data.upgrades.indexOf(a.item.upgrade);
-        const ordreB = b.item.palier
-          ? game.state.equipe.findIndex((m) => m.espece_ligne === b.item.especeLigne)
-          : game.data.upgrades.indexOf(b.item.upgrade);
-        return ordreA - ordreB || a.indexOrigine - b.indexOrigine;
-      })
-      .map(({ item }) => item);
   }
 
   function reconstruirePossedeesSiNecessaire() {
