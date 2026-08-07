@@ -10,6 +10,7 @@ import {
 const SAVE_KEY = "pokeloop_save_v1";
 const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
 const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
+const BONUS_POKEDEX_PAR_DECOUVERTE = 0.1; // +10% multiplicatif final par Pokémon découvert (cf. pokedex.md)
 
 export class Game {
   constructor({ resources, pokemons, upgrades, recrutement, specialisation, paliersPokemon }) {
@@ -38,6 +39,12 @@ export class Game {
         for (const membre of state.equipe) {
           if (!membre.espece_ligne) membre.espece_ligne = membre.id;
         }
+        // Migration : les sauvegardes antérieures au Pokédex (6quater) n'ont pas de champ
+        // pokedex_decouverts — on le reconstruit à partir de l'équipe actuelle (espece_ligne,
+        // l'espèce réellement recrutée) pour ne pas faire perdre leur découverte aux joueurs.
+        if (!state.pokedex_decouverts) {
+          state.pokedex_decouverts = [...new Set(state.equipe.map((m) => m.espece_ligne))];
+        }
         if (state.equipe.length > 0 && state.dernierTick) {
           const ecouleSec = Math.min(
             (Date.now() - state.dernierTick) / 1000,
@@ -60,6 +67,7 @@ export class Game {
       equipe: [],
       upgradesPossedees: [],
       specialisation: null,
+      pokedex_decouverts: [],
       dernierTick: Date.now(),
     };
   }
@@ -77,6 +85,7 @@ export class Game {
     const def = this.definitionPokemon(pokemonId);
     if (!def || !def.starter) return false;
     this.state.equipe.push({ id: def.id, espece_ligne: def.id, niveau: def.niveau_depart, xp: 0 });
+    this.decouvrirPokemon(def.id);
     return true;
   }
 
@@ -96,6 +105,7 @@ export class Game {
     const def = this.definitionPokemon(pokemonId);
     this.state.pokedollars -= palier.cout;
     this.state.equipe.push({ id: def.id, espece_ligne: def.id, niveau: def.niveau_depart, xp: 0 });
+    this.decouvrirPokemon(def.id);
     return true;
   }
 
@@ -132,6 +142,7 @@ export class Game {
         cibleEspece
       )
     );
+    modifiers.push(this.modifierPokedex());
     return appliquerFacteurs(base, modifiers);
   }
 
@@ -309,6 +320,50 @@ export class Game {
     const def = this.definitionPokemon(membre.id);
     membre.id = def.evolution.vers;
     return true;
+  }
+
+  // --- Pokédex (cf. docs/pokedex.md) : découverte persistante hors run, bonus global
+  // permanent et cumulatif, consultation de tous les Pokémon (151) même non découverts. ---
+
+  estDecouvert(pokemonId) {
+    return this.state.pokedex_decouverts.includes(pokemonId);
+  }
+
+  decouvrirPokemon(pokemonId) {
+    if (this.estDecouvert(pokemonId)) return;
+    this.state.pokedex_decouverts.push(pokemonId);
+  }
+
+  // +10% de production finale par Pokémon découvert, calculé en une seule fois (somme
+  // simple des %) puis appliqué comme un seul facteur multiplicatif — jamais composé
+  // pokémon par pokémon (ce qui donnerait 1.1^n) ni sommé dans les additifs finaux.
+  multiplicateurPokedex() {
+    return 1 + BONUS_POKEDEX_PAR_DECOUVERTE * this.state.pokedex_decouverts.length;
+  }
+
+  modifierPokedex() {
+    return { categorie: "multiplicatif_final", valeur: this.multiplicateurPokedex() };
+  }
+
+  // Reconstruit la chaîne évolutive complète d'une espèce (du premier au dernier palier)
+  // en remontant/descendant les liens evolution.vers déjà présents dans pokemons.json —
+  // aucun nouveau champ de chaînage nécessaire. Chaque étape porte le niveau requis pour
+  // y accéder depuis l'étape précédente (null pour la toute première étape de la chaîne).
+  ligneeComplete(pokemonId) {
+    let racine = this.definitionPokemon(pokemonId);
+    let predecesseur = this.data.pokemons.find((p) => p.evolution && p.evolution.vers === racine.id);
+    while (predecesseur) {
+      racine = predecesseur;
+      predecesseur = this.data.pokemons.find((p) => p.evolution && p.evolution.vers === racine.id);
+    }
+    const chaine = [{ def: racine, niveauRequis: null }];
+    let courant = racine;
+    while (courant.evolution) {
+      const suivant = this.definitionPokemon(courant.evolution.vers);
+      chaine.push({ def: suivant, niveauRequis: courant.evolution.niveau });
+      courant = suivant;
+    }
+    return chaine;
   }
 
   // --- Paliers de niveau par Pokémon (cf. docs/paliers_pokemon.md) : 10 upgrades

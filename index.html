@@ -31,6 +31,9 @@
     <section class="panel-menu">
       <div class="panel-header">
         <h2 class="panel-titre" id="panel-titre">Pokémon</h2>
+        <div class="pokedex-header-actions" id="pokedex-header-actions">
+          <button class="btn-pokedex" id="btn-pokedex" aria-label="Pokédex">📖</button>
+        </div>
         <div class="xp-header-actions" id="xp-header-actions">
           <button class="btn-xp-all" id="btn-xp-all" aria-label="Ajouter l'XP sélectionnée à toute l'équipe">ALL</button>
           <button class="btn-xp-select" id="btn-xp-select" aria-label="Choisir la quantité d'XP"></button>
@@ -93,6 +96,25 @@
   <div class="modal-starter" id="modal-recrue" hidden>
     <h3 class="modal-titre" id="recrue-titre"></h3>
     <div class="starter-cartes" id="recrue-cartes"></div>
+  </div>
+
+  <div class="popup-backdrop" id="pokedex-backdrop" hidden></div>
+  <div class="modal-starter modal-pokedex" id="modal-pokedex" hidden>
+    <div id="pokedex-vue-grille">
+      <h3 class="modal-titre">Pokédex</h3>
+      <p class="pokedex-compteur" id="pokedex-compteur"></p>
+      <div class="pokedex-grille" id="pokedex-grille"></div>
+    </div>
+    <div id="pokedex-vue-fiche" hidden>
+      <button class="btn-pokedex-retour" id="btn-pokedex-retour" aria-label="Retour au Pokédex">← Retour</button>
+      <div class="pokedex-fiche">
+        <img class="pokedex-fiche-portrait" id="pokedex-fiche-portrait" alt="" />
+        <div class="pokedex-fiche-nom" id="pokedex-fiche-nom"></div>
+        <div class="pokedex-fiche-types" id="pokedex-fiche-types"></div>
+      </div>
+      <div class="pokedex-fiche-lignee" id="pokedex-fiche-lignee"></div>
+      <p class="pokedex-fiche-description" id="pokedex-fiche-description"></p>
+    </div>
   </div>
 
   <div class="popup-backdrop" id="specialisation-backdrop" hidden></div>

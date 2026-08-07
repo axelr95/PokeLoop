@@ -21,7 +21,8 @@
     "evolution": {
       "vers": "ivysaur",
       "niveau": 16
-    }
+    },
+    "description": "Une graine étrange a été plantée sur son dos à la naissance. Elle grossit avec lui et emmagasine l'énergie du soleil."
   },
   {
     "id": "ivysaur",
@@ -44,7 +45,8 @@
     "evolution": {
       "vers": "venusaur",
       "niveau": 32
-    }
+    },
+    "description": "Le bourgeon sur son dos grossit en puisant les nutriments de son corps. Un parfum agréable s'en dégage quand il s'apprête à fleurir."
   },
   {
     "id": "venusaur",
@@ -63,7 +65,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "La grande fleur sur son dos prend des couleurs plus vives quand elle absorbe la lumière du soleil. On dit que sa fleur imite les Pokémon aux alentours pour se nourrir de leur énergie."
   },
   {
     "id": "charmander",
@@ -86,7 +89,8 @@
     "evolution": {
       "vers": "charmeleon",
       "niveau": 16
-    }
+    },
+    "description": "Un lézard qui préfère les endroits chauds. Quand il pleut, on dit que de la vapeur sort du bout de sa queue."
   },
   {
     "id": "charmeleon",
@@ -108,7 +112,8 @@
     "evolution": {
       "vers": "charizard",
       "niveau": 36
-    }
+    },
+    "description": "Dès qu'il trouve un adversaire, il s'énerve et sa queue s'embrase d'une flamme d'un rouge plus intense."
   },
   {
     "id": "charizard",
@@ -127,7 +132,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il crache des flammes si puissantes qu'elles font fondre presque tout. Il ne souffle vraiment son feu que face à un rival digne de lui."
   },
   {
     "id": "squirtle",
@@ -150,7 +156,8 @@
     "evolution": {
       "vers": "wartortle",
       "niveau": 16
-    }
+    },
+    "description": "Sa carapace n'est pas seulement une protection : sa forme arrondie et ses sillons réduisent la résistance de l'eau quand il nage."
   },
   {
     "id": "wartortle",
@@ -172,7 +179,8 @@
     "evolution": {
       "vers": "blastoise",
       "niveau": 36
-    }
+    },
+    "description": "Sa longue queue duveteuse est prisée pour sa belle couleur, qui fonce avec l'âge. Les traces sur sa carapace sont la preuve de sa force."
   },
   {
     "id": "blastoise",
@@ -190,7 +198,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Les canons à eau qui poussent sur sa carapace développent une pression digne d'un canon et peuvent percer une plaque d'acier à bonne distance."
   },
   {
     "id": "caterpie",
@@ -212,7 +221,8 @@
     "evolution": {
       "vers": "metapod",
       "niveau": 7
-    }
+    },
+    "description": "Il dévore continuellement des feuilles, plus grosses que lui, pour grandir vite. Son antenne dégage une odeur forte quand il se sent menacé."
   },
   {
     "id": "metapod",
@@ -234,7 +244,8 @@
     "evolution": {
       "vers": "butterfree",
       "niveau": 10
-    }
+    },
+    "description": "Presque incapable de bouger, il ne peut que durcir sa carapace pour encaisser les attaques en attendant une transformation majeure à l'intérieur."
   },
   {
     "id": "butterfree",
@@ -253,7 +264,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il collecte le pollen de fleurs en butinant chaque jour. La fine poussière de ses ailes est en réalité toxique si elle est libérée."
   },
   {
     "id": "weedle",
@@ -276,7 +288,8 @@
     "evolution": {
       "vers": "kakuna",
       "niveau": 7
-    }
+    },
+    "description": "L'aiguillon rouge sur sa tête est extrêmement toxique. Il se cache souvent sous les feuilles pour éviter les prédateurs voraces."
   },
   {
     "id": "kakuna",
@@ -299,7 +312,8 @@
     "evolution": {
       "vers": "beedrill",
       "niveau": 10
-    }
+    },
+    "description": "Presque figé, il ne peut riposter que par un jet de venin quand il est attaqué, en attendant de terminer sa métamorphose intérieure."
   },
   {
     "id": "beedrill",
@@ -318,7 +332,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il vole à grande vitesse en formant des essaims et attaque en piquant à répétition avec les trois aiguillons de ses pattes avant."
   },
   {
     "id": "pidgey",
@@ -341,7 +356,8 @@
     "evolution": {
       "vers": "pidgeotto",
       "niveau": 18
-    }
+    },
+    "description": "Un oiseau docile et peu combatif que l'on croise souvent dans les prés et les forêts, occupé à picorer des graines au sol."
   },
   {
     "id": "pidgeotto",
@@ -364,7 +380,8 @@
     "evolution": {
       "vers": "pidgeot",
       "niveau": 36
-    }
+    },
+    "description": "Il possède un territoire de chasse étendu qu'il patrouille sans relâche, attaquant sans pitié quiconque l'envahit."
   },
   {
     "id": "pidgeot",
@@ -383,7 +400,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "En rase-mottes à haute vitesse, il chasse ses proies avec des serres acérées. Son magnifique plumage lui vaut d'être prisé des dresseurs."
   },
   {
     "id": "rattata",
@@ -405,7 +423,8 @@
     "evolution": {
       "vers": "raticate",
       "niveau": 20
-    }
+    },
+    "description": "Ses longues incisives ne cessent jamais de pousser, ce qui l'oblige à ronger sans arrêt pour les user, quitte à s'en prendre à n'importe quoi."
   },
   {
     "id": "raticate",
@@ -423,7 +442,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses moustaches lui servent à évaluer avec précision la taille des espaces exigus, ce qui lui permet de savoir s'il peut s'y faufiler sans se coincer."
   },
   {
     "id": "spearow",
@@ -446,7 +466,8 @@
     "evolution": {
       "vers": "fearow",
       "niveau": 20
-    }
+    },
+    "description": "Malgré ses petites ailes, il bat frénétiquement des dizaines de fois par seconde pour voler à travers les fourrés denses."
   },
   {
     "id": "fearow",
@@ -465,7 +486,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Grâce à son long bec fin, il peut attraper des proies dissimulées dans l'eau ou sous terre sans jamais se mouiller les plumes."
   },
   {
     "id": "ekans",
@@ -487,7 +509,8 @@
     "evolution": {
       "vers": "arbok",
       "niveau": 22
-    }
+    },
+    "description": "Il peut avaler des proies bien plus grosses que lui-même, en dilatant sa mâchoire, puis rester immobile de longues heures pour digérer."
   },
   {
     "id": "arbok",
@@ -505,7 +528,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Le motif effrayant sur son ventre diffère selon les régions. Certains dresseurs pensent qu'il s'agit en réalité d'un visage terrifiant."
   },
   {
     "id": "pikachu",
@@ -527,7 +551,8 @@
     "evolution": {
       "vers": "raichu",
       "niveau": 25
-    }
+    },
+    "description": "Il stocke de l'électricité dans les poches sur ses joues. Quand il dort, il libère de petites décharges qui font grésiller ses poils."
   },
   {
     "id": "raichu",
@@ -545,7 +570,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa longue queue lui sert de paratonnerre, plantée dans le sol pour évacuer le surplus d'électricité qu'il ne parvient pas à contenir."
   },
   {
     "id": "sandshrew",
@@ -567,7 +593,8 @@
     "evolution": {
       "vers": "sandslash",
       "niveau": 22
-    }
+    },
+    "description": "Il se love en boule pour se protéger avant de s'enfouir. Il préfère les endroits secs, car l'eau ramollit sa peau écailleuse."
   },
   {
     "id": "sandslash",
@@ -585,7 +612,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses piquants durs comme la pierre se hérissent quand il se met en boule. Il les utilise aussi pour creuser rapidement des terriers profonds."
   },
   {
     "id": "nidoran-f",
@@ -607,7 +635,8 @@
     "evolution": {
       "vers": "nidorina",
       "niveau": 16
-    }
+    },
+    "description": "Malgré sa petite taille, ses cornes sécrètent un puissant venin. Les femelles ont tendance à se déplacer en petits groupes pour se protéger."
   },
   {
     "id": "nidorina",
@@ -629,7 +658,8 @@
     "evolution": {
       "vers": "nidoqueen",
       "niveau": 25
-    }
+    },
+    "description": "Ses cornes sont plus courtes que celles du mâle de son espèce. Elle devient nettement plus docile en compagnie de ses semblables."
   },
   {
     "id": "nidoqueen",
@@ -648,7 +678,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses écailles solides comme une armure la protègent efficacement même des attaques les plus violentes, ce qui en fait une adversaire redoutable."
   },
   {
     "id": "nidoran-m",
@@ -670,7 +701,8 @@
     "evolution": {
       "vers": "nidorino",
       "niveau": 16
-    }
+    },
+    "description": "Il dresse ses grandes oreilles au moindre bruit suspect. Le venin puissant de sa corne peut se révéler mortel s'il n'est pas maîtrisé."
   },
   {
     "id": "nidorino",
@@ -692,7 +724,8 @@
     "evolution": {
       "vers": "nidoking",
       "niveau": 25
-    }
+    },
+    "description": "Sa corne, plus dure que du diamant, réagit au moindre signal nerveux : elle se dresse instantanément dès qu'un ennemi approche."
   },
   {
     "id": "nidoking",
@@ -711,7 +744,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa queue épaisse et puissante peut renverser une tour métallique d'un seul coup. Il devient incontrôlable une fois qu'il se met en colère."
   },
   {
     "id": "clefairy",
@@ -733,7 +767,8 @@
     "evolution": {
       "vers": "clefable",
       "niveau": 25
-    }
+    },
+    "description": "Il est rare et son apparition est parfois associée à la chute d'une étoile filante. Il aime danser sous la pleine lune."
   },
   {
     "id": "clefable",
@@ -751,7 +786,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Timide, il ne se montre presque jamais aux humains. On raconte qu'il se déplace sur la pointe des pieds pour rester silencieux."
   },
   {
     "id": "vulpix",
@@ -773,7 +809,8 @@
     "evolution": {
       "vers": "ninetales",
       "niveau": 25
-    }
+    },
+    "description": "Dès la naissance, il ne possède qu'une seule queue toute blanche, qui se divise en plusieurs queues rousses à mesure qu'il grandit."
   },
   {
     "id": "ninetales",
@@ -791,7 +828,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il vit très longtemps et chacune de ses neuf queues renfermerait un pouvoir mystique. On raconte qu'il peut lancer une malédiction s'il est maltraité."
   },
   {
     "id": "jigglypuff",
@@ -814,7 +852,8 @@
     "evolution": {
       "vers": "wigglytuff",
       "niveau": 25
-    }
+    },
+    "description": "Ses grands yeux ronds ne clignent presque jamais. Il chante une berceuse hypnotisante en gonflant son corps au rythme de sa mélodie."
   },
   {
     "id": "wigglytuff",
@@ -833,7 +872,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa peau extrêmement élastique se distend comme un ballon. Si on tire dessus, elle reprend aussitôt sa forme initiale."
   },
   {
     "id": "zubat",
@@ -856,7 +896,8 @@
     "evolution": {
       "vers": "golbat",
       "niveau": 22
-    }
+    },
+    "description": "Aveugle, il se repère grâce à un système d'écholocation ultrasonique. Il vit tapi dans l'obscurité des grottes en attendant le crépuscule."
   },
   {
     "id": "golbat",
@@ -875,7 +916,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa large gueule sécrète une salive toxique qui empêche le sang de coaguler, lui permettant de se nourrir tranquillement de ses victimes."
   },
   {
     "id": "oddish",
@@ -898,7 +940,8 @@
     "evolution": {
       "vers": "gloom",
       "niveau": 21
-    }
+    },
+    "description": "Il fuit la lumière du soleil et préfère se déplacer la nuit. Le jour, il s'enterre dans un sol riche en profitant de l'obscurité pour grandir."
   },
   {
     "id": "gloom",
@@ -921,7 +964,8 @@
     "evolution": {
       "vers": "vileplume",
       "niveau": 25
-    }
+    },
+    "description": "Le liquide visqueux et nauséabond qui suinte de sa tête a une odeur si forte qu'elle peut faire pleurer n'importe qui à trente mètres à la ronde."
   },
   {
     "id": "vileplume",
@@ -940,7 +984,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il possède les plus grands pétales du monde végétal. Chaque mouvement de sa fleur diffuse un pollen toxique et allergène dans l'air."
   },
   {
     "id": "paras",
@@ -963,7 +1008,8 @@
     "evolution": {
       "vers": "parasect",
       "niveau": 24
-    }
+    },
+    "description": "Un champignon parasite a poussé sur son dos et contrôle petit à petit son organisme, jusqu'à en absorber la majeure partie des nutriments."
   },
   {
     "id": "parasect",
@@ -982,7 +1028,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Le champignon géant sur son dos a totalement pris le contrôle de son corps. On raconte qu'il grandit en se nourrissant de son hôte, encore vivant."
   },
   {
     "id": "venonat",
@@ -1005,7 +1052,8 @@
     "evolution": {
       "vers": "venomoth",
       "niveau": 31
-    }
+    },
+    "description": "Ses grands yeux rouges à facettes agissent comme des détecteurs infrarouges, lui permettant de repérer ses proies même dans l'obscurité totale."
   },
   {
     "id": "venomoth",
@@ -1024,7 +1072,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "La fine poussière qui recouvre ses ailes libère des poudres toxiques différentes à chaque battement, selon l'effet qu'il recherche."
   },
   {
     "id": "diglett",
@@ -1046,7 +1095,8 @@
     "evolution": {
       "vers": "dugtrio",
       "niveau": 26
-    }
+    },
+    "description": "On ignore à quoi ressemble le reste de son corps, car il vit toujours caché sous terre. Les fermiers l'apprécient pour l'aération qu'il apporte au sol."
   },
   {
     "id": "dugtrio",
@@ -1064,7 +1114,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Trois individus formés à partir d'un même corps, qui creusent en parfaite synchronisation. Ses déplacements souterrains peuvent provoquer des séismes."
   },
   {
     "id": "meowth",
@@ -1086,7 +1137,8 @@
     "evolution": {
       "vers": "persian",
       "niveau": 28
-    }
+    },
+    "description": "Attiré par tout ce qui brille, il adore ramasser les pièces et autres objets scintillants qu'il croise en se promenant la nuit."
   },
   {
     "id": "persian",
@@ -1104,7 +1156,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Son pelage élégant et ses six moustaches gracieuses cachent un tempérament sournois et un tempérament facilement irritable."
   },
   {
     "id": "psyduck",
@@ -1126,7 +1179,8 @@
     "evolution": {
       "vers": "golduck",
       "niveau": 33
-    }
+    },
+    "description": "Il souffre en permanence d'un mal de tête persistant. Lorsque la douleur atteint son paroxysme, il libère malgré lui de mystérieux pouvoirs psychiques."
   },
   {
     "id": "golduck",
@@ -1144,7 +1198,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Excellent nageur, on le croise souvent près des lacs et rivières. On raconte qu'il apparaît quand la surface de l'eau est parfaitement calme."
   },
   {
     "id": "mankey",
@@ -1166,7 +1221,8 @@
     "evolution": {
       "vers": "primeape",
       "niveau": 28
-    }
+    },
+    "description": "Son humeur change à une vitesse redoutable : à peine s'est-il calmé qu'un rien suffit à le mettre à nouveau dans une colère noire."
   },
   {
     "id": "primeape",
@@ -1184,7 +1240,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa fureur est si intense qu'il continue de pourchasser sa cible même après avoir oublié la raison initiale de sa colère."
   },
   {
     "id": "growlithe",
@@ -1206,7 +1263,8 @@
     "evolution": {
       "vers": "arcanine",
       "niveau": 25
-    }
+    },
+    "description": "Fidèle et courageux, il aboie sans relâche face à tout intrus. Son flair très développé lui permet de distinguer l'odeur de chaque individu."
   },
   {
     "id": "arcanine",
@@ -1224,7 +1282,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses longues pattes lui permettent de courir sur de très longues distances sans jamais se fatiguer. Il inspire un profond respect depuis l'Antiquité."
   },
   {
     "id": "poliwag",
@@ -1246,7 +1305,8 @@
     "evolution": {
       "vers": "poliwhirl",
       "niveau": 25
-    }
+    },
+    "description": "Sa peau fine laisse apparaître ses organes internes par transparence. La spirale sur son ventre serait en réalité une partie de ses intestins."
   },
   {
     "id": "poliwhirl",
@@ -1268,7 +1328,8 @@
     "evolution": {
       "vers": "poliwrath",
       "niveau": 25
-    }
+    },
+    "description": "Regarder fixement la spirale sur son ventre a un effet hypnotisant. On raconte que des chamans l'utilisaient autrefois pour calmer les esprits."
   },
   {
     "id": "poliwrath",
@@ -1287,7 +1348,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses muscles surdéveloppés en font un nageur exceptionnel, capable de traverser l'océan sans jamais faiblir."
   },
   {
     "id": "abra",
@@ -1309,7 +1371,8 @@
     "evolution": {
       "vers": "kadabra",
       "niveau": 16
-    }
+    },
+    "description": "Il passe environ dix-huit heures par jour à dormir. S'il sent le danger approcher, il se téléporte ailleurs même en plein sommeil."
   },
   {
     "id": "kadabra",
@@ -1331,7 +1394,8 @@
     "evolution": {
       "vers": "alakazam",
       "niveau": 30
-    }
+    },
+    "description": "Il émettrait de faibles ondes cérébrales qui provoquent des maux de tête chez les personnes à proximité. Sa cuillère amplifierait ses pouvoirs psychiques."
   },
   {
     "id": "alakazam",
@@ -1349,7 +1413,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Son cerveau ne cesse de grossir, au point que son cou peine à en soutenir le poids. On dit qu'il se souvient de tout ce qu'il a jamais vécu."
   },
   {
     "id": "machop",
@@ -1371,7 +1436,8 @@
     "evolution": {
       "vers": "machoke",
       "niveau": 28
-    }
+    },
+    "description": "Son corps est entièrement constitué de muscles. Même le plus jeune d'entre eux peut soulever une centaine d'adultes sans effort."
   },
   {
     "id": "machoke",
@@ -1393,7 +1459,8 @@
     "evolution": {
       "vers": "machamp",
       "niveau": 30
-    }
+    },
+    "description": "Sa ceinture musclée contient et régule sa force phénoménale, sans quoi il détruirait tout ce qui l'entoure au moindre geste."
   },
   {
     "id": "machamp",
@@ -1411,7 +1478,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses quatre bras lui permettent d'envoyer une centaine de coups de poing en seulement deux secondes lorsqu'il se déchaîne."
   },
   {
     "id": "bellsprout",
@@ -1434,7 +1502,8 @@
     "evolution": {
       "vers": "weepinbell",
       "niveau": 21
-    }
+    },
+    "description": "Ses racines minces mais solides lui permettent de se nourrir même sur un sol aride, en aspirant les nutriments avec ténacité."
   },
   {
     "id": "weepinbell",
@@ -1457,7 +1526,8 @@
     "evolution": {
       "vers": "victreebel",
       "niveau": 25
-    }
+    },
+    "description": "Un liquide digestif acide s'écoule en permanence de sa bouche. Le simple contact de son suc suffit à faire fondre le métal."
   },
   {
     "id": "victreebel",
@@ -1476,7 +1546,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa gueule dégage un parfum sucré qui attire les proies avant de les engloutir entières, sans jamais les laisser ressortir."
   },
   {
     "id": "tentacool",
@@ -1499,7 +1570,8 @@
     "evolution": {
       "vers": "tentacruel",
       "niveau": 30
-    }
+    },
+    "description": "Ses longs tentacules peuvent se rétracter mais s'étirent normalement jusqu'à cinquante mètres, causant de terribles douleurs au contact."
   },
   {
     "id": "tentacruel",
@@ -1518,7 +1590,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Les anneaux rouges sur ses tentacules brillent avant une attaque. Il en possède quatre-vingts-seize, capables de paralyser une proie en un instant."
   },
   {
     "id": "geodude",
@@ -1541,7 +1614,8 @@
     "evolution": {
       "vers": "graveler",
       "niveau": 25
-    }
+    },
+    "description": "On le confond souvent avec un simple rocher immobile au bord des chemins. Les promeneurs finissent parfois par lui marcher accidentellement dessus."
   },
   {
     "id": "graveler",
@@ -1564,7 +1638,8 @@
     "evolution": {
       "vers": "golem",
       "niveau": 30
-    }
+    },
+    "description": "Il dévale volontiers les pentes escarpées en roulant sur lui-même, ne se souciant jamais de ce qui pourrait se trouver sur son passage."
   },
   {
     "id": "golem",
@@ -1583,7 +1658,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa carapace rocheuse extrêmement solide se détache et repousse une fois par an. On raconte qu'il explose lorsqu'il se met vraiment en colère."
   },
   {
     "id": "ponyta",
@@ -1605,7 +1681,8 @@
     "evolution": {
       "vers": "rapidash",
       "niveau": 40
-    }
+    },
+    "description": "Ses sabots, plus durs que du diamant, se renforcent encore à force de galoper. Peu après sa naissance, il court déjà presque aussi vite qu'un adulte."
   },
   {
     "id": "rapidash",
@@ -1623,7 +1700,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa crinière de flammes s'embrase encore davantage lorsqu'il galope à pleine vitesse, capable de dépasser deux cent quarante kilomètres par heure."
   },
   {
     "id": "slowpoke",
@@ -1646,7 +1724,8 @@
     "evolution": {
       "vers": "slowbro",
       "niveau": 37
-    }
+    },
+    "description": "Il lui faut cinq bonnes secondes pour ressentir la douleur lorsqu'on lui marche sur la queue. Sa lenteur légendaire le rend étonnamment difficile à agacer."
   },
   {
     "id": "slowbro",
@@ -1665,7 +1744,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Un Krabby s'est un jour accroché à sa queue et l'a mordue ; la sensation lui a tellement plu qu'il n'a jamais cherché à s'en débarrasser depuis."
   },
   {
     "id": "magnemite",
@@ -1688,7 +1768,8 @@
     "evolution": {
       "vers": "magneton",
       "niveau": 30
-    }
+    },
+    "description": "Il se maintient en lévitation grâce à un champ magnétique. On le voit apparaître en nombre après les orages, attiré par l'électricité statique."
   },
   {
     "id": "magneton",
@@ -1707,7 +1788,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Formé de trois Magnéti agglomérés, il génère un puissant champ magnétique connu pour brouiller les signaux de télévision à proximité."
   },
   {
     "id": "farfetchd",
@@ -1726,7 +1808,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il tient toujours entre ses ailes une tige de poireau qu'il utilise à la fois comme épée improvisée et comme ingrédient de secours."
   },
   {
     "id": "doduo",
@@ -1749,7 +1832,8 @@
     "evolution": {
       "vers": "dodrio",
       "niveau": 31
-    }
+    },
+    "description": "Ses deux têtes ne dorment jamais en même temps, ce qui lui permet de rester vigilant à tout moment, même pendant son sommeil."
   },
   {
     "id": "dodrio",
@@ -1768,7 +1852,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Chacune de ses trois têtes exprime une émotion différente : joie, colère ou tristesse. Il peut courir sans jamais montrer de signe de fatigue."
   },
   {
     "id": "seel",
@@ -1790,7 +1875,8 @@
     "evolution": {
       "vers": "dewgong",
       "niveau": 34
-    }
+    },
+    "description": "Sa peau épaisse le protège efficacement du froid, ce qui lui permet de plonger sans problème dans une eau glaciale à moins dix degrés."
   },
   {
     "id": "dewgong",
@@ -1809,7 +1895,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa fourrure blanche flotte magnifiquement dans l'eau. On raconte qu'il glisse sur la banquise en s'aidant de sa corne frontale comme d'un ski."
   },
   {
     "id": "grimer",
@@ -1831,7 +1918,8 @@
     "evolution": {
       "vers": "muk",
       "niveau": 38
-    }
+    },
+    "description": "Né de déchets industriels abandonnés, il se nourrit de détritus en tout genre. Son corps visqueux dégage une odeur pestilentielle."
   },
   {
     "id": "muk",
@@ -1849,7 +1937,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Son corps toxique laisse derrière lui une traînée si nauséabonde qu'on peut sentir sa présence à plus d'un kilomètre à la ronde."
   },
   {
     "id": "shellder",
@@ -1871,7 +1960,8 @@
     "evolution": {
       "vers": "cloyster",
       "niveau": 25
-    }
+    },
+    "description": "Sa coquille, plus dure que du diamant, se referme brutalement sur ses proies. On raconte qu'une fois refermée, rien ne peut plus l'ouvrir."
   },
   {
     "id": "cloyster",
@@ -1890,7 +1980,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa coquille est réputée pour être la plus dure qui soit. Quand il se sent menacé, il tire une volée de pointes acérées vers son adversaire."
   },
   {
     "id": "gastly",
@@ -1913,7 +2004,8 @@
     "evolution": {
       "vers": "haunter",
       "niveau": 25
-    }
+    },
+    "description": "Constitué de gaz toxique, son corps peut envelopper une cible pour l'endormir en quelques secondes sans qu'elle ne s'en aperçoive."
   },
   {
     "id": "haunter",
@@ -1936,7 +2028,8 @@
     "evolution": {
       "vers": "gengar",
       "niveau": 30
-    }
+    },
+    "description": "Un simple frôlement de sa langue suffit à provoquer des tremblements incontrôlables chez sa victime, jusqu'à l'arrêt complet de sa respiration."
   },
   {
     "id": "gengar",
@@ -1955,7 +2048,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il se dissimulerait dans l'ombre des gens et des objets pour observer le froid glacial qu'il provoque. On dit qu'il apparaît par nuit de pleine lune."
   },
   {
     "id": "onix",
@@ -1974,7 +2068,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "À mesure qu'il grandit, son corps se solidifie et prend une texture semblable au diamant. Il creuse sous terre à près de quatre-vingts kilomètres par heure."
   },
   {
     "id": "drowzee",
@@ -1996,7 +2091,8 @@
     "evolution": {
       "vers": "hypno",
       "niveau": 26
-    }
+    },
+    "description": "Il se nourrit des rêves des humains et des Pokémon endormis à proximité. On raconte qu'il peut faire ressurgir des souvenirs oubliés en aspirant un rêve."
   },
   {
     "id": "hypno",
@@ -2014,7 +2110,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il balance son pendule d'un mouvement régulier pour hypnotiser sa cible avant de l'attaquer, ou de dérober un de ses rêves."
   },
   {
     "id": "krabby",
@@ -2036,7 +2133,8 @@
     "evolution": {
       "vers": "kingler",
       "niveau": 28
-    }
+    },
+    "description": "Ses grosses pinces repoussent si elles se cassent au combat. Il en change régulièrement de taille en fonction de leur usure."
   },
   {
     "id": "kingler",
@@ -2054,7 +2152,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa pince massive développe une force phénoménale, mais elle est si lourde qu'il a du mal à viser avec précision au combat."
   },
   {
     "id": "voltorb",
@@ -2076,7 +2175,8 @@
     "evolution": {
       "vers": "electrode",
       "niveau": 30
-    }
+    },
+    "description": "Il ressemble à s'y méprendre à une Poké Ball. Personne ne sait vraiment pourquoi, mais son contact soudain peut provoquer une violente explosion."
   },
   {
     "id": "electrode",
@@ -2094,7 +2194,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il accumule l'électricité atmosphérique dans son corps sphérique. Devenu instable, il peut exploser au moindre choc, même léger."
   },
   {
     "id": "exeggcute",
@@ -2117,7 +2218,8 @@
     "evolution": {
       "vers": "exeggutor",
       "niveau": 25
-    }
+    },
+    "description": "Composé de six œufs reliés par télépathie, le groupe se déplace toujours de manière coordonnée comme s'il ne formait qu'un seul être."
   },
   {
     "id": "exeggutor",
@@ -2136,7 +2238,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Chacune de ses trois têtes pense de manière indépendante. On raconte que la tête la plus âgée dirige les deux autres pendant les combats."
   },
   {
     "id": "cubone",
@@ -2158,7 +2261,8 @@
     "evolution": {
       "vers": "marowak",
       "niveau": 28
-    }
+    },
+    "description": "Il porte toujours le crâne de sa mère disparue en guise de casque, pour cacher son visage triste et masquer son propre chagrin."
   },
   {
     "id": "marowak",
@@ -2176,7 +2280,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ayant surmonté la perte de sa mère, il est devenu robuste et endurci. Il manie son os comme une arme avec une redoutable précision."
   },
   {
     "id": "hitmonlee",
@@ -2194,7 +2299,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses jambes élastiques peuvent s'étirer librement pour décocher des coups de pied dévastateurs, avant de reprendre instantanément leur taille normale."
   },
   {
     "id": "hitmonchan",
@@ -2212,7 +2318,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Chacun de ses coups de poing est asséné avec une vitesse fulgurante, dans un style qui varie selon le dresseur qui l'a entraîné."
   },
   {
     "id": "lickitung",
@@ -2230,7 +2337,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa langue, longue et gluante, recouvre tout ce qu'elle touche d'une salive qui provoque un frisson persistant durant plusieurs jours."
   },
   {
     "id": "koffing",
@@ -2252,7 +2360,8 @@
     "evolution": {
       "vers": "weezing",
       "niveau": 35
-    }
+    },
+    "description": "Son corps entier n'est en réalité qu'une poche de gaz toxique. Il explose facilement au moindre contact avec une source de chaleur."
   },
   {
     "id": "weezing",
@@ -2270,7 +2379,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Formé de deux Smogo fusionnés, il produit un gaz nauséabond en faisant fermenter des ordures dans son corps, jour et nuit."
   },
   {
     "id": "rhyhorn",
@@ -2293,7 +2403,8 @@
     "evolution": {
       "vers": "rhydon",
       "niveau": 42
-    }
+    },
+    "description": "Doté d'un cerveau minuscule, il oublie instantanément ce qu'il vient de faire. En revanche, rien ne peut arrêter sa charge une fois lancée."
   },
   {
     "id": "rhydon",
@@ -2312,7 +2423,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa peau, aussi dure que du roc, lui permet même de vivre au cœur d'une coulée de lave en fusion sans en être affecté."
   },
   {
     "id": "chansey",
@@ -2330,7 +2442,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il est extrêmement difficile à approcher dans la nature. L'œuf nourrissant qu'il transporte est très recherché pour ses vertus revigorantes."
   },
   {
     "id": "tangela",
@@ -2348,7 +2461,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Son corps est entièrement recouvert de longues lianes bleues qui repoussent aussitôt coupées, cachant sa véritable apparence à tout le monde."
   },
   {
     "id": "kangaskhan",
@@ -2366,7 +2480,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Le petit qu'elle porte dans sa poche ventrale n'en sort presque jamais avant l'âge de trois ans, restant bien à l'abri."
   },
   {
     "id": "horsea",
@@ -2388,7 +2503,8 @@
     "evolution": {
       "vers": "seadra",
       "niveau": 32
-    }
+    },
+    "description": "Il s'accroche aux algues marines grâce à sa queue pour ne pas être emporté par le courant lorsqu'il se repose."
   },
   {
     "id": "seadra",
@@ -2406,7 +2522,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Les pointes acérées le long de son corps sécrètent un puissant venin. Le mâle garde les œufs dans sa poche jusqu'à l'éclosion."
   },
   {
     "id": "goldeen",
@@ -2428,7 +2545,8 @@
     "evolution": {
       "vers": "seaking",
       "niveau": 33
-    }
+    },
+    "description": "Sa nageoire caudale, ondulant tel un magnifique kimono, lui permet de nager avec grâce à contre-courant, même dans les rapides les plus violents."
   },
   {
     "id": "seaking",
@@ -2446,7 +2564,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "En automne, il migre en amont des rivières en creusant patiemment la roche à l'aide de sa corne pour tracer son propre chemin."
   },
   {
     "id": "staryu",
@@ -2468,7 +2587,8 @@
     "evolution": {
       "vers": "starmie",
       "niveau": 25
-    }
+    },
+    "description": "Son noyau central, situé au cœur de son corps, scintille d'une lumière rougeoyante la nuit. On raconte qu'il aurait la même forme qu'une étoile filante."
   },
   {
     "id": "starmie",
@@ -2487,7 +2607,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Son noyau translucide émet des signaux lumineux mystérieux, dont on ignore encore la signification exacte, dans des couleurs de l'arc-en-ciel."
   },
   {
     "id": "mr-mime",
@@ -2506,7 +2627,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Doué d'un incroyable talent de mime, il peut créer des murs invisibles rien qu'en effectuant les gestes appropriés du bout des doigts."
   },
   {
     "id": "scyther",
@@ -2525,7 +2647,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses faux tranchantes deviennent plus affûtées à mesure qu'il les aiguise contre des pierres dures, jusqu'à pouvoir trancher une bille de fer."
   },
   {
     "id": "jynx",
@@ -2544,7 +2667,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Elle se déplace en effectuant des pas de danse rythmés, comme si elle voulait exprimer une joie irrépressible qui semble contagieuse."
   },
   {
     "id": "electabuzz",
@@ -2562,7 +2686,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Attiré par les orages, il grimpe volontiers sur des pylônes électriques pour absorber la foudre et refaire le plein d'énergie."
   },
   {
     "id": "magmar",
@@ -2580,7 +2705,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Son corps brûle en permanence à une température avoisinant les mille cinq cents degrés. Il vit près des volcans en activité."
   },
   {
     "id": "pinsir",
@@ -2598,7 +2724,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il utilise ses puissantes pinces cornues pour agripper sa proie et la couper en deux d'un coup sec, sans lui laisser aucune chance."
   },
   {
     "id": "tauros",
@@ -2616,7 +2743,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ce Pokémon extrêmement agressif charge tout ce qui bouge sans distinction. Il fouette l'air de ses trois queues pour s'auto-motiver avant l'attaque."
   },
   {
     "id": "magikarp",
@@ -2638,7 +2766,8 @@
     "evolution": {
       "vers": "gyarados",
       "niveau": 20
-    }
+    },
+    "description": "Autrefois plus puissant qu'aujourd'hui, on le considère désormais comme l'un des Pokémon les plus faibles, incapable de faire autre chose que sauter."
   },
   {
     "id": "gyarados",
@@ -2657,7 +2786,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Une fois sa fureur déclenchée, il devient d'une violence inouïe et continue de tout détruire jusqu'à épuisement total de ses forces."
   },
   {
     "id": "lapras",
@@ -2676,7 +2806,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Intelligent et d'une grande douceur, il comprend le langage humain. On raconte qu'il transportait autrefois les dresseurs sur son dos à travers les mers."
   },
   {
     "id": "ditto",
@@ -2694,7 +2825,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il peut reconstituer entièrement la structure cellulaire de n'importe quel être qu'il observe, mais se trompe parfois s'il est surpris ou distrait."
   },
   {
     "id": "eevee",
@@ -2712,7 +2844,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa structure génétique instable évolue de façon très différente selon l'environnement dans lequel il se trouve."
   },
   {
     "id": "vaporeon",
@@ -2730,7 +2863,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Sa structure cellulaire ressemble à celle des molécules d'eau, ce qui lui permet de se fondre littéralement dans l'eau et de devenir invisible."
   },
   {
     "id": "jolteon",
@@ -2748,7 +2882,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ses poils hérissés fonctionnent comme des antennes de haute sensibilité, capables de détecter le moindre changement climatique alentour."
   },
   {
     "id": "flareon",
@@ -2766,7 +2901,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "La poche interne qui emmagasine l'air enflammé dans son organisme peut atteindre une température supérieure à neuf cents degrés."
   },
   {
     "id": "porygon",
@@ -2784,7 +2920,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ce Pokémon entièrement programmé par ordinateur peut se déplacer librement dans le cyberespace pour explorer les réseaux électroniques."
   },
   {
     "id": "omanyte",
@@ -2807,7 +2944,8 @@
     "evolution": {
       "vers": "omastar",
       "niveau": 40
-    }
+    },
+    "description": "Disparu depuis des temps immémoriaux, il n'a pu être ramené à la vie que grâce à une technologie moderne de régénération."
   },
   {
     "id": "omastar",
@@ -2826,7 +2964,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "On pense qu'il a fini par disparaître parce que sa coquille, trop lourde, l'empêchait de se déplacer efficacement pour chasser sa nourriture."
   },
   {
     "id": "kabuto",
@@ -2849,7 +2988,8 @@
     "evolution": {
       "vers": "kabutops",
       "niveau": 40
-    }
+    },
+    "description": "Ce Pokémon fossile, dit vivant, n'a presque pas changé depuis des millions d'années. On le surnomme parfois « fossile vivant »."
   },
   {
     "id": "kabutops",
@@ -2868,7 +3008,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il tranchait autrefois ses proies avec ses faux acérées avant d'en aspirer les fluides. On suppose qu'il nageait aussi habilement qu'un dauphin."
   },
   {
     "id": "aerodactyl",
@@ -2887,7 +3028,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ce Pokémon préhistorique a été ramené à la vie à partir d'un moustique fossilisé conservé dans de l'ambre pendant des millions d'années."
   },
   {
     "id": "snorlax",
@@ -2905,7 +3047,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il ne fait rien d'autre que manger et dormir, et son poids colossal fait trembler le sol quand il s'installe pour sa sieste quotidienne."
   },
   {
     "id": "articuno",
@@ -2924,7 +3067,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "On raconte que le simple battement de ses ailes suffit à faire tomber la neige. Ce Pokémon légendaire ne se montre que très rarement."
   },
   {
     "id": "zapdos",
@@ -2943,7 +3087,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Il apparaît généralement lors des orages violents. On raconte qu'il aurait le pouvoir de commander à la foudre elle-même."
   },
   {
     "id": "moltres",
@@ -2962,7 +3107,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ce Pokémon légendaire de feu serait à l'origine de l'apparition du printemps chaque année, réchauffant les terres partout où il vole."
   },
   {
     "id": "dratini",
@@ -2984,7 +3130,8 @@
     "evolution": {
       "vers": "dragonair",
       "niveau": 30
-    }
+    },
+    "description": "Il mue continuellement, changeant de peau à mesure qu'il grandit. Longtemps considéré comme un mythe, il vit caché au fond des lacs."
   },
   {
     "id": "dragonair",
@@ -3006,7 +3153,8 @@
     "evolution": {
       "vers": "dragonite",
       "niveau": 55
-    }
+    },
+    "description": "Un mystérieux orbe transparent orne sa gorge. On raconte qu'il aurait le pouvoir de modifier les conditions climatiques à volonté."
   },
   {
     "id": "dragonite",
@@ -3025,7 +3173,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Malgré sa carrure impressionnante et ses petites ailes, il peut faire le tour de la planète en à peine seize heures de vol."
   },
   {
     "id": "mewtwo",
@@ -3043,7 +3192,8 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Créé par manipulation génétique à partir de l'ADN de Mew, ce Pokémon aux pouvoirs psychiques exceptionnels serait le plus puissant jamais conçu."
   },
   {
     "id": "mew",
@@ -3061,6 +3211,7 @@
     "production_base": {
       "type": "lineaire",
       "valeur_par_niveau": 2
-    }
+    },
+    "description": "Ce Pokémon extrêmement rare serait à l'origine du patrimoine génétique de tous les autres Pokémon. On raconte qu'il se rend invisible à volonté."
   }
 ]

@@ -151,6 +151,8 @@ async function demarrer() {
     panelTitre: document.getElementById("panel-titre"),
     panelPokemon: document.getElementById("panel-pokemon"),
     panelBoutique: document.getElementById("panel-boutique"),
+    pokedexHeaderActions: document.getElementById("pokedex-header-actions"),
+    btnPokedex: document.getElementById("btn-pokedex"),
     xpHeaderActions: document.getElementById("xp-header-actions"),
     btnXpAll: document.getElementById("btn-xp-all"),
     btnXpSelect: document.getElementById("btn-xp-select"),
@@ -175,6 +177,18 @@ async function demarrer() {
     modalRecrue: document.getElementById("modal-recrue"),
     recrueTitre: document.getElementById("recrue-titre"),
     recrueCartes: document.getElementById("recrue-cartes"),
+    pokedexBackdrop: document.getElementById("pokedex-backdrop"),
+    modalPokedex: document.getElementById("modal-pokedex"),
+    pokedexVueGrille: document.getElementById("pokedex-vue-grille"),
+    pokedexCompteur: document.getElementById("pokedex-compteur"),
+    pokedexGrille: document.getElementById("pokedex-grille"),
+    pokedexVueFiche: document.getElementById("pokedex-vue-fiche"),
+    btnPokedexRetour: document.getElementById("btn-pokedex-retour"),
+    pokedexFichePortrait: document.getElementById("pokedex-fiche-portrait"),
+    pokedexFicheNom: document.getElementById("pokedex-fiche-nom"),
+    pokedexFicheTypes: document.getElementById("pokedex-fiche-types"),
+    pokedexFicheLignee: document.getElementById("pokedex-fiche-lignee"),
+    pokedexFicheDescription: document.getElementById("pokedex-fiche-description"),
     specialisationBackdrop: document.getElementById("specialisation-backdrop"),
     modalSpecialisation: document.getElementById("modal-specialisation"),
     specialisationCartes: document.getElementById("specialisation-cartes"),
@@ -414,6 +428,7 @@ async function demarrer() {
     el.panelPokemon.hidden = nom !== "pokemon";
     el.panelBoutique.hidden = nom !== "boutique";
     el.panelTitre.textContent = TITRES_ONGLETS[nom];
+    el.pokedexHeaderActions.hidden = nom !== "pokemon";
     el.xpHeaderActions.hidden = nom !== "pokemon";
     el.boutiqueHeaderActions.hidden = nom !== "boutique";
     el.tabsBtns.forEach((btn) => btn.classList.toggle("actif", btn.dataset.tab === nom));
@@ -897,6 +912,110 @@ async function demarrer() {
   }
 
   el.specialisationBackdrop.addEventListener("click", fermerModaleSpecialisation);
+
+  // --- Pokédex (6quater) : vue grille des 151 Pokémon + vue fiche détaillée, dans la
+  // même modale. Consultable même non découvert (portrait grisé, nom visible, pas de lore
+  // ni de lignée pour éviter de spoiler le contenu). ---
+  function creerVignettePokedex(def) {
+    const decouvert = game.estDecouvert(def.id);
+    const vignette = document.createElement("button");
+    vignette.className = `pokedex-vignette${decouvert ? "" : " pokedex-non-decouvert"}`;
+    const img = document.createElement("img");
+    img.src = `${def.sprite_dossier}portrait.png`;
+    img.alt = decouvert ? def.nom : "";
+    vignette.appendChild(img);
+    vignette.addEventListener("click", (evt) => {
+      evt.stopPropagation();
+      ouvrirFichePokedex(def.id);
+    });
+    return vignette;
+  }
+
+  function construirePokedexGrille() {
+    const nbDecouverts = game.state.pokedex_decouverts.length;
+    const bonusPct = Math.round((game.multiplicateurPokedex() - 1) * 100);
+    el.pokedexCompteur.textContent = `${nbDecouverts} / ${game.data.pokemons.length} découverts — bonus +${bonusPct}% production finale`;
+    el.pokedexGrille.innerHTML = "";
+    for (const def of game.data.pokemons) {
+      el.pokedexGrille.appendChild(creerVignettePokedex(def));
+    }
+  }
+
+  function afficherVuePokedex(vue) {
+    el.pokedexVueGrille.hidden = vue !== "grille";
+    el.pokedexVueFiche.hidden = vue !== "fiche";
+  }
+
+  function ouvrirFichePokedex(pokemonId) {
+    const def = game.definitionPokemon(pokemonId);
+    const decouvert = game.estDecouvert(pokemonId);
+
+    el.pokedexFichePortrait.src = `${def.sprite_dossier}portrait.png`;
+    el.pokedexFichePortrait.classList.toggle("pokedex-non-decouvert", !decouvert);
+    el.pokedexFicheNom.textContent = def.nom;
+
+    el.pokedexFicheTypes.innerHTML = "";
+    el.pokedexFicheLignee.innerHTML = "";
+    el.pokedexFicheDescription.textContent = "";
+
+    if (!decouvert) {
+      el.pokedexFicheDescription.className = "pokedex-fiche-indisponible";
+      el.pokedexFicheDescription.textContent =
+        "Pokémon non découvert. Fais-le rejoindre ton équipe pour révéler sa fiche.";
+      afficherVuePokedex("fiche");
+      return;
+    }
+
+    for (const t of def.types) el.pokedexFicheTypes.appendChild(creerBadgeType(t));
+
+    const lignee = game.ligneeComplete(pokemonId);
+    lignee.forEach((etape, index) => {
+      if (index > 0) {
+        const fleche = document.createElement("span");
+        fleche.className = "pokedex-lignee-fleche";
+        fleche.textContent = `→ Nv ${etape.niveauRequis}`;
+        el.pokedexFicheLignee.appendChild(fleche);
+      }
+      const bloc = document.createElement("div");
+      bloc.className = `pokedex-lignee-etape${etape.def.id === pokemonId ? " pokedex-etape-actuelle" : ""}`;
+      const img = document.createElement("img");
+      img.src = `${etape.def.sprite_dossier}portrait.png`;
+      img.alt = "";
+      const nom = document.createElement("span");
+      nom.textContent = etape.def.nom;
+      bloc.append(img, nom);
+      el.pokedexFicheLignee.appendChild(bloc);
+    });
+
+    el.pokedexFicheDescription.className = "pokedex-fiche-description";
+    el.pokedexFicheDescription.textContent = def.description;
+
+    afficherVuePokedex("fiche");
+  }
+
+  function fermerModalePokedex() {
+    el.modalPokedex.hidden = true;
+    el.pokedexBackdrop.hidden = true;
+  }
+
+  function ouvrirModalePokedex() {
+    construirePokedexGrille();
+    afficherVuePokedex("grille");
+    el.modalPokedex.hidden = false;
+    el.pokedexBackdrop.hidden = false;
+  }
+
+  el.btnPokedex.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    ouvrirModalePokedex();
+  });
+
+  el.btnPokedexRetour.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    afficherVuePokedex("grille");
+  });
+
+  el.pokedexBackdrop.addEventListener("click", fermerModalePokedex);
 
   // --- Toast de progression hors-ligne, affiché une fois au chargement si applicable ---
   function afficherToastHorsLigne() {
