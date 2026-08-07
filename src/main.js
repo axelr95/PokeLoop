@@ -177,6 +177,10 @@ async function demarrer() {
     modalRecrue: document.getElementById("modal-recrue"),
     recrueTitre: document.getElementById("recrue-titre"),
     recrueCartes: document.getElementById("recrue-cartes"),
+    evolutionBackdrop: document.getElementById("evolution-backdrop"),
+    modalEvolution: document.getElementById("modal-evolution"),
+    evolutionTitre: document.getElementById("evolution-titre"),
+    evolutionCartes: document.getElementById("evolution-cartes"),
     pokedexBackdrop: document.getElementById("pokedex-backdrop"),
     modalPokedex: document.getElementById("modal-pokedex"),
     pokedexCompteur: document.getElementById("pokedex-compteur"),
@@ -385,18 +389,49 @@ async function demarrer() {
     });
     carte.querySelector(".btn-evoluer").addEventListener("click", (evt) => {
       evt.stopPropagation();
-      surEvoluer(membre.id);
+      const options = game.optionsEvolution(membre);
+      if (options) {
+        ouvrirModaleEvolution(membre, options);
+      } else {
+        surEvoluer(membre.id);
+      }
     });
     return carte;
   }
 
-  function surEvoluer(membreId) {
-    if (!game.evoluerPokemon(membreId)) return;
+  function surEvoluer(membreId, versId) {
+    if (!game.evoluerPokemon(membreId, versId)) return;
     construireDecorEquipe();
     construireGrilleEquipe();
     actualiserValeurs();
     game.sauvegarder();
   }
+
+  // --- Embranchement d'évolution à choix multiple (ex : Évoli → Aquali/Voltali/Pyroli),
+  // même pattern visuel que le choix du starter (cf. 3.1 / docs section 9). ---
+  function fermerModaleEvolution() {
+    el.modalEvolution.hidden = true;
+    el.evolutionBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleEvolution(membre, options) {
+    const def = game.definitionPokemon(membre.id);
+    el.evolutionTitre.textContent = `${def.nom} évolue en...`;
+    el.evolutionCartes.innerHTML = "";
+    for (const optionDef of options) {
+      const carte = creerCarteChoixPokemon(optionDef, {
+        onClick: () => {
+          fermerModaleEvolution();
+          surEvoluer(membre.id, optionDef.id);
+        },
+      });
+      el.evolutionCartes.appendChild(carte);
+    }
+    el.modalEvolution.hidden = false;
+    el.evolutionBackdrop.hidden = false;
+  }
+
+  el.evolutionBackdrop.addEventListener("click", fermerModaleEvolution);
 
   function creerCarteAction(icone, texte, onClick, dataset) {
     const carte = document.createElement("button");

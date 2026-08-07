@@ -2843,9 +2843,17 @@
     },
     "production_base": {
       "type": "lineaire",
-      "valeur_par_niveau": 2
+      "valeur_par_niveau": 1.5
     },
-    "description": "Sa structure génétique instable évolue de façon très différente selon l'environnement dans lequel il se trouve."
+    "description": "Sa structure génétique instable évolue de façon très différente selon l'environnement dans lequel il se trouve.",
+    "evolution": {
+      "vers": [
+        "vaporeon",
+        "jolteon",
+        "flareon"
+      ],
+      "niveau": 25
+    }
   },
   {
     "id": "vaporeon",

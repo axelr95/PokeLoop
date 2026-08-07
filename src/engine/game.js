@@ -314,11 +314,25 @@ export class Game {
     return Boolean(def.evolution) && membre.niveau >= def.evolution.niveau;
   }
 
-  evoluerPokemon(membreId) {
+  // Embranchement à choix multiple (ex : Évoli → Aquali/Voltali/Pyroli, cf. docs section 9) :
+  // evolution.vers est alors un tableau d'id plutôt qu'un id unique. Retourne les définitions
+  // complètes des choix possibles, ou null pour une évolution classique à cible unique.
+  optionsEvolution(membre) {
+    const def = this.definitionPokemon(membre.id);
+    if (!def.evolution || !Array.isArray(def.evolution.vers)) return null;
+    return def.evolution.vers.map((id) => this.definitionPokemon(id));
+  }
+
+  // versId : requis uniquement pour un embranchement à choix multiple (ignoré sinon).
+  evoluerPokemon(membreId, versId) {
     const membre = this.state.equipe.find((m) => m.id === membreId);
     if (!membre || !this.peutEvoluer(membre)) return false;
     const def = this.definitionPokemon(membre.id);
-    membre.id = def.evolution.vers;
+    const cible = Array.isArray(def.evolution.vers) ? versId : def.evolution.vers;
+    if (!cible || (Array.isArray(def.evolution.vers) && !def.evolution.vers.includes(cible))) {
+      return false;
+    }
+    membre.id = cible;
     this.decouvrirPokemon(membre.id);
     return true;
   }
@@ -350,18 +364,28 @@ export class Game {
   // en remontant/descendant les liens evolution.vers déjà présents dans pokemons.json —
   // aucun nouveau champ de chaînage nécessaire. Chaque étape porte le niveau requis pour
   // y accéder depuis l'étape précédente (null pour la toute première étape de la chaîne).
+  // Gère les embranchements à choix multiple (evolution.vers en tableau, cf. optionsEvolution) :
+  // ne suit que la branche menant à pokemonId, jamais les branches sœurs.
   ligneeComplete(pokemonId) {
+    const meneVers = (evolution, id) =>
+      Array.isArray(evolution.vers) ? evolution.vers.includes(id) : evolution.vers === id;
+
     let racine = this.definitionPokemon(pokemonId);
-    let predecesseur = this.data.pokemons.find((p) => p.evolution && p.evolution.vers === racine.id);
+    let predecesseur = this.data.pokemons.find((p) => p.evolution && meneVers(p.evolution, racine.id));
     while (predecesseur) {
       racine = predecesseur;
-      predecesseur = this.data.pokemons.find((p) => p.evolution && p.evolution.vers === racine.id);
+      predecesseur = this.data.pokemons.find((p) => p.evolution && meneVers(p.evolution, racine.id));
     }
     const chaine = [{ def: racine, niveauRequis: null }];
     let courant = racine;
     while (courant.evolution) {
-      const suivant = this.definitionPokemon(courant.evolution.vers);
+      const versId = Array.isArray(courant.evolution.vers)
+        ? courant.evolution.vers.find((id) => id === pokemonId)
+        : courant.evolution.vers;
+      if (!versId) break; // embranchement dont la branche affichée n'a pas encore de cible connue
+      const suivant = this.definitionPokemon(versId);
       chaine.push({ def: suivant, niveauRequis: courant.evolution.niveau });
+      if (suivant.id === pokemonId) break;
       courant = suivant;
     }
     return chaine;
