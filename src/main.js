@@ -362,7 +362,7 @@ async function demarrer() {
     carte.querySelector(".ce-portrait").src = `${def.sprite_dossier}portrait.png`;
     carte.querySelector(".ce-portrait").addEventListener("click", (evt) => {
       evt.stopPropagation();
-      ouvrirPokedexSurFiche(membre.id);
+      ouvrirFicheDepuisEquipe(membre.id);
     });
     carte.querySelector(".ce-nom").textContent = def.nom;
     const typesEl = carte.querySelector(".ce-types-badges");
@@ -1073,11 +1073,10 @@ async function demarrer() {
     el.pokedexBackdrop.hidden = false;
   }
 
-  // Ouvre la fiche par-dessus la grille (ex : clic sur le portrait d'un membre de
-  // l'équipe) — la grille est construite/affichée en arrière-plan pour rester
-  // consultable directement si le joueur ferme la fiche sans tout refermer.
-  function ouvrirPokedexSurFiche(pokemonId) {
-    ouvrirModalePokedex();
+  // Clic sur le portrait d'un membre de l'équipe : ouvre uniquement la fiche, sans la
+  // grille du Pokédex derrière (celle-ci ne s'affiche que si on y accède depuis le
+  // Pokédex lui-même, cf. creerVignettePokedex).
+  function ouvrirFicheDepuisEquipe(pokemonId) {
     ouvrirFichePokedex(pokemonId);
   }
 
