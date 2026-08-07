@@ -427,7 +427,6 @@ img {
 }
 
 .ce-nom-niveau {
-  flex: 1;
   min-width: 0;
   display: flex;
   justify-content: space-between;
@@ -850,8 +849,15 @@ img {
   image-rendering: pixelated;
 }
 
+/* Sous les 16px natifs de la pastille, le texte qu'elle contient devient illisible/
+   flou en la réduisant (ce n'est pas de la vectorisation, du pixel-art déjà tout petit).
+   On affiche donc juste l'icône (crop 16×16 à gauche, échelle 1:1, jamais redimensionnée)
+   plutôt que la pastille entière rapetissée. */
 .type-badge-mini {
-  height: 0.65rem;
+  width: 16px;
+  height: 16px;
+  object-fit: none;
+  object-position: left center;
 }
 
 /* Grille des 18 types, réutilisée pour le choix de spécialisation */
