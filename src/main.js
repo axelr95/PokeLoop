@@ -645,6 +645,41 @@ async function demarrer() {
     }
   }
 
+  // Ordre logique d'affichage (boutique ET possédées) : les upgrades liées entre
+  // elles restent groupées et dans l'ordre de leur progression (clic, puis global,
+  // puis spécialisation de type, puis paliers de niveau par Pokémon — cf. docs
+  // section 6/6bis/6ter). Un rang par catégorie de cible, puis un ordre secondaire
+  // qui respecte les tiers : position dans upgrades.json (déjà écrit dans l'ordre
+  // de progression) pour les upgrades classiques, position dans l'équipe pour les
+  // paliers (pas d'ordre naturel en data puisqu'ils sont générés dynamiquement).
+  const RANG_CIBLE_UPGRADE = { clic_manuel: 0, global: 1, type_pokemon: 2 };
+
+  function rangUpgrade(upgrade) {
+    return RANG_CIBLE_UPGRADE[upgrade.effet.cible.type] ?? 3;
+  }
+
+  function rangPalier() {
+    return 4; // toujours après les upgrades classiques (cf. section 6ter, après 6/6bis)
+  }
+
+  function trierItemsBoutique(items) {
+    return items
+      .map((item, indexOrigine) => ({ item, indexOrigine }))
+      .sort((a, b) => {
+        const rangA = a.item.palier ? rangPalier() : rangUpgrade(a.item.upgrade);
+        const rangB = b.item.palier ? rangPalier() : rangUpgrade(b.item.upgrade);
+        if (rangA !== rangB) return rangA - rangB;
+        const ordreA = a.item.palier
+          ? game.state.equipe.findIndex((m) => m.espece_ligne === a.item.especeLigne)
+          : game.data.upgrades.indexOf(a.item.upgrade);
+        const ordreB = b.item.palier
+          ? game.state.equipe.findIndex((m) => m.espece_ligne === b.item.especeLigne)
+          : game.data.upgrades.indexOf(b.item.upgrade);
+        return ordreA - ordreB || a.indexOrigine - b.indexOrigine;
+      })
+      .map(({ item }) => item);
+  }
+
   function reconstruirePossedeesSiNecessaire() {
     const ids = game.state.upgradesPossedees.join(",");
     if (ids === idsPossedeesAffiches) return;
@@ -662,11 +697,29 @@ async function demarrer() {
     const meilleurPalierParEspece = new Map();
     for (const id of game.state.upgradesPossedees) {
       const palier = paliersConnus.find((p) => p.id === id);
-      if (palier) meilleurPalierParEspece.set(palier.effet.cible.valeur, palier);
+      if (!palier) continue;
+      const especeLigne = palier.effet.cible.valeur;
+      const actuel = meilleurPalierParEspece.get(especeLigne);
+      if (!actuel || palier.niveau_requis > actuel.niveau_requis) {
+        meilleurPalierParEspece.set(especeLigne, palier);
+      }
     }
+    const items = [];
     for (const id of game.state.upgradesPossedees) {
       const upgrade = game.data.upgrades.find((u) => u.id === id);
       if (upgrade) {
+        items.push({ upgrade });
+        continue;
+      }
+      const palier = paliersConnus.find((p) => p.id === id);
+      if (!palier) continue;
+      const especeLigne = palier.effet.cible.valeur;
+      if (meilleurPalierParEspece.get(especeLigne).id !== palier.id) continue;
+      items.push({ palier, especeLigne });
+    }
+    for (const item of trierItemsBoutique(items)) {
+      if (item.upgrade) {
+        const { upgrade } = item;
         const btn = document.createElement("button");
         btn.className = "icone-item possedee";
         btn.textContent = upgrade.icone;
@@ -678,10 +731,7 @@ async function demarrer() {
         el.possedeesListe.appendChild(btn);
         continue;
       }
-      const palier = paliersConnus.find((p) => p.id === id);
-      if (!palier) continue;
-      const especeLigne = palier.effet.cible.valeur;
-      if (meilleurPalierParEspece.get(especeLigne).id !== palier.id) continue;
+      const { palier, especeLigne } = item;
       const btn = creerIconePalier(especeLigne, palier, { possedee: true });
       btn.addEventListener("click", (evt) => {
         evt.stopPropagation();
