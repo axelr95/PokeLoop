@@ -450,10 +450,6 @@ img {
   overflow: hidden;
 }
 
-.type-badge-mini {
-  height: 0.7rem;
-}
-
 .ce-normal[hidden] {
   display: none;
 }
@@ -843,6 +839,10 @@ img {
   vertical-align: middle;
   object-fit: contain;
   image-rendering: pixelated;
+}
+
+.type-badge-mini {
+  height: 0.5rem;
 }
 
 /* Grille des 18 types, réutilisée pour le choix de spécialisation */
