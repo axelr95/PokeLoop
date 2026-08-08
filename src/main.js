@@ -202,6 +202,14 @@ async function demarrer() {
     toastHorsLigne: document.getElementById("toast-hors-ligne"),
     toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
     toastHorsLigneFermer: document.getElementById("toast-hors-ligne-fermer"),
+    poussiereBadge: document.getElementById("poussiere-badge"),
+    poussiereValeur: document.getElementById("poussiere-valeur"),
+    btnEveil: document.getElementById("btn-eveil"),
+    eveilBackdrop: document.getElementById("eveil-backdrop"),
+    modalEveil: document.getElementById("modal-eveil"),
+    eveilTexte: document.getElementById("eveil-texte"),
+    eveilConfirmer: document.getElementById("eveil-confirmer"),
+    eveilAnnuler: document.getElementById("eveil-annuler"),
   };
 
   // Empêche le drag-and-drop natif du navigateur sur les sprites/portraits (le CSS
@@ -521,7 +529,64 @@ async function demarrer() {
       const cout = Number(btn.dataset.cout);
       btn.classList.toggle("non-abordable", game.state.pokedollars < cout);
     });
+
+    actualiserEveil();
   }
+
+  // --- Éveil (soft-reset) : badge = Poussière Étoile acquise (bonus actif, verrouillé
+  // au dernier Éveil), bouton = calcul temps réel de ce qui serait obtenu en Éveillant
+  // maintenant. cf. docs/eveil.md ---
+  function actualiserEveil() {
+    const acquise = game.poussiereEtoileAcquise();
+    el.poussiereBadge.hidden = acquise <= 0;
+    el.poussiereValeur.textContent = formatNombre(acquise);
+
+    const enAttente = game.poussiereEtoileEnAttente();
+    el.btnEveil.hidden = !game.eveilDisponible();
+    el.btnEveil.textContent = `🌅 Éveil (${formatNombre(enAttente)} ✨)`;
+  }
+
+  function fermerModaleEveil() {
+    el.modalEveil.hidden = true;
+    el.eveilBackdrop.hidden = true;
+  }
+
+  function ouvrirModaleEveil() {
+    const enAttente = game.poussiereEtoileEnAttente();
+    el.eveilTexte.textContent =
+      `Réinitialise tes Pokédollars, ton équipe, tes upgrades et paliers, et ta spécialisation ` +
+      `pour repartir de zéro avec un meilleur rythme de progression. ` +
+      `Ta Poussière Étoile passera à ${formatNombre(enAttente)} (+${Math.round(
+        (game.multiplicateurPoussiereProjete() - 1) * 100
+      )}% production) ; ton Pokédex reste acquis pour toujours.`;
+    el.modalEveil.hidden = false;
+    el.eveilBackdrop.hidden = false;
+  }
+
+  el.btnEveil.addEventListener("click", (evt) => {
+    evt.stopPropagation();
+    ouvrirModaleEveil();
+  });
+
+  el.eveilBackdrop.addEventListener("click", fermerModaleEveil);
+  el.eveilAnnuler.addEventListener("click", fermerModaleEveil);
+
+  el.eveilConfirmer.addEventListener("click", () => {
+    if (!game.effectuerEveil()) return;
+    fermerModaleEveil();
+    idsBoutiqueAffiches = null;
+    idsPaliersAffiches = null;
+    idsPossedeesAffiches = null;
+    construireDecorEquipe();
+    construireGrilleEquipe();
+    reconstruireBoutiqueSiNecessaire();
+    reconstruirePaliersSiNecessaire();
+    reconstruirePossedeesSiNecessaire();
+    actualiserBadgeSpecialisation();
+    actualiserValeurs();
+    game.sauvegarder();
+    ouvrirModaleStarter();
+  });
 
   // --- Onglets du bas : change le panel affiché ---
   function activerOnglet(nom) {

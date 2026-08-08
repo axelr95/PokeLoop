@@ -93,6 +93,33 @@ img {
   font-size: 0.85rem;
 }
 
+.header-droite {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.ressource-poussiere {
+  font-size: 0.95rem;
+  color: #f5d76e;
+}
+
+.btn-eveil {
+  min-height: 32px;
+  padding: 0 0.7rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--couleur-accent);
+  color: #1e1b2e;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-eveil:active {
+  filter: brightness(1.3);
+}
+
 /* Zone décorative : fond jour/nuit (paysage), sprites posés sur la falaise, clic manuel */
 .zone-decor {
   flex: 1;
@@ -740,6 +767,34 @@ img {
 .btn-acheter:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.modal-texte {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--couleur-texte-att);
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.modal-actions .btn-acheter,
+.modal-actions .btn-annuler {
+  flex: 1;
+}
+
+.btn-annuler {
+  min-height: 38px;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--couleur-texte-att);
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* Modale de choix du starter */

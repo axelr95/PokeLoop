@@ -12,6 +12,13 @@ const OFFLINE_MAX_SECONDES = 8 * 3600; // plafond de rattrapage hors-ligne
 const OFFLINE_SEUIL_SECONDES = 5; // en dessous, on ignore (simple changement d'onglet)
 const BONUS_POKEDEX_PAR_DECOUVERTE = 0.1; // +10% multiplicatif final par Pokémon découvert (cf. pokedex.md)
 
+// --- Éveil (soft-reset, cf. docs/eveil.md) : coût cumulé (à vie) de la n-ième
+// Poussière Étoile = n * (n+1) * 500. cumulProductionVie ne reset jamais, même
+// par Éveil ; la Poussière Étoile n'est acquise (et son bonus appliqué) qu'au
+// moment de l'Éveil, pas en continu pendant la run.
+const COUT_POUSSIERE_UNITE = 1000;
+const BONUS_POUSSIERE_PAR_UNITE = 0.03;
+
 export class Game {
   constructor({ resources, pokemons, upgrades, recrutement, specialisation, paliersPokemon }) {
     this.data = {
@@ -33,6 +40,8 @@ export class Game {
         const state = JSON.parse(brut);
         this.state = state;
         if (state.specialisation === undefined) state.specialisation = null;
+        if (state.cumulProductionVie === undefined) state.cumulProductionVie = 0;
+        if (state.poussiereEtoile === undefined) state.poussiereEtoile = 0;
         // Migration : les sauvegardes antérieures aux paliers de niveau (6ter) n'ont pas
         // de champ espece_ligne — à défaut de l'historique d'évolution, l'espèce actuelle
         // est la meilleure approximation disponible (correcte pour tout membre pas encore évolué).
@@ -53,6 +62,7 @@ export class Game {
           if (ecouleSec > OFFLINE_SEUIL_SECONDES) {
             const gains = ecouleSec * this.productionParSeconde();
             state.pokedollars += gains;
+            state.cumulProductionVie += gains;
             this.gainsHorsLigne = { montant: gains, secondes: ecouleSec };
           }
         }
@@ -68,6 +78,8 @@ export class Game {
       upgradesPossedees: [],
       specialisation: null,
       pokedex_decouverts: [],
+      cumulProductionVie: 0,
+      poussiereEtoile: 0,
       dernierTick: Date.now(),
     };
   }
@@ -143,6 +155,7 @@ export class Game {
       )
     );
     modifiers.push(this.modifierPokedex());
+    modifiers.push(this.modifierEveil());
     return appliquerFacteurs(base, modifiers);
   }
 
@@ -187,12 +200,16 @@ export class Game {
   }
 
   tick() {
-    this.state.pokedollars += this.productionParSeconde();
+    const gain = this.productionParSeconde();
+    this.state.pokedollars += gain;
+    this.state.cumulProductionVie += gain;
     this.state.dernierTick = Date.now();
   }
 
   clic() {
-    this.state.pokedollars += this.productionClic();
+    const gain = this.productionClic();
+    this.state.pokedollars += gain;
+    this.state.cumulProductionVie += gain;
   }
 
   peutInvestir(montant) {
@@ -358,6 +375,49 @@ export class Game {
 
   modifierPokedex() {
     return { categorie: "multiplicatif_final", valeur: this.multiplicateurPokedex() };
+  }
+
+  // --- Éveil (soft-reset, cf. docs/eveil.md) : cumulProductionVie ne reset jamais ; la
+  // Poussière Étoile n'est acquise (et son bonus figé pour la run) qu'au moment de l'Éveil.
+  // poussiereEtoileEnAttente() est le calcul temps réel ("si j'Éveil maintenant, j'aurai N"),
+  // utilisé pour l'affichage ; poussiereEtoileAcquise() est la ressource verrouillée qui
+  // alimente le bonus de production actif pendant la run.
+  poussiereEtoileEnAttente() {
+    const c = this.state.cumulProductionVie / (COUT_POUSSIERE_UNITE / 2);
+    return Math.max(0, Math.floor((Math.sqrt(1 + 4 * c) - 1) / 2));
+  }
+
+  poussiereEtoileAcquise() {
+    return this.state.poussiereEtoile;
+  }
+
+  multiplicateurPoussiere() {
+    return 1 + BONUS_POUSSIERE_PAR_UNITE * this.poussiereEtoileAcquise();
+  }
+
+  // Bonus qui sera actif après un Éveil déclenché maintenant (pour la modale de confirmation).
+  multiplicateurPoussiereProjete() {
+    return 1 + BONUS_POUSSIERE_PAR_UNITE * this.poussiereEtoileEnAttente();
+  }
+
+  modifierEveil() {
+    return { categorie: "multiplicatif_final", valeur: this.multiplicateurPoussiere() };
+  }
+
+  eveilDisponible() {
+    return this.poussiereEtoileEnAttente() >= 1;
+  }
+
+  // Reset pokedollars/équipe/upgrades (dont paliers de niveau)/spécialisation, cf. eveil.md.
+  // Pokédex et cumulProductionVie ne sont jamais touchés par l'Éveil.
+  effectuerEveil() {
+    if (!this.eveilDisponible()) return false;
+    this.state.poussiereEtoile = this.poussiereEtoileEnAttente();
+    this.state.pokedollars = 0;
+    this.state.equipe = [];
+    this.state.upgradesPossedees = [];
+    this.state.specialisation = null;
+    return true;
   }
 
   // Reconstruit la chaîne évolutive complète d'une espèce (du premier au dernier palier)
