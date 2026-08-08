@@ -8,6 +8,10 @@
 
 ## Git
 - Toujours commit & push en fin de tâche. Toujours sur `main` (seule branche testable côté utilisateur).
+- Avant de démarrer un nouveau sujet : `git fetch` puis vérifier qu'il n'y a AUCUN retard sur
+  `origin/main` (`git log main..origin/main`). Si retard, `git pull --rebase` d'abord — ne jamais
+  coder sur une base locale obsolète (risque de reconstruire à côté d'un système déjà présent
+  côté distant, ou de conflits massifs au push).
 - Pas de branches annexes pour des sous-tâches : tout converge sur `main`, directement.
 - Projet solo, pas de PR/review : en cas de bug, `git revert`/`git reset` sur le commit précédent suffit.
 - Convention de commit : `type: description` en français, à l'impératif.
