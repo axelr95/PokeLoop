@@ -146,7 +146,7 @@
     "id": "normal_spe_t1",
     "nom": "Spécialisation Normal I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Normal",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Normal",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -157,7 +157,7 @@
         "type": "type_pokemon",
         "valeur": "normal"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -167,7 +167,7 @@
     "id": "normal_spe_t2",
     "nom": "Spécialisation Normal II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Normal",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Normal",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -178,7 +178,7 @@
         "type": "type_pokemon",
         "valeur": "normal"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "normal_spe_t1"
@@ -190,7 +190,7 @@
     "id": "normal_spe_t3",
     "nom": "Spécialisation Normal III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Normal",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Normal",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -201,7 +201,7 @@
         "type": "type_pokemon",
         "valeur": "normal"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "normal_spe_t2"
@@ -213,7 +213,7 @@
     "id": "combat_spe_t1",
     "nom": "Spécialisation Combat I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Combat",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Combat",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -224,7 +224,7 @@
         "type": "type_pokemon",
         "valeur": "combat"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -234,7 +234,7 @@
     "id": "combat_spe_t2",
     "nom": "Spécialisation Combat II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Combat",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Combat",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -245,7 +245,7 @@
         "type": "type_pokemon",
         "valeur": "combat"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "combat_spe_t1"
@@ -257,7 +257,7 @@
     "id": "combat_spe_t3",
     "nom": "Spécialisation Combat III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Combat",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Combat",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -268,7 +268,7 @@
         "type": "type_pokemon",
         "valeur": "combat"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "combat_spe_t2"
@@ -280,7 +280,7 @@
     "id": "vol_spe_t1",
     "nom": "Spécialisation Vol I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Vol",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Vol",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -291,7 +291,7 @@
         "type": "type_pokemon",
         "valeur": "vol"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -301,7 +301,7 @@
     "id": "vol_spe_t2",
     "nom": "Spécialisation Vol II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Vol",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Vol",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -312,7 +312,7 @@
         "type": "type_pokemon",
         "valeur": "vol"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "vol_spe_t1"
@@ -324,7 +324,7 @@
     "id": "vol_spe_t3",
     "nom": "Spécialisation Vol III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Vol",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Vol",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -335,7 +335,7 @@
         "type": "type_pokemon",
         "valeur": "vol"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "vol_spe_t2"
@@ -347,7 +347,7 @@
     "id": "poison_spe_t1",
     "nom": "Spécialisation Poison I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Poison",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Poison",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -358,7 +358,7 @@
         "type": "type_pokemon",
         "valeur": "poison"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -368,7 +368,7 @@
     "id": "poison_spe_t2",
     "nom": "Spécialisation Poison II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Poison",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Poison",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -379,7 +379,7 @@
         "type": "type_pokemon",
         "valeur": "poison"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "poison_spe_t1"
@@ -391,7 +391,7 @@
     "id": "poison_spe_t3",
     "nom": "Spécialisation Poison III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Poison",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Poison",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -402,7 +402,7 @@
         "type": "type_pokemon",
         "valeur": "poison"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "poison_spe_t2"
@@ -414,7 +414,7 @@
     "id": "sol_spe_t1",
     "nom": "Spécialisation Sol I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Sol",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Sol",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -425,7 +425,7 @@
         "type": "type_pokemon",
         "valeur": "sol"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -435,7 +435,7 @@
     "id": "sol_spe_t2",
     "nom": "Spécialisation Sol II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Sol",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Sol",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -446,7 +446,7 @@
         "type": "type_pokemon",
         "valeur": "sol"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "sol_spe_t1"
@@ -458,7 +458,7 @@
     "id": "sol_spe_t3",
     "nom": "Spécialisation Sol III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Sol",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Sol",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -469,7 +469,7 @@
         "type": "type_pokemon",
         "valeur": "sol"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "sol_spe_t2"
@@ -481,7 +481,7 @@
     "id": "roche_spe_t1",
     "nom": "Spécialisation Roche I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Roche",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Roche",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -492,7 +492,7 @@
         "type": "type_pokemon",
         "valeur": "roche"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -502,7 +502,7 @@
     "id": "roche_spe_t2",
     "nom": "Spécialisation Roche II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Roche",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Roche",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -513,7 +513,7 @@
         "type": "type_pokemon",
         "valeur": "roche"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "roche_spe_t1"
@@ -525,7 +525,7 @@
     "id": "roche_spe_t3",
     "nom": "Spécialisation Roche III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Roche",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Roche",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -536,7 +536,7 @@
         "type": "type_pokemon",
         "valeur": "roche"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "roche_spe_t2"
@@ -548,7 +548,7 @@
     "id": "insecte_spe_t1",
     "nom": "Spécialisation Insecte I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Insecte",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Insecte",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -559,7 +559,7 @@
         "type": "type_pokemon",
         "valeur": "insecte"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -569,7 +569,7 @@
     "id": "insecte_spe_t2",
     "nom": "Spécialisation Insecte II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Insecte",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Insecte",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -580,7 +580,7 @@
         "type": "type_pokemon",
         "valeur": "insecte"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "insecte_spe_t1"
@@ -592,7 +592,7 @@
     "id": "insecte_spe_t3",
     "nom": "Spécialisation Insecte III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Insecte",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Insecte",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -603,7 +603,7 @@
         "type": "type_pokemon",
         "valeur": "insecte"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "insecte_spe_t2"
@@ -615,7 +615,7 @@
     "id": "spectre_spe_t1",
     "nom": "Spécialisation Spectre I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Spectre",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Spectre",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -626,7 +626,7 @@
         "type": "type_pokemon",
         "valeur": "spectre"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -636,7 +636,7 @@
     "id": "spectre_spe_t2",
     "nom": "Spécialisation Spectre II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Spectre",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Spectre",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -647,7 +647,7 @@
         "type": "type_pokemon",
         "valeur": "spectre"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "spectre_spe_t1"
@@ -659,7 +659,7 @@
     "id": "spectre_spe_t3",
     "nom": "Spécialisation Spectre III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Spectre",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Spectre",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -670,7 +670,7 @@
         "type": "type_pokemon",
         "valeur": "spectre"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "spectre_spe_t2"
@@ -682,7 +682,7 @@
     "id": "acier_spe_t1",
     "nom": "Spécialisation Acier I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Acier",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Acier",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -693,7 +693,7 @@
         "type": "type_pokemon",
         "valeur": "acier"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -703,7 +703,7 @@
     "id": "acier_spe_t2",
     "nom": "Spécialisation Acier II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Acier",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Acier",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -714,7 +714,7 @@
         "type": "type_pokemon",
         "valeur": "acier"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "acier_spe_t1"
@@ -726,7 +726,7 @@
     "id": "acier_spe_t3",
     "nom": "Spécialisation Acier III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Acier",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Acier",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -737,7 +737,7 @@
         "type": "type_pokemon",
         "valeur": "acier"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "acier_spe_t2"
@@ -749,7 +749,7 @@
     "id": "feu_spe_t1",
     "nom": "Spécialisation Feu I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Feu",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Feu",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -760,7 +760,7 @@
         "type": "type_pokemon",
         "valeur": "feu"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -770,7 +770,7 @@
     "id": "feu_spe_t2",
     "nom": "Spécialisation Feu II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Feu",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Feu",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -781,7 +781,7 @@
         "type": "type_pokemon",
         "valeur": "feu"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "feu_spe_t1"
@@ -793,7 +793,7 @@
     "id": "feu_spe_t3",
     "nom": "Spécialisation Feu III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Feu",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Feu",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -804,7 +804,7 @@
         "type": "type_pokemon",
         "valeur": "feu"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "feu_spe_t2"
@@ -816,7 +816,7 @@
     "id": "eau_spe_t1",
     "nom": "Spécialisation Eau I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Eau",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Eau",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -827,7 +827,7 @@
         "type": "type_pokemon",
         "valeur": "eau"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -837,7 +837,7 @@
     "id": "eau_spe_t2",
     "nom": "Spécialisation Eau II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Eau",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Eau",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -848,7 +848,7 @@
         "type": "type_pokemon",
         "valeur": "eau"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "eau_spe_t1"
@@ -860,7 +860,7 @@
     "id": "eau_spe_t3",
     "nom": "Spécialisation Eau III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Eau",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Eau",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -871,7 +871,7 @@
         "type": "type_pokemon",
         "valeur": "eau"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "eau_spe_t2"
@@ -883,7 +883,7 @@
     "id": "plante_spe_t1",
     "nom": "Spécialisation Plante I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Plante",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Plante",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -894,7 +894,7 @@
         "type": "type_pokemon",
         "valeur": "plante"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -904,7 +904,7 @@
     "id": "plante_spe_t2",
     "nom": "Spécialisation Plante II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Plante",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Plante",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -915,7 +915,7 @@
         "type": "type_pokemon",
         "valeur": "plante"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "plante_spe_t1"
@@ -927,7 +927,7 @@
     "id": "plante_spe_t3",
     "nom": "Spécialisation Plante III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Plante",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Plante",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -938,7 +938,7 @@
         "type": "type_pokemon",
         "valeur": "plante"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "plante_spe_t2"
@@ -950,7 +950,7 @@
     "id": "electrik_spe_t1",
     "nom": "Spécialisation Électrik I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Électrik",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Électrik",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -961,7 +961,7 @@
         "type": "type_pokemon",
         "valeur": "electrik"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -971,7 +971,7 @@
     "id": "electrik_spe_t2",
     "nom": "Spécialisation Électrik II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Électrik",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Électrik",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -982,7 +982,7 @@
         "type": "type_pokemon",
         "valeur": "electrik"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "electrik_spe_t1"
@@ -994,7 +994,7 @@
     "id": "electrik_spe_t3",
     "nom": "Spécialisation Électrik III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Électrik",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Électrik",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -1005,7 +1005,7 @@
         "type": "type_pokemon",
         "valeur": "electrik"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "electrik_spe_t2"
@@ -1017,7 +1017,7 @@
     "id": "psy_spe_t1",
     "nom": "Spécialisation Psy I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Psy",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Psy",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -1028,7 +1028,7 @@
         "type": "type_pokemon",
         "valeur": "psy"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -1038,7 +1038,7 @@
     "id": "psy_spe_t2",
     "nom": "Spécialisation Psy II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Psy",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Psy",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -1049,7 +1049,7 @@
         "type": "type_pokemon",
         "valeur": "psy"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "psy_spe_t1"
@@ -1061,7 +1061,7 @@
     "id": "psy_spe_t3",
     "nom": "Spécialisation Psy III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Psy",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Psy",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -1072,7 +1072,7 @@
         "type": "type_pokemon",
         "valeur": "psy"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "psy_spe_t2"
@@ -1084,7 +1084,7 @@
     "id": "glace_spe_t1",
     "nom": "Spécialisation Glace I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Glace",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Glace",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -1095,7 +1095,7 @@
         "type": "type_pokemon",
         "valeur": "glace"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -1105,7 +1105,7 @@
     "id": "glace_spe_t2",
     "nom": "Spécialisation Glace II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Glace",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Glace",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -1116,7 +1116,7 @@
         "type": "type_pokemon",
         "valeur": "glace"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "glace_spe_t1"
@@ -1128,7 +1128,7 @@
     "id": "glace_spe_t3",
     "nom": "Spécialisation Glace III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Glace",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Glace",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -1139,7 +1139,7 @@
         "type": "type_pokemon",
         "valeur": "glace"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "glace_spe_t2"
@@ -1151,7 +1151,7 @@
     "id": "dragon_spe_t1",
     "nom": "Spécialisation Dragon I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Dragon",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Dragon",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -1162,7 +1162,7 @@
         "type": "type_pokemon",
         "valeur": "dragon"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -1172,7 +1172,7 @@
     "id": "dragon_spe_t2",
     "nom": "Spécialisation Dragon II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Dragon",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Dragon",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -1183,7 +1183,7 @@
         "type": "type_pokemon",
         "valeur": "dragon"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "dragon_spe_t1"
@@ -1195,7 +1195,7 @@
     "id": "dragon_spe_t3",
     "nom": "Spécialisation Dragon III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Dragon",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Dragon",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -1206,7 +1206,7 @@
         "type": "type_pokemon",
         "valeur": "dragon"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "dragon_spe_t2"
@@ -1218,7 +1218,7 @@
     "id": "tenebres_spe_t1",
     "nom": "Spécialisation Ténèbres I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Ténèbres",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Ténèbres",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -1229,7 +1229,7 @@
         "type": "type_pokemon",
         "valeur": "tenebres"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -1239,7 +1239,7 @@
     "id": "tenebres_spe_t2",
     "nom": "Spécialisation Ténèbres II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Ténèbres",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Ténèbres",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -1250,7 +1250,7 @@
         "type": "type_pokemon",
         "valeur": "tenebres"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "tenebres_spe_t1"
@@ -1262,7 +1262,7 @@
     "id": "tenebres_spe_t3",
     "nom": "Spécialisation Ténèbres III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Ténèbres",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Ténèbres",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -1273,7 +1273,7 @@
         "type": "type_pokemon",
         "valeur": "tenebres"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "tenebres_spe_t2"
@@ -1285,7 +1285,7 @@
     "id": "fee_spe_t1",
     "nom": "Spécialisation Fée I",
     "icone": "⭐",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Fée",
+    "description": "+100% production finale supplémentaire pour les Pokémon de type Fée",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 10000
@@ -1296,7 +1296,7 @@
         "type": "type_pokemon",
         "valeur": "fee"
       },
-      "valeur": 0.2
+      "valeur": 1
     },
     "prerequis": [],
     "exclusif_avec": [],
@@ -1306,7 +1306,7 @@
     "id": "fee_spe_t2",
     "nom": "Spécialisation Fée II",
     "icone": "🌟",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Fée",
+    "description": "+200% production finale supplémentaire pour les Pokémon de type Fée",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 50000
@@ -1317,7 +1317,7 @@
         "type": "type_pokemon",
         "valeur": "fee"
       },
-      "valeur": 0.2
+      "valeur": 2
     },
     "prerequis": [
       "fee_spe_t1"
@@ -1329,7 +1329,7 @@
     "id": "fee_spe_t3",
     "nom": "Spécialisation Fée III",
     "icone": "💫",
-    "description": "+20% production finale supplémentaire pour les Pokémon de type Fée",
+    "description": "+300% production finale supplémentaire pour les Pokémon de type Fée",
     "cout": {
       "ressource": "pokedollars",
       "valeur": 100000
@@ -1340,7 +1340,7 @@
         "type": "type_pokemon",
         "valeur": "fee"
       },
-      "valeur": 0.2
+      "valeur": 3
     },
     "prerequis": [
       "fee_spe_t2"

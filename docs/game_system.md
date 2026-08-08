@@ -60,11 +60,17 @@ Chaque ressource sera définie en data (`resources.json`) avec : `id`, `nom`, `i
 - **Évoli n'a pas d'évolution pour l'instant** : ses 3 évolutions (pierres Feu/Eau/Foudre) forment un embranchement à choix multiple que le schéma actuel (`evolution` à cible unique) ne gère pas encore.
 ### 3.3 Expérience et niveau
 - Payer X Pokédollars donne X d'XP au Pokémon choisi (ratio de départ : **1 Pokédollar = 1 XP**, ajustable).
-- XP requise pour passer au niveau supérieur, courbe croissante simple :
+- XP requise pour passer au niveau supérieur, courbe exponentielle (v2, remplace la loi
+  puissance initiale — early game trop cher, fin de partie pas assez, cf. `xp_courbe.type`) :
   ```
-  XP_requise(n) = base × n^facteur
-  ex : XP_requise(n) = 10 × n^1.5
+  XP_requise(n) = base × facteur^n
+  actuel : XP_requise(n) = 8.5705 × 1.1107^n   (+11,07%/niveau)
+  ex : niv2 = 11, niv50 = 1 632, niv80 = 38 084, niv100 = 310 945
   ```
+  Ajustée par régression log-linéaire sur 3 repères cibles (niv2≈10, niv80≈50 000,
+  niv100≈250 000) — early levels très bas, dernière ligne droite (80-100) un vrai mur de XP.
+  L'ancienne loi puissance (`type` absent/`"puissance"`, `base × n^facteur`) reste supportée
+  par le moteur pour compat, mais n'est plus utilisée par aucun Pokémon actuellement.
 - Quand le seuil est atteint, le Pokémon monte de niveau, sa production de base augmente (+1/s).
 ---
 
@@ -171,13 +177,13 @@ Nouvelle case dans le shop, achat unique à **5000 Pokédollars**. Contrairement
 ```
 → +100% prod finale pour les Pokémon du type choisi.
 
-**Déblocage de 3 upgrades liées au type choisi** (effets placeholders, à équilibrer) :
+**Déblocage de 3 upgrades liées au type choisi** :
 
 | tier | coût | effet |
 |---|---|---|
-| 1 | 10 000 | additif_final, type choisi, +20% |
-| 2 | 50 000 | additif_final, type choisi, +20% (prereq tier 1) |
-| 3 | 100 000 | additif_final, type choisi, +20% (prereq tier 2) |
+| 1 | 10 000 | additif_final, type choisi, +100% |
+| 2 | 50 000 | additif_final, type choisi, +200% (prereq tier 1) |
+| 3 | 100 000 | additif_final, type choisi, +300% (prereq tier 2) |
 
 **Data model : `specialisation.json`** (nouveau fichier, template générique — pas 18 entrées dupliquées) :
 ```json
@@ -248,7 +254,7 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
   "types": ["feu"],
   "niveau_depart": 5,
   "sprite_dossier": "assets/sprites/0004_charmander/",
-  "xp_courbe": { "base": 10, "facteur": 1.5 },
+  "xp_courbe": { "type": "exponentielle", "base": 8.5705, "facteur": 1.1107 },
   "production_base": { "type": "lineaire", "valeur_par_niveau": 1 },
   "starter": true,
   "evolution": { "vers": "charmeleon", "niveau": 16 }
@@ -260,7 +266,7 @@ Contient les **151 entrées de la 1ère génération** (récupérées via l'API 
 - `starter` : présent (`true`) uniquement sur les 3 Pokémon proposés au choix initial (Bulbizarre, Salamèche, Carapuce). Absent sinon.
 - `evolution` : optionnel, cf. section 3.2bis. `vers` référence un autre `id` de ce même fichier ; `niveau` est le seuil d'affichage du bouton Évoluer. Absent pour les espèces sans évolution suivante (formes finales, ou Évoli en attendant l'embranchement).
 - `production_base.valeur_par_niveau` : varie selon la position de l'espèce dans sa lignée complète (1 / 1.5 / 2, cf. 3.2bis) — ce n'est donc plus une constante à 1 pour les 151 entrées comme au tour précédent.
-- `xp_courbe` : **commune à tous les Pokémon pour l'instant** (même formule `base × niveau^facteur`, cf. section 3.3). On ne différencie pas encore par Pokémon/légendaire — l'écart entre types de Pokémon viendra plutôt d'upgrades qui réduisent le coût d'XP pour un type donné, créant une variation naturelle selon les runs plutôt qu'une valeur figée par Pokémon.
+- `xp_courbe` : **commune à tous les Pokémon pour l'instant** (même courbe exponentielle, cf. section 3.3). `type: "exponentielle"` → `base × facteur^niveau` ; `type` absent ou `"puissance"` → `base × niveau^facteur` (ancienne loi, encore supportée par le moteur mais plus utilisée). On ne différencie pas encore par Pokémon/légendaire — l'écart entre types de Pokémon viendra plutôt d'upgrades qui réduisent le coût d'XP pour un type donné, créant une variation naturelle selon les runs plutôt qu'une valeur figée par Pokémon.
 - `production_base` : formule paramétrée (pas un tableau de valeurs par niveau, trop lourd à maintenir). Calculée à la volée par le moteur : `production(niveau)`.
   - `type: "lineaire"` → `valeur_par_niveau × niveau` (cas standard, ex : Salamèche = 1/niveau). Tous les 151 Pokémon utilisent ce type pour l'instant.
   - `type: "exponentielle"` → `base × facteur^niveau` (réservé aux Pokémon spéciaux, ex : légendaires avec une courbe plus forte, pas encore utilisé).

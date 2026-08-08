@@ -8,8 +8,9 @@ export function productionPokemon(pokemon, niveau) {
 }
 
 export function xpRequise(pokemon, niveau) {
-  const { base, facteur } = pokemon.xp_courbe;
-  return base * Math.pow(niveau, facteur);
+  const { type, base, facteur } = pokemon.xp_courbe;
+  if (type === "exponentielle") return base * Math.pow(facteur, niveau);
+  return base * Math.pow(niveau, facteur); // "puissance" (défaut, historique)
 }
 
 // XP encore nécessaire pour atteindre exactement le niveau 100 depuis

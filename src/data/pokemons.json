@@ -10,8 +10,9 @@
     "niveau_depart": 5,
     "sprite_dossier": "assets/sprites/0001_bulbasaur/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -35,8 +36,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0002_ivysaur/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -59,8 +61,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0003_venusaur/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -78,8 +81,9 @@
     "niveau_depart": 5,
     "sprite_dossier": "assets/sprites/0004_charmander/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -102,8 +106,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0005_charmeleon/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -126,8 +131,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0006_charizard/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -145,8 +151,9 @@
     "niveau_depart": 5,
     "sprite_dossier": "assets/sprites/0007_squirtle/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -169,8 +176,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0008_wartortle/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -192,8 +200,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0009_blastoise/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -211,8 +220,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0010_caterpie/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -234,8 +244,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0011_metapod/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -258,8 +269,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0012_butterfree/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -278,8 +290,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0013_weedle/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -302,8 +315,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0014_kakuna/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -326,8 +340,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0015_beedrill/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -346,8 +361,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0016_pidgey/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -370,8 +386,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0017_pidgeotto/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -394,8 +411,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0018_pidgeot/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -413,8 +431,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0019_rattata/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -436,8 +455,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0020_raticate/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -456,8 +476,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0021_spearow/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -480,8 +501,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0022_fearow/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -499,8 +521,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0023_ekans/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -522,8 +545,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0024_arbok/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -541,8 +565,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0025_pikachu/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -564,8 +589,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0026_raichu/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -583,8 +609,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0027_sandshrew/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -606,8 +633,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0028_sandslash/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -625,8 +653,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0029_nidoran-f/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -648,8 +677,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0030_nidorina/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -672,8 +702,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0031_nidoqueen/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -691,8 +722,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0032_nidoran-m/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -714,8 +746,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0033_nidorino/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -738,8 +771,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0034_nidoking/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -757,8 +791,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0035_clefairy/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -780,8 +815,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0036_clefable/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -799,8 +835,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0037_vulpix/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -822,8 +859,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0038_ninetales/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -842,8 +880,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0039_jigglypuff/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -866,8 +905,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0040_wigglytuff/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -886,8 +926,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0041_zubat/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -910,8 +951,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0042_golbat/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -930,8 +972,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0043_oddish/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -954,8 +997,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0044_gloom/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -978,8 +1022,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0045_vileplume/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -998,8 +1043,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0046_paras/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1022,8 +1068,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0047_parasect/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1042,8 +1089,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0048_venonat/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1066,8 +1114,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0049_venomoth/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1085,8 +1134,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0050_diglett/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1108,8 +1158,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0051_dugtrio/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1127,8 +1178,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0052_meowth/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1150,8 +1202,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0053_persian/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1169,8 +1222,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0054_psyduck/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1192,8 +1246,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0055_golduck/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1211,8 +1266,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0056_mankey/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1234,8 +1290,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0057_primeape/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1253,8 +1310,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0058_growlithe/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1276,8 +1334,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0059_arcanine/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1295,8 +1354,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0060_poliwag/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1318,8 +1378,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0061_poliwhirl/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1342,8 +1403,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0062_poliwrath/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1361,8 +1423,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0063_abra/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1384,8 +1447,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0064_kadabra/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1407,8 +1471,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0065_alakazam/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1426,8 +1491,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0066_machop/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1449,8 +1515,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0067_machoke/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1472,8 +1539,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0068_machamp/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1492,8 +1560,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0069_bellsprout/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1516,8 +1585,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0070_weepinbell/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1540,8 +1610,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0071_victreebel/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1560,8 +1631,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0072_tentacool/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1584,8 +1656,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0073_tentacruel/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1604,8 +1677,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0074_geodude/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1628,8 +1702,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0075_graveler/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1652,8 +1727,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0076_golem/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1671,8 +1747,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0077_ponyta/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1694,8 +1771,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0078_rapidash/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1714,8 +1792,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0079_slowpoke/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1738,8 +1817,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0080_slowbro/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1758,8 +1838,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0081_magnemite/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1782,8 +1863,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0082_magneton/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1802,8 +1884,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0083_farfetchd/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1822,8 +1905,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0084_doduo/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1846,8 +1930,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0085_dodrio/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1865,8 +1950,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0086_seel/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1889,8 +1975,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0087_dewgong/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1908,8 +1995,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0088_grimer/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1931,8 +2019,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0089_muk/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1950,8 +2039,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0090_shellder/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1974,8 +2064,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0091_cloyster/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -1994,8 +2085,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0092_gastly/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2018,8 +2110,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0093_haunter/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2042,8 +2135,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0094_gengar/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2062,8 +2156,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0095_onix/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2081,8 +2176,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0096_drowzee/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2104,8 +2200,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0097_hypno/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2123,8 +2220,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0098_krabby/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2146,8 +2244,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0099_kingler/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2165,8 +2264,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0100_voltorb/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2188,8 +2288,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0101_electrode/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2208,8 +2309,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0102_exeggcute/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2232,8 +2334,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0103_exeggutor/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2251,8 +2354,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0104_cubone/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2274,8 +2378,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0105_marowak/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2293,8 +2398,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0106_hitmonlee/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2312,8 +2418,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0107_hitmonchan/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2331,8 +2438,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0108_lickitung/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2350,8 +2458,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0109_koffing/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2373,8 +2482,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0110_weezing/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2393,8 +2503,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0111_rhyhorn/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2417,8 +2528,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0112_rhydon/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2436,8 +2548,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0113_chansey/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2455,8 +2568,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0114_tangela/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2474,8 +2588,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0115_kangaskhan/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2493,8 +2608,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0116_horsea/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2516,8 +2632,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0117_seadra/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2535,8 +2652,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0118_goldeen/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2558,8 +2676,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0119_seaking/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2577,8 +2696,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0120_staryu/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2601,8 +2721,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0121_starmie/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2621,8 +2742,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0122_mr-mime/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2641,8 +2763,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0123_scyther/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2661,8 +2784,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0124_jynx/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2680,8 +2804,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0125_electabuzz/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2699,8 +2824,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0126_magmar/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2718,8 +2844,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0127_pinsir/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2737,8 +2864,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0128_tauros/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2756,8 +2884,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0129_magikarp/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2780,8 +2909,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0130_gyarados/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2800,8 +2930,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0131_lapras/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2819,8 +2950,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0132_ditto/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2838,8 +2970,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0133_eevee/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2865,8 +2998,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0134_vaporeon/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2884,8 +3018,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0135_jolteon/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2903,8 +3038,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0136_flareon/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2922,8 +3058,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0137_porygon/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2942,8 +3079,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0138_omanyte/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2966,8 +3104,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0139_omastar/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -2986,8 +3125,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0140_kabuto/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3010,8 +3150,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0141_kabutops/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3030,8 +3171,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0142_aerodactyl/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3049,8 +3191,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0143_snorlax/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3069,8 +3212,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0144_articuno/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3089,8 +3233,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0145_zapdos/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3109,8 +3254,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0146_moltres/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3128,8 +3274,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0147_dratini/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3151,8 +3298,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0148_dragonair/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3175,8 +3323,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0149_dragonite/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3194,8 +3343,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0150_mewtwo/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
@@ -3213,8 +3363,9 @@
     "niveau_depart": 1,
     "sprite_dossier": "assets/sprites/0151_mew/",
     "xp_courbe": {
-      "base": 10,
-      "facteur": 1.5
+      "type": "exponentielle",
+      "base": 8.5705,
+      "facteur": 1.1107
     },
     "production_base": {
       "type": "lineaire",
