@@ -10,12 +10,9 @@
 <body>
   <div class="app">
     <header class="header">
-      <div class="header-gauche">
-        <img class="specialisation-icone" id="specialisation-icone" alt="" hidden />
-        <div class="ressource">
-          <span class="ressource-icone" id="ressource-icone">💰</span>
-          <span class="ressource-valeur" id="pokedollars-valeur">0</span>
-        </div>
+      <div class="ressource">
+        <span class="ressource-icone" id="ressource-icone">💰</span>
+        <span class="ressource-valeur" id="pokedollars-valeur">0</span>
       </div>
       <div class="header-droite">
         <div class="ressource ressource-poussiere" id="poussiere-badge" hidden>
@@ -33,6 +30,12 @@
       <button class="btn-debug-fond" id="btn-debug-fond" aria-label="Changer le fond (debug)">🕐</button>
       <button class="btn-debug-argent" id="btn-debug-argent" aria-label="Doubler les Pokédollars (debug)">💸</button>
     </main>
+
+    <!-- Bandeau spécialisation (icône, gauche) + Éveil (centre), juste au-dessus du menu -->
+    <div class="bandeau-action">
+      <img class="specialisation-icone" id="specialisation-icone" alt="" hidden />
+      <button class="btn-eveil" id="btn-eveil" hidden>🌅 Éveil</button>
+    </div>
 
     <!-- Panel du menu sélectionné : contenu changé par les onglets du bas -->
     <section class="panel-menu">
@@ -74,7 +77,6 @@
     <nav class="tabs-bar">
       <button class="tab-btn actif" id="tab-pokemon" data-tab="pokemon" aria-label="Pokémon">🐾</button>
       <button class="tab-btn" id="tab-boutique" data-tab="boutique" aria-label="Boutique">🛒</button>
-      <button class="btn-eveil" id="btn-eveil" hidden>🌅 Éveil</button>
     </nav>
   </div>
 
