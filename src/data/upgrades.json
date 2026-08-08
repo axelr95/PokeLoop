@@ -1370,7 +1370,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_normal != 1",
     "deblocage_maitrise": "normal",
-    "type_associe": "normal"
+    "type_associe": "normal",
+    "type": "declencheur"
   },
   {
     "id": "normal_maitrise",
@@ -1415,7 +1416,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_combat != 1",
     "deblocage_maitrise": "combat",
-    "type_associe": "combat"
+    "type_associe": "combat",
+    "type": "declencheur"
   },
   {
     "id": "combat_maitrise",
@@ -1460,7 +1462,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_vol != 1",
     "deblocage_maitrise": "vol",
-    "type_associe": "vol"
+    "type_associe": "vol",
+    "type": "declencheur"
   },
   {
     "id": "vol_maitrise",
@@ -1505,7 +1508,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_poison != 1",
     "deblocage_maitrise": "poison",
-    "type_associe": "poison"
+    "type_associe": "poison",
+    "type": "declencheur"
   },
   {
     "id": "poison_maitrise",
@@ -1550,7 +1554,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_sol != 1",
     "deblocage_maitrise": "sol",
-    "type_associe": "sol"
+    "type_associe": "sol",
+    "type": "declencheur"
   },
   {
     "id": "sol_maitrise",
@@ -1595,7 +1600,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_roche != 1",
     "deblocage_maitrise": "roche",
-    "type_associe": "roche"
+    "type_associe": "roche",
+    "type": "declencheur"
   },
   {
     "id": "roche_maitrise",
@@ -1640,7 +1646,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_insecte != 1",
     "deblocage_maitrise": "insecte",
-    "type_associe": "insecte"
+    "type_associe": "insecte",
+    "type": "declencheur"
   },
   {
     "id": "insecte_maitrise",
@@ -1685,7 +1692,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_spectre != 1",
     "deblocage_maitrise": "spectre",
-    "type_associe": "spectre"
+    "type_associe": "spectre",
+    "type": "declencheur"
   },
   {
     "id": "spectre_maitrise",
@@ -1730,7 +1738,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_acier != 1",
     "deblocage_maitrise": "acier",
-    "type_associe": "acier"
+    "type_associe": "acier",
+    "type": "declencheur"
   },
   {
     "id": "acier_maitrise",
@@ -1775,7 +1784,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_feu != 1",
     "deblocage_maitrise": "feu",
-    "type_associe": "feu"
+    "type_associe": "feu",
+    "type": "declencheur"
   },
   {
     "id": "feu_maitrise",
@@ -1820,7 +1830,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_eau != 1",
     "deblocage_maitrise": "eau",
-    "type_associe": "eau"
+    "type_associe": "eau",
+    "type": "declencheur"
   },
   {
     "id": "eau_maitrise",
@@ -1865,7 +1876,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_plante != 1",
     "deblocage_maitrise": "plante",
-    "type_associe": "plante"
+    "type_associe": "plante",
+    "type": "declencheur"
   },
   {
     "id": "plante_maitrise",
@@ -1910,7 +1922,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_electrik != 1",
     "deblocage_maitrise": "electrik",
-    "type_associe": "electrik"
+    "type_associe": "electrik",
+    "type": "declencheur"
   },
   {
     "id": "electrik_maitrise",
@@ -1955,7 +1968,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_psy != 1",
     "deblocage_maitrise": "psy",
-    "type_associe": "psy"
+    "type_associe": "psy",
+    "type": "declencheur"
   },
   {
     "id": "psy_maitrise",
@@ -2000,7 +2014,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_glace != 1",
     "deblocage_maitrise": "glace",
-    "type_associe": "glace"
+    "type_associe": "glace",
+    "type": "declencheur"
   },
   {
     "id": "glace_maitrise",
@@ -2045,7 +2060,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_dragon != 1",
     "deblocage_maitrise": "dragon",
-    "type_associe": "dragon"
+    "type_associe": "dragon",
+    "type": "declencheur"
   },
   {
     "id": "dragon_maitrise",
@@ -2090,7 +2106,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_tenebres != 1",
     "deblocage_maitrise": "tenebres",
-    "type_associe": "tenebres"
+    "type_associe": "tenebres",
+    "type": "declencheur"
   },
   {
     "id": "tenebres_maitrise",
@@ -2135,7 +2152,8 @@
     "exclusif_avec": [],
     "condition_deblocage": "maitrise_fee != 1",
     "deblocage_maitrise": "fee",
-    "type_associe": "fee"
+    "type_associe": "fee",
+    "type": "declencheur"
   },
   {
     "id": "fee_maitrise",

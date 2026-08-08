@@ -197,7 +197,7 @@ async function demarrer() {
     specialisationBackdrop: document.getElementById("specialisation-backdrop"),
     modalSpecialisation: document.getElementById("modal-specialisation"),
     specialisationCartes: document.getElementById("specialisation-cartes"),
-    specialisationBadge: document.getElementById("specialisation-badge"),
+    specialisationIcone: document.getElementById("specialisation-icone"),
     toastBackdrop: document.getElementById("toast-backdrop"),
     toastHorsLigne: document.getElementById("toast-hors-ligne"),
     toastHorsLigneTexte: document.getElementById("toast-hors-ligne-texte"),
@@ -272,7 +272,18 @@ async function demarrer() {
     );
   }
 
-  const formatNombre = (n) => Math.floor(n).toLocaleString("fr-FR");
+  // Au-delà de 999 999, notation scientifique compacte (1e6, 5.11e8, 1e9...) plutôt
+  // que des chiffres à rallonge — mantisse sans décimales inutiles (1e6, pas 1.00e6).
+  const formatNombre = (n) => {
+    const valeur = Math.floor(n);
+    if (valeur < 1_000_000) return valeur.toLocaleString("fr-FR");
+    let exposant = Math.floor(Math.log10(valeur));
+    let mantisse = valeur / 10 ** exposant;
+    if (mantisse >= 10) { mantisse /= 10; exposant += 1; }
+    if (mantisse < 1) { mantisse *= 10; exposant -= 1; }
+    const texte = mantisse.toFixed(2).replace(/\.?0+$/, "");
+    return `${texte}e${exposant}`;
+  };
   const TITRES_ONGLETS = { pokemon: "Pokémon", boutique: "Boutique" };
   let idsBoutiqueAffiches = null;
   let idsPaliersAffiches = null;
@@ -292,7 +303,7 @@ async function demarrer() {
     floater.style.top = `${yRelatif}px`;
     el.zoneDecor.appendChild(floater);
     floater.addEventListener("animationend", () => floater.remove());
-    setTimeout(() => floater.remove(), 900); // filet de sécurité si l'animation ne se déclenche pas (onglet en arrière-plan)
+    setTimeout(() => floater.remove(), 1700); // filet de sécurité si l'animation ne se déclenche pas (onglet en arrière-plan)
   }
 
   function floaterDepuisEvenement(evt, texte) {
@@ -907,7 +918,10 @@ async function demarrer() {
     for (const id of game.state.upgradesPossedees) {
       const upgrade = game.data.upgrades.find((u) => u.id === id);
       if (upgrade) {
-        items.push({ upgrade });
+        // Déclencheur (cf. 7bis.6) : pose juste un flag à l'achat, jamais une
+        // carte à part entière dans les possédées — réutilisable pour d'autres
+        // déblocages futurs du même genre.
+        if (upgrade.type !== "declencheur") items.push({ upgrade });
         continue;
       }
       const palier = paliersConnus.find((p) => p.id === id);
@@ -1039,13 +1053,13 @@ async function demarrer() {
   // --- Spécialisation de type : choix unique et définitif, débloque 3 upgrades liées ---
   function actualiserBadgeSpecialisation() {
     if (!game.specialisationChoisie()) {
-      el.specialisationBadge.style.visibility = "hidden";
+      el.specialisationIcone.hidden = true;
       return;
     }
     const def = types[game.state.specialisation];
-    el.specialisationBadge.style.visibility = "visible";
-    el.specialisationBadge.style.background = def.couleur;
-    el.specialisationBadge.innerHTML = `Spécialisation <img class="specialisation-badge-icone" src="assets/icons/types/${game.state.specialisation}.png" alt="${def.nom}" />`;
+    el.specialisationIcone.hidden = false;
+    el.specialisationIcone.src = `assets/icons/types/${game.state.specialisation}.png`;
+    el.specialisationIcone.alt = def.nom;
   }
 
   function fermerModaleSpecialisation() {

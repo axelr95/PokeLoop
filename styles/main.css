@@ -76,6 +76,19 @@ img {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.header-gauche {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.specialisation-icone {
+  height: 1.5rem;
+  width: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
 .ressource {
   display: flex;
   align-items: center;
@@ -105,14 +118,15 @@ img {
 }
 
 .btn-eveil {
-  min-height: 32px;
-  padding: 0 0.7rem;
+  flex: 1;
+  min-height: 46px;
+  padding: 0 0.5rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--couleur-accent);
   color: #1e1b2e;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
@@ -212,7 +226,7 @@ img {
   font-size: 0.95rem;
   color: var(--couleur-accent);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  animation: flotter-disparaitre 0.8s ease-out forwards;
+  animation: flotter-disparaitre 1.6s ease-out forwards;
   z-index: 5;
 }
 
@@ -223,7 +237,7 @@ img {
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -36px);
+    transform: translate(-50%, -56px);
   }
 }
 
@@ -936,31 +950,6 @@ img {
 
 .type-carte-icone {
   height: 1.6rem;
-  width: auto;
-  object-fit: contain;
-  image-rendering: pixelated;
-}
-
-/* Badge de la spécialisation choisie, affiché juste au-dessus des menus.
-   Hauteur fixe et toujours réservée (masqué via visibility, pas display) :
-   la zone décorative au-dessus (flex:1) ne doit jamais changer de taille
-   selon que ce badge est vide/rempli, sinon le fond qu'elle affiche saute. */
-.specialisation-badge {
-  flex: none;
-  height: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  padding: 0 0.5rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #1e1b2e;
-  visibility: hidden;
-}
-
-.specialisation-badge-icone {
-  height: 1em;
   width: auto;
   object-fit: contain;
   image-rendering: pixelated;
