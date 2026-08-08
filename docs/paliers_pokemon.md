@@ -27,28 +27,37 @@ Motif en vague **25% / 50% / 100%** répété 3 fois, puis un palier final renfo
 
 **Important** : `valeur` = l'incrément individuel (ce que le moteur utilise pour le calcul additif_final, qui somme automatiquement toutes les upgrades actives). Le "cumulé affiché" est une valeur **calculée pour l'affichage uniquement** (texte de description), égale à la somme de tous les paliers jusqu'à celui-ci inclus — elle n'a pas besoin d'être stockée séparément, le moteur peut la recalculer à l'affichage (somme des `valeur` de tier 1 à tier courant pour ce Pokémon) ou la précalculer à la génération.
 
-## Coût — première courbe (à ajuster en balancing)
+## Coût — indexé sur le coût XP cumulé (v2, remplace la courbe ×4 initiale)
 
-Formule simple, exponentielle ×4 par palier, indépendante du Pokémon pour l'instant (v1) :
+La courbe ×4/palier (v1) coûtait jusqu'à 65× le coût XP total pour monter un Pokémon de 1 à 100
+(tier X : 26 214 400, contre ~405 000 d'XP cumulée pour atteindre niveau 100) — un mur en fin de
+partie totalement déconnecté de l'économie réelle du joueur (cf. analyse de balancing).
+
+Nouvelle formule : coût = **8% du coût XP cumulé** pour atteindre le niveau requis du palier
+(même courbe `xpRequise(n) = 10 × n^1.5` que la montée en niveau, section 3.3) :
 
 ```
-cout(tier) = 100 × 4^(tier - 1)
+cumulXP(niveau) = Σ xpRequise(n) pour n de 2 à niveau
+cout(tier)       = round(0.08 × cumulXP(niveau_requis))
 ```
 
-| tier | coût |
-|---|---|
-| I | 100 |
-| II | 400 |
-| III | 1 600 |
-| IV | 6 400 |
-| V | 25 600 |
-| VI | 102 400 |
-| VII | 409 600 |
-| VIII | 1 638 400 |
-| IX | 6 553 600 |
-| X | 26 214 400 |
+| tier | niveau requis | coût |
+|---|---|---|
+| I | 10 | 113 |
+| II | 20 | 608 |
+| III | 30 | 1 643 |
+| IV | 40 | 3 339 |
+| V | 50 | 5 798 |
+| VI | 60 | 9 109 |
+| VII | 70 | 13 353 |
+| VIII | 80 | 18 604 |
+| IX | 90 | 24 932 |
+| X | 100 | 32 400 |
 
-À affiner une fois testé en jeu (probablement en pondérant par la position du Pokémon dans sa lignée d'évolution, ou par son coût de recrutement, pour différencier starters/recrues tardives).
+Le coût grandit avec la même forme (~puissance) que la XP cumulée plutôt qu'exponentiellement —
+reste une dépense significative à chaque palier sans jamais dépasser une poignée de % du budget
+XP déjà investi. Toujours uniforme par tier (indépendant du Pokémon) ; la différenciation
+starter/recrue tardive reste une piste ouverte.
 
 ## Data model : template générique (pas 1510 entrées en dur)
 
@@ -57,16 +66,16 @@ Comme `specialisation.json`, un **template unique** instancié dynamiquement par
 ```json
 {
   "paliers": [
-    { "id_suffix": "palier_1", "tier_romain": "I",   "niveau_requis": 10,  "valeur": 0.25, "cout": 100 },
-    { "id_suffix": "palier_2", "tier_romain": "II",  "niveau_requis": 20,  "valeur": 0.50, "cout": 400 },
-    { "id_suffix": "palier_3", "tier_romain": "III", "niveau_requis": 30,  "valeur": 1.00, "cout": 1600 },
-    { "id_suffix": "palier_4", "tier_romain": "IV",  "niveau_requis": 40,  "valeur": 0.25, "cout": 6400 },
-    { "id_suffix": "palier_5", "tier_romain": "V",   "niveau_requis": 50,  "valeur": 0.50, "cout": 25600 },
-    { "id_suffix": "palier_6", "tier_romain": "VI",  "niveau_requis": 60,  "valeur": 1.00, "cout": 102400 },
-    { "id_suffix": "palier_7", "tier_romain": "VII", "niveau_requis": 70,  "valeur": 0.25, "cout": 409600 },
-    { "id_suffix": "palier_8", "tier_romain": "VIII","niveau_requis": 80,  "valeur": 0.50, "cout": 1638400 },
-    { "id_suffix": "palier_9", "tier_romain": "IX",  "niveau_requis": 90,  "valeur": 1.00, "cout": 6553600 },
-    { "id_suffix": "palier_10","tier_romain": "X",   "niveau_requis": 100, "valeur": 1.75, "cout": 26214400 }
+    { "id_suffix": "palier_1", "tier_romain": "I",   "niveau_requis": 10,  "valeur": 0.25, "cout": 113 },
+    { "id_suffix": "palier_2", "tier_romain": "II",  "niveau_requis": 20,  "valeur": 0.50, "cout": 608 },
+    { "id_suffix": "palier_3", "tier_romain": "III", "niveau_requis": 30,  "valeur": 1.00, "cout": 1643 },
+    { "id_suffix": "palier_4", "tier_romain": "IV",  "niveau_requis": 40,  "valeur": 0.25, "cout": 3339 },
+    { "id_suffix": "palier_5", "tier_romain": "V",   "niveau_requis": 50,  "valeur": 0.50, "cout": 5798 },
+    { "id_suffix": "palier_6", "tier_romain": "VI",  "niveau_requis": 60,  "valeur": 1.00, "cout": 9109 },
+    { "id_suffix": "palier_7", "tier_romain": "VII", "niveau_requis": 70,  "valeur": 0.25, "cout": 13353 },
+    { "id_suffix": "palier_8", "tier_romain": "VIII","niveau_requis": 80,  "valeur": 0.50, "cout": 18604 },
+    { "id_suffix": "palier_9", "tier_romain": "IX",  "niveau_requis": 90,  "valeur": 1.00, "cout": 24932 },
+    { "id_suffix": "palier_10","tier_romain": "X",   "niveau_requis": 100, "valeur": 1.75, "cout": 32400 }
   ]
 }
 ```

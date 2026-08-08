@@ -215,7 +215,7 @@ Chaque Pokémon jouable (starter + recrues débloquées) génère **10 upgrades 
 | X | 100 | 175% | 700% |
 
 - `valeur` stockée = incrément individuel (le moteur somme automatiquement via `additif_final`). Le "cumulé affiché" est une valeur calculée pour la description au clic, pas stockée séparément.
-- **Coût** (v1, à équilibrer) : `cout(tier) = 100 × 4^(tier-1)` — de 100 (tier I) à 26 214 400 (tier X). Uniforme pour tous les Pokémon en v1, sera probablement différencié par lignée plus tard.
+- **Coût** (v2) : `cout(tier) = round(0.08 × cumulXP(niveau_requis))`, où `cumulXP` est le coût XP cumulé (section 3.3) pour atteindre ce niveau depuis 1 — de 113 (tier I) à 32 400 (tier X). Remplace la courbe ×4 initiale, qui atteignait 65× le coût XP total de la montée niveau 1→100 (cf. `paliers_pokemon.md`). Uniforme pour tous les Pokémon, sera probablement différencié par lignée plus tard.
 - **Icône** : portrait de `espece_ligne` (jamais `espece_actuelle`) + chiffre romain (I-X) en overlay bas-droite, généré côté UI.
 - **Affichage shop** : 1 seul emplacement visible par Pokémon (pas 10 lignes) — affiche le prochain tier achetable, remplacé visuellement après achat par le suivant. N'apparaît pas du tout si le Pokémon n'a pas atteint le niveau 10.
 - **Data model** : template générique (`paliers_pokemon.json`), instancié dynamiquement par le moteur pour chaque Pokémon jouable — pas d'entrées en dur par Pokémon. Voir `paliers_pokemon.md` pour le détail complet.
@@ -361,5 +361,5 @@ Un bouton (sous le bouton debug fond, coin haut-droit) efface `localStorage`/`se
 - Mode combat annexe (Tour de combat / Raids) et réintroduction de l'efficacité des types.
 - Choix du starter au prestige (aléatoire vs Pokédex débloqué — les 151 sont déjà en data, reste à décider comment ils se débloquent au fil des runs).
 - Équilibrage des 3 upgrades de spécialisation (valeurs placeholders +20% × 3, cf. 6bis).
-- Équilibrage de la courbe de coût des paliers de niveau (formule ×4 provisoire, cf. 6ter) — à ajuster une fois testée en jeu.
+- Équilibrage de la courbe de coût des paliers de niveau : formule ×4 remplacée par un coût indexé sur 8% du coût XP cumulé (cf. 6ter) — à confirmer en jeu.
 - Différenciation possible du coût des paliers selon le Pokémon (starter vs recrue tardive) — uniforme pour l'instant.
