@@ -27,42 +27,39 @@ Motif en vague **25% / 50% / 100%** répété 3 fois, puis un palier final renfo
 
 **Important** : `valeur` = l'incrément individuel (ce que le moteur utilise pour le calcul additif_final, qui somme automatiquement toutes les upgrades actives). Le "cumulé affiché" est une valeur **calculée pour l'affichage uniquement** (texte de description), égale à la somme de tous les paliers jusqu'à celui-ci inclus — elle n'a pas besoin d'être stockée séparément, le moteur peut la recalculer à l'affichage (somme des `valeur` de tier 1 à tier courant pour ce Pokémon) ou la précalculer à la génération.
 
-## Coût — indexé sur le coût XP cumulé (v2, remplace la courbe ×4 initiale)
+## Coût — indexé sur le coût XP cumulé (v3, suit la courbe XP exponentielle)
 
-La courbe ×4/palier (v1) coûtait jusqu'à 65× le coût XP total pour monter un Pokémon de 1 à 100
-(tier X : 26 214 400, contre ~405 000 d'XP cumulée pour atteindre niveau 100) — un mur en fin de
-partie totalement déconnecté de l'économie réelle du joueur (cf. analyse de balancing).
+Coût (par Pokémon) = **10% du coût XP cumulé de l'équipe entière** (6 membres) pour atteindre le
+niveau requis du palier, arrondi à un chiffre lisible. Basé sur l'équipe et non sur un seul
+Pokémon : c'est la vraie masse de Pokédollars que le joueur a dû produire pour arriver à ce
+niveau (une seule ressource, un seul pool de production).
 
-Nouvelle formule : coût (par Pokémon) = **10% du coût XP cumulé de l'équipe entière** (6 membres)
-pour atteindre le niveau requis du palier, arrondi à un chiffre lisible. Basé sur l'équipe et non
-sur un seul Pokémon : c'est la vraie masse de Pokédollars que le joueur a dû produire pour arriver
-à ce niveau (une seule ressource, un seul pool de production) — baser le calcul sur un seul
-Pokémon sous-évaluait le coût d'un facteur ~6 et rendait le palier trivial (quelques secondes de
-prod équipe) :
+Recalculé après le passage à la courbe XP exponentielle (section 3.3, `xp_courbe.type:
+"exponentielle"`) — le cumul XP est désormais concentré sur les 20-30 derniers niveaux, donc les
+paliers bas coûtent beaucoup moins qu'avec l'ancienne courbe (loi puissance), et les hauts
+beaucoup plus (jusqu'à ×7,7 sur le palier X) :
 
 ```
-xpRequise(n)         = 10 × n^1.5                      (section 3.3)
-cumulXP_equipe(niveau) = 6 × Σ xpRequise(n) pour n de 2 à niveau
-cout(tier)              ≈ round_lisible(0.10 × cumulXP_equipe(niveau_requis))
+xpRequise(n)            = 8.5705 × 1.1107^n            (section 3.3)
+cumulXP_equipe(niveau)  = 6 × Σ xpRequise(n) pour n de 2 à niveau
+cout(tier)               ≈ round_lisible(0.10 × cumulXP_equipe(niveau_requis))
 ```
 
 | tier | niveau requis | coût brut (10%) | coût arrondi |
 |---|---|---|---|
-| I | 10 | 850 | 800 |
-| II | 20 | 4 559 | 4 500 |
-| III | 30 | 12 322 | 12 500 |
-| IV | 40 | 25 044 | 25 000 |
-| V | 50 | 43 486 | 43 500 |
-| VI | 60 | 68 319 | 68 000 |
-| VII | 70 | 100 148 | 100 000 |
-| VIII | 80 | 139 531 | 140 000 |
-| IX | 90 | 186 986 | 187 000 |
-| X | 100 | 243 001 | 243 000 |
+| I | 10 | 90 | 100 |
+| II | 20 | 364 | 350 |
+| III | 30 | 1 146 | 1 150 |
+| IV | 40 | 3 382 | 3 400 |
+| V | 50 | 9 770 | 9 750 |
+| VI | 60 | 28 024 | 28 000 |
+| VII | 70 | 80 181 | 80 000 |
+| VIII | 80 | 229 213 | 230 000 |
+| IX | 90 | 655 055 | 655 000 |
+| X | 100 | 1 871 847 | 1 870 000 |
 
-Acheter le palier X pour les 6 membres coûte 1 458 000, soit 60% de la XP totale déjà investie
-par l'équipe pour arriver à niveau 100 (2 430 013, cf. analyse de balancing) — un gros achat
-sans être un mur. Toujours uniforme par tier (indépendant du Pokémon) ; la différenciation
-starter/recrue tardive reste une piste ouverte.
+Toujours uniforme par tier (indépendant du Pokémon) ; la différenciation starter/recrue tardive
+reste une piste ouverte.
 
 ## Data model : template générique (pas 1510 entrées en dur)
 
@@ -71,16 +68,16 @@ Comme `specialisation.json`, un **template unique** instancié dynamiquement par
 ```json
 {
   "paliers": [
-    { "id_suffix": "palier_1", "tier_romain": "I",   "niveau_requis": 10,  "valeur": 0.25, "cout": 800 },
-    { "id_suffix": "palier_2", "tier_romain": "II",  "niveau_requis": 20,  "valeur": 0.50, "cout": 4500 },
-    { "id_suffix": "palier_3", "tier_romain": "III", "niveau_requis": 30,  "valeur": 1.00, "cout": 12500 },
-    { "id_suffix": "palier_4", "tier_romain": "IV",  "niveau_requis": 40,  "valeur": 0.25, "cout": 25000 },
-    { "id_suffix": "palier_5", "tier_romain": "V",   "niveau_requis": 50,  "valeur": 0.50, "cout": 43500 },
-    { "id_suffix": "palier_6", "tier_romain": "VI",  "niveau_requis": 60,  "valeur": 1.00, "cout": 68000 },
-    { "id_suffix": "palier_7", "tier_romain": "VII", "niveau_requis": 70,  "valeur": 0.25, "cout": 100000 },
-    { "id_suffix": "palier_8", "tier_romain": "VIII","niveau_requis": 80,  "valeur": 0.50, "cout": 140000 },
-    { "id_suffix": "palier_9", "tier_romain": "IX",  "niveau_requis": 90,  "valeur": 1.00, "cout": 187000 },
-    { "id_suffix": "palier_10","tier_romain": "X",   "niveau_requis": 100, "valeur": 1.75, "cout": 243000 }
+    { "id_suffix": "palier_1", "tier_romain": "I",   "niveau_requis": 10,  "valeur": 0.25, "cout": 100 },
+    { "id_suffix": "palier_2", "tier_romain": "II",  "niveau_requis": 20,  "valeur": 0.50, "cout": 350 },
+    { "id_suffix": "palier_3", "tier_romain": "III", "niveau_requis": 30,  "valeur": 1.00, "cout": 1150 },
+    { "id_suffix": "palier_4", "tier_romain": "IV",  "niveau_requis": 40,  "valeur": 0.25, "cout": 3400 },
+    { "id_suffix": "palier_5", "tier_romain": "V",   "niveau_requis": 50,  "valeur": 0.50, "cout": 9750 },
+    { "id_suffix": "palier_6", "tier_romain": "VI",  "niveau_requis": 60,  "valeur": 1.00, "cout": 28000 },
+    { "id_suffix": "palier_7", "tier_romain": "VII", "niveau_requis": 70,  "valeur": 0.25, "cout": 80000 },
+    { "id_suffix": "palier_8", "tier_romain": "VIII","niveau_requis": 80,  "valeur": 0.50, "cout": 230000 },
+    { "id_suffix": "palier_9", "tier_romain": "IX",  "niveau_requis": 90,  "valeur": 1.00, "cout": 655000 },
+    { "id_suffix": "palier_10","tier_romain": "X",   "niveau_requis": 100, "valeur": 1.75, "cout": 1870000 }
   ]
 }
 ```
