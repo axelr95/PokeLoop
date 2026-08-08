@@ -7,7 +7,7 @@
 - Skills `ponytail` et `caveman` actives par défaut (sauf indication contraire dans le message).
 
 ## Git
-- En fin de tâche, push systématique sur `main` (seule branche testable côté utilisateur).
+- Toujours commit & push en fin de tâche. Toujours sur `main` (seule branche testable côté utilisateur).
 - Pas de branches annexes pour des sous-tâches : tout converge sur `main`, directement.
 - Projet solo, pas de PR/review : en cas de bug, `git revert`/`git reset` sur le commit précédent suffit.
 - Convention de commit : `type: description` en français, à l'impératif.
