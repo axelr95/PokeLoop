@@ -8,7 +8,17 @@
 
 ## Git
 - En fin de tâche, push systématique sur `main` (seule branche testable côté utilisateur).
-- Créer les commits normalement, mais ne pas s'arrêter sur une branche de travail intermédiaire.
+- Pas de branches annexes pour des sous-tâches : tout converge sur `main`, directement.
+- Projet solo, pas de PR/review : en cas de bug, `git revert`/`git reset` sur le commit précédent suffit.
+- Convention de commit : `type: description` en français, à l'impératif.
+  Types : `feat` (ajout), `fix` (correction), `balance` (équilibrage jeu), `docs`, `refactor`, `chore`.
+  Ex : `balance: rééquilibre le coût des paliers de niveau`.
+
+## Tests
+- Pas de framework de test. Avant de livrer un changement, vérifier rapidement qu'il fonctionne
+  (ex : `node -e` ciblé sur la fonction touchée, ou lancer `npm run dev` et un check ponctuel).
+- Rester minimal : un check qui casse si la logique est fausse, pas une suite exhaustive.
+  Pas de rapport détaillé du test dans la réponse — juste le résultat (ok/pas ok) si pertinent.
 
 ## Projet
 Idle game Pokémon (JS vanilla, pas de framework), servi par `server.js` (Node natif, statique).
