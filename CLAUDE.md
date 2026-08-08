@@ -14,6 +14,17 @@
   Types : `feat` (ajout), `fix` (correction), `balance` (équilibrage jeu), `docs`, `refactor`, `chore`.
   Ex : `balance: rééquilibre le coût des paliers de niveau`.
 
+## Balancing
+- Le balancing va être touché en continu (nouvelles mécaniques, changements de progression
+  qui ont des répercussions en cascade). Centraliser tout calcul de balance dans
+  `scripts/balance.js` plutôt que du calcul jetable en terminal — le réutiliser et le faire
+  évoluer à chaque changement.
+- Ce script réutilise les vraies formules (`src/engine/calculations.js`) et les vraies données
+  (`src/data/*.json`), jamais de valeurs recopiées à la main.
+- `node scripts/balance.js` : table de balance actuelle (prod, coûts, ratios par palier).
+- `node scripts/balance.js --fraction=0.10` : suggère des coûts de paliers à X% de la XP
+  cumulée équipe, pour retrouver un ratio cible après un futur changement de données.
+
 ## Tests
 - Pas de framework de test. Avant de livrer un changement, vérifier rapidement qu'il fonctionne
   (ex : `node -e` ciblé sur la fonction touchée, ou lancer `npm run dev` et un check ponctuel).
