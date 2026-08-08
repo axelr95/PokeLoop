@@ -27,8 +27,9 @@ const V_FORME_FINALE = 2; // valeur_par_niveau d'un Pokémon en forme finale (cf
 
 // Modifiers globaux actifs en jeu normal : toutes les upgrades globales achetées
 // (peu chères, achetées tôt), équipe complète (final_boost_1 débloqué dès 3 membres).
+// Exclut la Maîtrise (7bis.6, coûts 100k/1M) : pas une hypothèse d'early-game valide.
 const modifiersGlobaux = upgrades
-  .filter((u) => u.effet.cible.type === "global")
+  .filter((u) => u.effet.cible.type === "global" && !u.id.includes("_maitrise"))
   .map((u) => ({ categorie: u.effet.categorie, valeur: u.effet.valeur, type: u.effet.type }));
 
 function xpCumuleUnMon(niveau) {

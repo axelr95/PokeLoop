@@ -54,6 +54,7 @@ export class Game {
         if (!state.pokedex_decouverts) {
           state.pokedex_decouverts = [...new Set(state.equipe.map((m) => m.espece_ligne))];
         }
+        if (!state.maitrises_debloquees) state.maitrises_debloquees = [];
         if (state.equipe.length > 0 && state.dernierTick) {
           const ecouleSec = Math.min(
             (Date.now() - state.dernierTick) / 1000,
@@ -78,6 +79,7 @@ export class Game {
       upgradesPossedees: [],
       specialisation: null,
       pokedex_decouverts: [],
+      maitrises_debloquees: [],
       cumulProductionVie: 0,
       poussiereEtoile: 0,
       dernierTick: Date.now(),
@@ -517,11 +519,15 @@ export class Game {
   }
 
   variablesEtat() {
-    return {
+    const variables = {
       equipe_taille: this.state.equipe.length,
       pokedollars: this.state.pokedollars,
       specialisation: this.state.specialisation,
     };
+    for (const typeId of this.state.maitrises_debloquees) {
+      variables[`maitrise_${typeId}`] = 1;
+    }
+    return variables;
   }
 
   upgradeDisponible(upgrade) {
@@ -542,6 +548,12 @@ export class Game {
     if (this.state.pokedollars < upgrade.cout.valeur) return false;
     this.state.pokedollars -= upgrade.cout.valeur;
     this.state.upgradesPossedees.push(upgrade.id);
+    // Maîtrise (7bis.6) : le déblocage ne touche pas la prod, il pose un flag
+    // permanent (jamais reset, même à l'Éveil) qui rend visible l'upgrade
+    // "Maîtrise <type>" rachetable chaque run.
+    if (upgrade.deblocage_maitrise && !this.state.maitrises_debloquees.includes(upgrade.deblocage_maitrise)) {
+      this.state.maitrises_debloquees.push(upgrade.deblocage_maitrise);
+    }
     return true;
   }
 

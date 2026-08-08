@@ -1347,5 +1347,815 @@
     ],
     "exclusif_avec": [],
     "condition_deblocage": "specialisation == fee"
+  },
+  {
+    "id": "normal_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Normal",
+    "icone": "⚪",
+    "description": "Débloque de manière permanente la Maîtrise du type Normal.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "normal_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_normal != 1",
+    "deblocage_maitrise": "normal",
+    "type_associe": "normal"
+  },
+  {
+    "id": "normal_maitrise",
+    "nom": "Maîtrise Normal",
+    "icone": "⚪",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_normal == 1",
+    "type_associe": "normal"
+  },
+  {
+    "id": "combat_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Combat",
+    "icone": "🥊",
+    "description": "Débloque de manière permanente la Maîtrise du type Combat.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "combat_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_combat != 1",
+    "deblocage_maitrise": "combat",
+    "type_associe": "combat"
+  },
+  {
+    "id": "combat_maitrise",
+    "nom": "Maîtrise Combat",
+    "icone": "🥊",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_combat == 1",
+    "type_associe": "combat"
+  },
+  {
+    "id": "vol_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Vol",
+    "icone": "🕊️",
+    "description": "Débloque de manière permanente la Maîtrise du type Vol.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "vol_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_vol != 1",
+    "deblocage_maitrise": "vol",
+    "type_associe": "vol"
+  },
+  {
+    "id": "vol_maitrise",
+    "nom": "Maîtrise Vol",
+    "icone": "🕊️",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_vol == 1",
+    "type_associe": "vol"
+  },
+  {
+    "id": "poison_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Poison",
+    "icone": "☠️",
+    "description": "Débloque de manière permanente la Maîtrise du type Poison.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "poison_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_poison != 1",
+    "deblocage_maitrise": "poison",
+    "type_associe": "poison"
+  },
+  {
+    "id": "poison_maitrise",
+    "nom": "Maîtrise Poison",
+    "icone": "☠️",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_poison == 1",
+    "type_associe": "poison"
+  },
+  {
+    "id": "sol_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Sol",
+    "icone": "🌎",
+    "description": "Débloque de manière permanente la Maîtrise du type Sol.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "sol_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_sol != 1",
+    "deblocage_maitrise": "sol",
+    "type_associe": "sol"
+  },
+  {
+    "id": "sol_maitrise",
+    "nom": "Maîtrise Sol",
+    "icone": "🌎",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_sol == 1",
+    "type_associe": "sol"
+  },
+  {
+    "id": "roche_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Roche",
+    "icone": "🪨",
+    "description": "Débloque de manière permanente la Maîtrise du type Roche.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "roche_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_roche != 1",
+    "deblocage_maitrise": "roche",
+    "type_associe": "roche"
+  },
+  {
+    "id": "roche_maitrise",
+    "nom": "Maîtrise Roche",
+    "icone": "🪨",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_roche == 1",
+    "type_associe": "roche"
+  },
+  {
+    "id": "insecte_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Insecte",
+    "icone": "🐛",
+    "description": "Débloque de manière permanente la Maîtrise du type Insecte.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "insecte_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_insecte != 1",
+    "deblocage_maitrise": "insecte",
+    "type_associe": "insecte"
+  },
+  {
+    "id": "insecte_maitrise",
+    "nom": "Maîtrise Insecte",
+    "icone": "🐛",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_insecte == 1",
+    "type_associe": "insecte"
+  },
+  {
+    "id": "spectre_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Spectre",
+    "icone": "👻",
+    "description": "Débloque de manière permanente la Maîtrise du type Spectre.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "spectre_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_spectre != 1",
+    "deblocage_maitrise": "spectre",
+    "type_associe": "spectre"
+  },
+  {
+    "id": "spectre_maitrise",
+    "nom": "Maîtrise Spectre",
+    "icone": "👻",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_spectre == 1",
+    "type_associe": "spectre"
+  },
+  {
+    "id": "acier_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Acier",
+    "icone": "🔩",
+    "description": "Débloque de manière permanente la Maîtrise du type Acier.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "acier_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_acier != 1",
+    "deblocage_maitrise": "acier",
+    "type_associe": "acier"
+  },
+  {
+    "id": "acier_maitrise",
+    "nom": "Maîtrise Acier",
+    "icone": "🔩",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_acier == 1",
+    "type_associe": "acier"
+  },
+  {
+    "id": "feu_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Feu",
+    "icone": "🔥",
+    "description": "Débloque de manière permanente la Maîtrise du type Feu.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "feu_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_feu != 1",
+    "deblocage_maitrise": "feu",
+    "type_associe": "feu"
+  },
+  {
+    "id": "feu_maitrise",
+    "nom": "Maîtrise Feu",
+    "icone": "🔥",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_feu == 1",
+    "type_associe": "feu"
+  },
+  {
+    "id": "eau_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Eau",
+    "icone": "💧",
+    "description": "Débloque de manière permanente la Maîtrise du type Eau.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "eau_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_eau != 1",
+    "deblocage_maitrise": "eau",
+    "type_associe": "eau"
+  },
+  {
+    "id": "eau_maitrise",
+    "nom": "Maîtrise Eau",
+    "icone": "💧",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_eau == 1",
+    "type_associe": "eau"
+  },
+  {
+    "id": "plante_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Plante",
+    "icone": "🌿",
+    "description": "Débloque de manière permanente la Maîtrise du type Plante.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "plante_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_plante != 1",
+    "deblocage_maitrise": "plante",
+    "type_associe": "plante"
+  },
+  {
+    "id": "plante_maitrise",
+    "nom": "Maîtrise Plante",
+    "icone": "🌿",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_plante == 1",
+    "type_associe": "plante"
+  },
+  {
+    "id": "electrik_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Électrik",
+    "icone": "⚡",
+    "description": "Débloque de manière permanente la Maîtrise du type Électrik.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "electrik_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_electrik != 1",
+    "deblocage_maitrise": "electrik",
+    "type_associe": "electrik"
+  },
+  {
+    "id": "electrik_maitrise",
+    "nom": "Maîtrise Électrik",
+    "icone": "⚡",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_electrik == 1",
+    "type_associe": "electrik"
+  },
+  {
+    "id": "psy_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Psy",
+    "icone": "🔮",
+    "description": "Débloque de manière permanente la Maîtrise du type Psy.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "psy_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_psy != 1",
+    "deblocage_maitrise": "psy",
+    "type_associe": "psy"
+  },
+  {
+    "id": "psy_maitrise",
+    "nom": "Maîtrise Psy",
+    "icone": "🔮",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_psy == 1",
+    "type_associe": "psy"
+  },
+  {
+    "id": "glace_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Glace",
+    "icone": "❄️",
+    "description": "Débloque de manière permanente la Maîtrise du type Glace.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "glace_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_glace != 1",
+    "deblocage_maitrise": "glace",
+    "type_associe": "glace"
+  },
+  {
+    "id": "glace_maitrise",
+    "nom": "Maîtrise Glace",
+    "icone": "❄️",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_glace == 1",
+    "type_associe": "glace"
+  },
+  {
+    "id": "dragon_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Dragon",
+    "icone": "🐉",
+    "description": "Débloque de manière permanente la Maîtrise du type Dragon.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "dragon_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_dragon != 1",
+    "deblocage_maitrise": "dragon",
+    "type_associe": "dragon"
+  },
+  {
+    "id": "dragon_maitrise",
+    "nom": "Maîtrise Dragon",
+    "icone": "🐉",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_dragon == 1",
+    "type_associe": "dragon"
+  },
+  {
+    "id": "tenebres_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Ténèbres",
+    "icone": "🌑",
+    "description": "Débloque de manière permanente la Maîtrise du type Ténèbres.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "tenebres_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_tenebres != 1",
+    "deblocage_maitrise": "tenebres",
+    "type_associe": "tenebres"
+  },
+  {
+    "id": "tenebres_maitrise",
+    "nom": "Maîtrise Ténèbres",
+    "icone": "🌑",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_tenebres == 1",
+    "type_associe": "tenebres"
+  },
+  {
+    "id": "fee_maitrise_deblocage",
+    "nom": "Débloquer Maîtrise Fée",
+    "icone": "🧚",
+    "description": "Débloque de manière permanente la Maîtrise du type Fée.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 1000000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 0
+    },
+    "prerequis": [
+      "fee_spe_t3"
+    ],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_fee != 1",
+    "deblocage_maitrise": "fee",
+    "type_associe": "fee"
+  },
+  {
+    "id": "fee_maitrise",
+    "nom": "Maîtrise Fée",
+    "icone": "🧚",
+    "description": "+200% production finale globale, sur toute l'équipe quel que soit le type joué.",
+    "cout": {
+      "ressource": "pokedollars",
+      "valeur": 100000
+    },
+    "effet": {
+      "categorie": "additif_final",
+      "cible": {
+        "type": "global"
+      },
+      "valeur": 2
+    },
+    "prerequis": [],
+    "exclusif_avec": [],
+    "condition_deblocage": "maitrise_fee == 1",
+    "type_associe": "fee"
   }
 ]

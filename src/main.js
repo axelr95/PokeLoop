@@ -727,8 +727,9 @@ async function demarrer() {
   // Fond coloré (couleur du type) pour faire ressortir les upgrades liées à un type
   function colorerSelonType(btn, upgrade) {
     const cible = upgrade.effet && upgrade.effet.cible;
-    if (!cible || cible.type !== "type_pokemon") return;
-    const def = types[cible.valeur];
+    const typeId = upgrade.type_associe || (cible && cible.type === "type_pokemon" ? cible.valeur : null);
+    if (!typeId) return;
+    const def = types[typeId];
     if (def) btn.style.background = def.couleur;
   }
 

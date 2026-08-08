@@ -3,5 +3,12 @@
   "bonus_choix": {
     "categorie": "additif_final",
     "valeur": 1.0
+  },
+  "maitrise": {
+    "cout_deblocage": 1000000,
+    "cout_upgrade": 100000,
+    "categorie": "additif_final",
+    "cible": { "type": "global" },
+    "valeur": 2.0
   }
 }
